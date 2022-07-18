@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imageview_dialog_image_preview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+
+    <!--    <com.google.android.material.button.MaterialButton-->
+    <!--        android:id="@+id/button_dialog_image_preview_cancel"-->
+    <!--        style="@style/Widget.App.Button"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@id/imageview_dialog_image_preview"-->
+    <!--        android:layout_alignParentEnd="true"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:text="@string/cancel" />-->
+
+    <!--    <com.google.android.material.button.MaterialButton-->
+    <!--        android:id="@+id/button_dialog_image_preview_change"-->
+    <!--        style="@style/Widget.App.Button.TextButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@id/imageview_dialog_image_preview"-->
+    <!--        android:layout_marginTop="8dp"-->
+    <!--        android:layout_marginEnd="4dp"-->
+    <!--        android:layout_toStartOf="@id/button_dialog_image_preview_cancel"-->
+    <!--        android:text="@string/change" />-->
+
+</RelativeLayout>

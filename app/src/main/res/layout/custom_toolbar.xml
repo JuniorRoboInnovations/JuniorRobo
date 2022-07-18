@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.MaterialToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/custom_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/pink_500"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
+    app:navigationIconTint="@color/white"
+    app:titleTextColor="@color/white">
+
+
+</com.google.android.material.appbar.MaterialToolbar>

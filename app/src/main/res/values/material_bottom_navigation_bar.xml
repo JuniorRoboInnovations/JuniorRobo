@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.App.BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/TextAppearance.MdcTypographyStyles.Subtitle2
+        </item>
+        <item name="itemTextAppearanceInactive">
+            @style/TextAppearance.MdcTypographyStyles.Subtitle2
+        </item>
+        <item name="itemTextAppearance">@style/TextAppearance.MdcTypographyStyles.Subtitle2</item>
+    </style>
+
+</resources>

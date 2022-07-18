@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">Junior Robo</string>
+    <string name="terms_privacy">I agree <a href="https://www.jrrobo.com/terms/">Terms and conditions</a> and <a href="https://www.jrrobo.com/terms/">Privacy policy</a></string>
+
+    <!--Text field hints strings-->
+    <string name="phone_number_hint">000 0000 000</string>
+    <string name="star">*</string>
+    <string name="ask_question_here">Ask question here</string>
+    <string name="question_description_optional">Question description (Optional)</string>
+    <string name="question_tag">Question TAG</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="email">Email</string>
+    <string name="grade">Grade</string>
+    <string name="city">City</string>
+    <string name="type_your_answer_here">Type your answer here</string>
+    <!--Text field hints strings ends here-->
+
+    <!--Text views strings-->
+    <string name="login">Login</string>
+    <string name="opt_verification">OTP Verification</string>
+    <string name="otp_sent_to_mobile">Enter 4 digit OTP sent to</string>
+    <string name="otp_resend">Didn\'t receive OTP?</string>
+    <string name="otp_will_be_sent">One Time Password(OTP) will be sent to the entered mobile number for verification</string>
+    <string name="select_question_tag">Select question tag</string>
+    <string name="otp_successful">OTP Verified Successfully</string>
+    <string name="you_can_use_to_ask_question">You can use following:</string>
+    <string name="register_as">Register as:</string>
+    <string name="guest_user">Guest user</string>
+    <string name="question_picture">Question Pic</string>
+    <string name="question_file">Question File</string>
+    <string name="question">Question:</string>
+    <string name="description">Description:</string>
+    <!--Text views strings ends here-->
+
+    <!--Button strings-->
+    <string name="back">BACK</string>
+    <string name="next">NEXT</string>
+    <string name="finish">FINISH</string>
+    <string name="request_otp">REQUEST OTP</string>
+    <string name="country_code">+91 IN</string>
+    <string name="verify">VERIFY</string>
+    <string name="resend_otp">RESEND OTP</string>
+    <string name="post_question">POST QUESTION</string>
+    <string name="take_picture">TAKE PICTURE</string>
+    <string name="attach_file">ATTACH FILE</string>
+    <string name="edit_profile">EDIT PROFILE</string>
+    <string name="update_profile">UPDATE PROFILE</string>
+    <string name="cancel">Cancel</string>
+    <string name="change">Change</string>
+    <string name="answer_this">ANSWER THIS</string>
+    <string name="post_answer">POST ANSWER</string>
+    <!--Button strings ends here-->
+
+    <!--Radio button strings-->
+    <string name="student">Student</string>
+    <string name="teacher">Teacher</string>
+    <!--Radio button strings ends here-->
+
+    <!--Floating Action Button strings-->
+    <string name="ask_question">ASK QUESTION</string>
+    <!--Floating Action Button strings ends here-->
+
+    <!--On boarding strings-->
+    <!--Screen 1-->
+    <string name="tactical_learning">A Tactical Learning\nplatform</string>
+    <string name="creative_lessons_best_price">Best and Creative lessons at\nLowest price Guaranteed</string>
+    <string name="unique_platform">Junior Robo is a Unique Platform for the kids to help them boost\ntheir IQ and EQ with the help of Coding.</string>
+    <string name="trustpilot_review">Trustpilot Review</string>
+    <!--Screen 2-->
+    <string name="screen_2">Give your child wings to innovate</string>
+    <!--Screen 3-->
+    <string name="screen_3">Activity based core subjects learning</string>
+    <!--Screen 4-->
+    <string name="screen_4">Why only create, lets cook it. Cooking classes for early age chef kids</string>
+    <!--Screen 5-->
+    <string name="screen_5">Make music and dancing your daily habit\nwith our quick learn courses</string>
+    <!--Screen 6-->
+    <string name="screen_6">Learn to see art everywhere and craft\nyour imagination into reality</string>
+    <!--On boarding strings ends-->
+
+    <!--bottom navigation titles-->
+    <string name="questions_answers">Q and A</string>
+    <string name="live_classes">Live Classes</string>
+    <string name="profile">Profile</string>
+    <string name="dummy">Dummy Menu</string>
+    <!--bottom navigation titles ends here-->
+
+    <!--chip text strings-->
+    <string name="all_questions">All</string>
+    <string name="maths_questions">Maths</string>
+    <string name="olympiad_questions">Olympiad</string>
+    <!--chip text strings ends here-->
+
+</resources>
