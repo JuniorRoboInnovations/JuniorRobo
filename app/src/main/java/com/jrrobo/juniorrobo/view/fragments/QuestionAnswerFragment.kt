@@ -24,8 +24,8 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     private var _binding: FragmentQuestionAnswerBinding? = null
 
     // non null view binding object to avoid null checks using backing property
-    private val binding: FragmentQuestionAnswerBinding
-        get() = _binding!!
+    private val binding: FragmentQuestionAnswerBinding?
+        get() = _binding
 
     // view model for this fragment
     private val viewModel: FragmentQuestionsViewModel by activityViewModels()
@@ -37,7 +37,7 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
         // Inflate the layout for this fragment using view binding object
         _binding = FragmentQuestionAnswerBinding.inflate(inflater, container, false)
 
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,22 +51,22 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             val listOfQuestionCategories: List<QuestionCategoryItem> = it.items
             binding.apply {
                 var chip: Chip
-                val chipGroup = binding.chipGroupQuestionCategoriesChips
+                val chipGroup = binding?.chipGroupQuestionCategoriesChips
 
                 var allQuestionChipId: Int = 1
                 for (questionCategory in listOfQuestionCategories) {
                     chip = Chip(requireContext())
                     chip.text = questionCategory.categoryTitle
-                    chipGroup.addView(chip)
+                    chipGroup?.addView(chip)
                     if (questionCategory.categoryTitle == "All") {
                         allQuestionChipId = chip.id
                     }
                 }
-                chipGroup.check(allQuestionChipId)
+                chipGroup?.check(allQuestionChipId)
             }
         })
 
-        binding.apply {
+        binding?.apply {
             rvQuestionsList.setHasFixedSize(true)
             rvQuestionsList.adapter = adapter
             rvQuestionsList.layoutManager = LinearLayoutManager(requireContext())
@@ -77,7 +77,7 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
         }
 
         // handle the FAB to open the AskQuestionActivity
-        binding.fabAskQuestion.setOnClickListener {
+        binding?.fabAskQuestion?.setOnClickListener {
             val intent = Intent(requireActivity(), AskQuestionActivity::class.java)
             startActivity(intent)
         }

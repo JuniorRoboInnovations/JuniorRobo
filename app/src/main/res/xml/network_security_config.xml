@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">karan17-001-site1.gtempurl.com</domain>
+        <domain includeSubdomains="true">karanapp-001-site1.gtempurl.com</domain>
     </domain-config>
 </network-security-config>
