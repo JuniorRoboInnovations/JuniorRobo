@@ -5,7 +5,7 @@ class EndPoints {
     companion object {
 
         // Base URL provided
-        const val BASE_URL: String = "http://karan17-001-site1.gtempurl.com/api/"
+        const val BASE_URL: String = "http://karanapp-001-site1.gtempurl.com/api/"
 
         // Endpoint for requesting OTP
         const val APP_SMS: String = "appSms"
