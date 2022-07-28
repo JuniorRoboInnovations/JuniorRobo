@@ -3,14 +3,15 @@ package com.jrrobo.juniorrobo.network
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
+import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
+import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemPostResponse
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemsResponse
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface JuniorRoboApi {
 
@@ -53,7 +54,7 @@ interface JuniorRoboApi {
 
     // GET request to fetch all the question categories
     @GET(EndPoints.APP_CATEGORY)
-    suspend fun getQuestionCategories(): QuestionCategory
+    suspend fun getQuestionCategories(): Response<List<QuestionCategoryItem>>
 
 
     // POST request to post an answer for question with question ID
@@ -63,12 +64,18 @@ interface JuniorRoboApi {
     ): Response<String>
 
 
-    // POST request for uploading images and files
-//    @Multipart
-//    @POST
-//    suspend fun postImage(
-//        @Body
-//    )
+//     POST request for uploading images
+    @Multipart
+    @POST(EndPoints.IMAGE_UPLOAD)
+    suspend fun postImage(
+        @Part image : MultipartBody.Part
+    ): Response<String>
+
+    // GET request to fetch the image data from server
+    @GET(EndPoints.GET_IMAGE+"/{imageName}")
+    suspend fun getImage(
+        @Path("imageName") imageName: String
+    ): Response<ResponseBody>
 
 
     // GET request to fetch all the question items to display in the question answer list
@@ -77,5 +84,5 @@ interface JuniorRoboApi {
         @Query("cat_id") cat_id: Int,
         @Query("skip") skip: Int,
         @Query("take") take: Int,
-    ): QuestionItemsResponse
+    ): Response<List<QuestionItem>>
 }

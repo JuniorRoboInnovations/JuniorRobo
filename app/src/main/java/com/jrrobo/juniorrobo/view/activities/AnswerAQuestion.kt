@@ -41,10 +41,10 @@ class AnswerAQuestion : AppCompatActivity() {
 
         binding.apply {
             textViewQuestionForAnswer.text = questionItem?.question
-            textViewQuestionTagForAnswer.text = questionItem?.questionSubtext
+            textViewQuestionTagForAnswer.text = questionItem?.question_sub_text
         }
 
-        Log.d(TAG, questionItem!!.pkQuestionId.toString())
+        Log.d(TAG, questionItem!!.id.toString())
 
         binding.buttonPostAnswer.setOnClickListener {
             viewModel.postAnswer(
@@ -52,7 +52,7 @@ class AnswerAQuestion : AppCompatActivity() {
                     binding.editTextAnswer.text.toString(),
                     null,
                     null,
-                    questionItem!!.pkQuestionId
+                    questionItem!!.id
                 )
             )
         }

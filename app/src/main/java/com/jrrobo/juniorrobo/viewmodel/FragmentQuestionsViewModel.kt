@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
+import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
+import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.network.JuniorRoboApi
 import com.jrrobo.juniorrobo.repository.QuestionRepository
 import com.jrrobo.juniorrobo.utility.DispatcherProvider
@@ -24,6 +26,7 @@ class FragmentQuestionsViewModel @Inject constructor(
     private val currentQuestionCategoryId = MutableLiveData(DEFAULT_QUESTION_CATEGORY_ID)
 
     val questions = currentQuestionCategoryId.switchMap { questionCategoryId ->
+        Log.d(TAG, "making api call to fetch questions: ")
         questionRepository.getAllQuestionList(questionCategoryId, 0).cachedIn(viewModelScope)
     }
 
@@ -31,13 +34,16 @@ class FragmentQuestionsViewModel @Inject constructor(
         currentQuestionCategoryId.value = cat_id
     }
 
-    private val _questionCategoriesLiveData = MutableLiveData<QuestionCategory>()
+    private val _questionCategoriesLiveData = MutableLiveData<List<QuestionCategoryItem>>()
 
-    val questionCategoriesLiveData: LiveData<QuestionCategory>
+    val questionCategoriesLiveData: LiveData<List<QuestionCategoryItem>>
         get() = _questionCategoriesLiveData
 
     fun getQuestionCategories() {
         viewModelScope.launch(dispatchers.io) {
+
+            Log.d(TAG, "getQuestionCategories: making api call from FragmetnQuestionsViewModel")
+
             when (val response = questionRepository.getQuestionCategories()) {
                 is NetworkRequestResource.Success -> {
                     if (response.data != null) {
@@ -46,7 +52,7 @@ class FragmentQuestionsViewModel @Inject constructor(
                     }
                 }
                 is NetworkRequestResource.Error -> {
-
+                    Log.d(TAG, "getQuestionCategories: Error->${response.message}")
                 }
             }
         }

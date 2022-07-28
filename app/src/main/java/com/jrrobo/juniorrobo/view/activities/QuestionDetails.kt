@@ -24,7 +24,7 @@ class QuestionDetails : AppCompatActivity() {
 
         binding.apply {
             textViewQuestion.text = questionItem?.question
-            textViewQuestionTag.text = questionItem?.questionSubtext
+            textViewQuestionTag.text = questionItem?.question_sub_text
         }
 
         binding.buttonAnswerThis.setOnClickListener {

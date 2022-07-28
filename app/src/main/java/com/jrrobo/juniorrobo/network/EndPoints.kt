@@ -26,7 +26,14 @@ class EndPoints {
         const val APP_QUE_ANS: String = "appQueAns"
 
         // Endpoint for uploading images and files
-        const val FILE_UPLOAD: String = "FileUpload/UploadImage"
+        const val IMAGE_UPLOAD: String = "http://karanapp-001-site1.gtempurl.com/FileUpload/UploadImage?type=student"
+
+        //Endpoint to get image from server
+        const val GET_IMAGE: String ="http://karanapp-001-site1.gtempurl.com/uploads/student/"
+
+        //Endpoint to get all question without paging
+        const val GET_ALL_QUESTIONS = ""
+
     }
 
 }

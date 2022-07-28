@@ -5,6 +5,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
+import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
+import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemPagingSource
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemPostResponse
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
@@ -41,16 +43,21 @@ class QuestionRepository @Inject constructor(
         }
     }
 
-    override suspend fun getQuestionCategories(): NetworkRequestResource<QuestionCategory> {
+    override suspend fun getQuestionCategories(): NetworkRequestResource<List<QuestionCategoryItem>> {
         return try {
+            Log.d(TAG, "getQuestionCategories: before api call")
             val response = juniorRoboApi.getQuestionCategories()
+            Log.d(TAG, "getQuestionCategories: after api call")
+            
+            
+            val result = response.body()
 
-            if (response != null) {
-                Log.d(TAG, response.toString())
-                NetworkRequestResource.Success(response)
+            if (result != null) {
+                Log.d(TAG,":getQuestionCategories---->"+ result.toString())
+                NetworkRequestResource.Success(result)
             } else {
                 Log.d(TAG, response.toString())
-                NetworkRequestResource.Error(response)
+                NetworkRequestResource.Error(response.message())
             }
         } catch (e: Exception) {
             NetworkRequestResource.Error(e.message ?: "Unable to get question categories")
@@ -68,4 +75,5 @@ class QuestionRepository @Inject constructor(
         ),
         pagingSourceFactory = { QuestionItemPagingSource(juniorRoboApi, cat_id) }
     ).liveData
+
 }

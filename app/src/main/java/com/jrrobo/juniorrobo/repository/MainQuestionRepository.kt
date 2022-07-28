@@ -1,6 +1,8 @@
 package com.jrrobo.juniorrobo.repository
 
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
+import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
+import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemPostResponse
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.utility.NetworkRequestResource
@@ -14,7 +16,7 @@ interface MainQuestionRepository {
         questionItemToAsk: QuestionItemToAsk
     ): NetworkRequestResource<QuestionItemPostResponse>
 
-    suspend fun getQuestionCategories(): NetworkRequestResource<QuestionCategory>
+    suspend fun getQuestionCategories(): NetworkRequestResource<List<QuestionCategoryItem>>
 
 //    suspend fun getAllQuestionList(
 //        cat_id: Int,

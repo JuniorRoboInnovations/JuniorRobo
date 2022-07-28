@@ -47,8 +47,8 @@ class QuestionItemAdapter(
         fun bind(currentItem: QuestionItem?) {
             binding.apply {
                 textViewQuestionItemQuestion.text = currentItem?.question
-                textViewQuestionItemDescription.text = currentItem?.questionSubtext
-                textViewQuestionItemStudentName.text = currentItem?.pkQuestionId.toString()
+                textViewQuestionItemDescription.text = currentItem?.question_sub_text
+                textViewQuestionItemStudentName.text = currentItem?.id.toString()
             }
         }
     }
@@ -60,7 +60,7 @@ class QuestionItemAdapter(
     companion object {
         private val QUESTION_COMPARATOR = object : DiffUtil.ItemCallback<QuestionItem>() {
             override fun areItemsTheSame(oldItem: QuestionItem, newItem: QuestionItem): Boolean =
-                oldItem.pkQuestionId == newItem.pkQuestionId
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: QuestionItem, newItem: QuestionItem): Boolean =
                 oldItem == newItem
