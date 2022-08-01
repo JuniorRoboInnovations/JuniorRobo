@@ -30,6 +30,29 @@ class FragmentQuestionsViewModel @Inject constructor(
         questionRepository.getAllQuestionList(questionCategoryId, 0).cachedIn(viewModelScope)
     }
 
+    // paging data----
+    private val _questionsWithoutPaging = MutableLiveData<List<QuestionItem>>()
+    val questionsWithoutPaging : LiveData<List<QuestionItem>>
+        get() = _questionsWithoutPaging
+
+    fun getQuestionsWithoutPaging(cat_id: Int?){
+        viewModelScope.launch(dispatchers.io) {
+            Log.d(TAG, "getQuestions: making api call from FragmentQuestionsViewModel")
+            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id)) {
+                is NetworkRequestResource.Success -> {
+                    if (response.data != null) {
+                        Log.d(TAG, response.data.toString())
+                        _questionsWithoutPaging.postValue(response.data)
+                    }
+                }
+                is NetworkRequestResource.Error -> {
+                    Log.d(TAG, "getQuestions: Error->${response.message}")
+                }
+            }
+        }
+    }
+    // paging data----
+
     fun getQuestions(cat_id: Int) {
         currentQuestionCategoryId.value = cat_id
     }
@@ -41,8 +64,7 @@ class FragmentQuestionsViewModel @Inject constructor(
 
     fun getQuestionCategories() {
         viewModelScope.launch(dispatchers.io) {
-
-            Log.d(TAG, "getQuestionCategories: making api call from FragmetnQuestionsViewModel")
+            Log.d(TAG, "getQuestionCategories: making api call from FragmentQuestionsViewModel")
 
             when (val response = questionRepository.getQuestionCategories()) {
                 is NetworkRequestResource.Success -> {

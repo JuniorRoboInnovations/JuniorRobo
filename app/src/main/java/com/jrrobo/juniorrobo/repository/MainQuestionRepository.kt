@@ -18,6 +18,8 @@ interface MainQuestionRepository {
 
     suspend fun getQuestionCategories(): NetworkRequestResource<List<QuestionCategoryItem>>
 
+    suspend fun getAllQuestionsWithoutPaging(cat_id :Int?): NetworkRequestResource<List<QuestionItem>>
+
 //    suspend fun getAllQuestionList(
 //        cat_id: Int,
 //        skip: Int,

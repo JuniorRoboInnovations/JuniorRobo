@@ -64,6 +64,27 @@ class QuestionRepository @Inject constructor(
         }
     }
 
+    override suspend fun getAllQuestionsWithoutPaging(cat_id: Int?): NetworkRequestResource<List<QuestionItem>> {
+        return try {
+            Log.d(TAG, "getQuestions: before api call")
+            val response = juniorRoboApi.getAllQuestionListWithoutPaging(cat_id,0,10)
+            Log.d(TAG, "getQuestions: after api call")
+
+            val result = response.body()
+
+            if (result != null) {
+                Log.d(TAG,"getQuestions---->"+ result.toString())
+                NetworkRequestResource.Success(result)
+            } else {
+                Log.d(TAG, response.toString())
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            NetworkRequestResource.Error(e.message ?: "Unable to get question categories")
+        }
+    }
+
+
     fun getAllQuestionList(
         cat_id: Int,
         skip: Int,
@@ -75,5 +96,7 @@ class QuestionRepository @Inject constructor(
         ),
         pagingSourceFactory = { QuestionItemPagingSource(juniorRoboApi, cat_id) }
     ).liveData
+
+
 
 }

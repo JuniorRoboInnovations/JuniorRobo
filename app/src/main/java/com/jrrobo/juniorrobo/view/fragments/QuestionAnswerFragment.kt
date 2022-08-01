@@ -18,6 +18,7 @@ import com.jrrobo.juniorrobo.databinding.FragmentQuestionAnswerBinding
 import com.jrrobo.juniorrobo.view.activities.AskQuestionActivity
 import com.jrrobo.juniorrobo.view.activities.QuestionDetails
 import com.jrrobo.juniorrobo.view.adapter.QuestionItemAdapter
+import com.jrrobo.juniorrobo.view.adapter.QuestionItemRvAdapter
 import com.jrrobo.juniorrobo.viewmodel.FragmentQuestionsViewModel
 import kotlinx.coroutines.launch
 
@@ -49,11 +50,18 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = QuestionItemAdapter(this@QuestionAnswerFragment)
+
+
         // making the network calls with coroutines
         lifecycleScope.launch {
             Log.d(TAG, "onViewCreated: calling getQuestionCategories")
             viewModel.getQuestionCategories()
+
+//            Log.d(TAG, "onViewCreated: calling getAllQuestions")
+//            viewModel.getQuestions(2)
+
+            Log.d(TAG, "onViewCreated: calling getAllQuestionsWithoutPaging")
+            viewModel.getQuestionsWithoutPaging(null)
         }
 
         viewModel.questionCategoriesLiveData.observe(requireActivity(), Observer {
@@ -79,15 +87,39 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             }
         })
 
-        binding?.apply {
-            rvQuestionsList.setHasFixedSize(true)
-            rvQuestionsList.adapter = adapter
-            rvQuestionsList.layoutManager = LinearLayoutManager(requireContext())
+//        val adapter = QuestionItemAdapter(this@QuestionAnswerFragment)
+//        binding?.apply {
+//            rvQuestionsList.setHasFixedSize(true)
+//            rvQuestionsList.adapter = adapter
+//            rvQuestionsList.layoutManager = LinearLayoutManager(requireContext())
+//        }
+//
+//        viewModel.questions.observe(viewLifecycleOwner) {
+//            adapter.submitData(viewLifecycleOwner.lifecycle, it)
+//        }
+
+
+        with(_binding?.rvQuestionsList){
+            this?.layoutManager = LinearLayoutManager(requireContext())
+
+            this?.adapter = QuestionItemRvAdapter{ questionItem->
+                val intent = Intent(requireContext(), QuestionDetails::class.java)
+                intent.putExtra("question_item", questionItem)
+                startActivity(intent)
+            }
         }
 
-        viewModel.questions.observe(viewLifecycleOwner) {
-            adapter.submitData(viewLifecycleOwner.lifecycle, it)
-        }
+        //paging data
+        viewModel.questionsWithoutPaging.observe(viewLifecycleOwner, Observer {
+            (binding?.rvQuestionsList?.adapter as QuestionItemRvAdapter).submitList(it)
+            // if empty fetch from network
+            if(it.isEmpty()){
+                Log.d(TAG, "onViewCreated: rv empty")
+                viewModel.getQuestionsWithoutPaging(null)
+            }
+        })
+        //paging data
+
 
         // handle the FAB to open the AskQuestionActivity
         binding?.fabAskQuestion?.setOnClickListener {
