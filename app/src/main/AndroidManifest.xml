@@ -23,7 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".view.activities.QuestionDetails"
-            android:exported="false" />
+            android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -25,13 +25,6 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
     // TAG for logging purpose
     private val TAG: String = javaClass.simpleName
 
-    private val api = AppModule.provideCurrencyApi()
-    private val MAIN = AppModule.provideDispatchers().main
-    private val IO = AppModule.provideDispatchers().io
-
-    private var originalList = GlobalScope.launch(MAIN) {
-        withContext(IO) { api.getAllQuestionList(skip = 0, take = 10) }
-    }
     // view binding object
     private lateinit var binding: ActivityFromQuestionAnswerBinding
 
@@ -82,52 +75,6 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
                 }
             }
             true
-        }
-    }
-    //Testing the search function in question tab
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_search_questions,menu)
-
-        val item =menu.findItem(R.menu.main_search_questions)
-        val searchView = item.actionView as SearchView
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { filterList(query) }
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (!newText.isNullOrEmpty()) {
-                    filterList(newText)
-                }
-                return true
-            }
-        })
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when(item.itemId){
-            R.id.filter -> {
-                //Implement for filter functions
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-    private fun filterList(query : String ){
-
-        GlobalScope.launch(MAIN){
-            val response = withContext(IO){api.getAllQuestionList(skip = 0, take = 10, keyword = query)}
-            var list = response.body()
-            if(list.isNullOrEmpty()){
-                //          originalList = list
-                NetworkRequestResource.Success(response)
-            }else {
-                NetworkRequestResource.Error("No Results Found")
-            }
-            QuestionItemAdapter.notify()
         }
     }
 }
