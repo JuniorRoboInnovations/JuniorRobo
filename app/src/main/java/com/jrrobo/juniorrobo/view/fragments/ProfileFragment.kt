@@ -58,6 +58,7 @@ class ProfileFragment : Fragment() {
 
 //            profilePictureFile = File(croppedPhotoUri.path.toString())
             profilePictureFile = File(result.getUriFilePath(requireContext()).toString())
+            Log.d(TAG, "setting up image view from cropImageActivity: ")
             binding.shapeableImageViewProfile.setImageURI(croppedPhotoUri)
         }
     }
@@ -317,7 +318,6 @@ class ProfileFragment : Fragment() {
                 Log.d(TAG, "populateProfileForm: Glide called")
                 Glide.with(binding.root)
                     .load(EndPoints.GET_IMAGE+studentProfileData.UserImage)
-                    .error(R.drawable.ic_baseline_person_24)
                     .into(binding.shapeableImageViewProfile)
 
         }
@@ -399,6 +399,6 @@ class ProfileFragment : Fragment() {
     // set the view binding object to null upon destroying the view
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+//        _binding = null
     }
 }
