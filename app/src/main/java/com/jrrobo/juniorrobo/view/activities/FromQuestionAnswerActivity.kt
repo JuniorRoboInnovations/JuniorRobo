@@ -30,7 +30,7 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
     private val IO = AppModule.provideDispatchers().io
 
     private var originalList = GlobalScope.launch(MAIN) {
-        withContext(IO) { api.getAllQuestionListWithoutPaging(skip = 0, take = 10) }
+        withContext(IO) { api.getAllQuestionList(skip = 0, take = 10) }
     }
     // view binding object
     private lateinit var binding: ActivityFromQuestionAnswerBinding
@@ -119,7 +119,7 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
     private fun filterList(query : String ){
 
         GlobalScope.launch(MAIN){
-            val response = withContext(IO){api.getAllQuestionListWithoutPaging(skip = 0, take = 10, keyword = query)}
+            val response = withContext(IO){api.getAllQuestionList(skip = 0, take = 10, keyword = query)}
             var list = response.body()
             if(list.isNullOrEmpty()){
                 //          originalList = list

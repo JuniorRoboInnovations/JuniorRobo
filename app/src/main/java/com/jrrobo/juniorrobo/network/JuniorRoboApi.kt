@@ -91,7 +91,7 @@ interface JuniorRoboApi {
     // GET request to fetch all the question items to display in the question answer list without paging
     @GET(EndPoints.APP_QUESTION)
     suspend fun getAllQuestionListWithoutPaging(
-        @Query("cat_id") cat_id: Int = 0,
+        @Query("cat_id") cat_id: Int?,
         @Query("skip") skip: Int?,
         @Query("take") take: Int?,
     ): Response<List<QuestionItem>>
