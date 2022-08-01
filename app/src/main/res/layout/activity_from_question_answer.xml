@@ -7,6 +7,22 @@
     android:orientation="vertical"
     tools:context=".view.activities.FromQuestionAnswerActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/questions_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:menu="@menu/main_search_questions"
+        android:layout_marginBottom="10dp">
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/questions_searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/styles"
+            app:queryHint="Search Here"
+            app:iconifiedByDefault="false"/>
+    </com.google.android.material.appbar.MaterialToolbar>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/from_question_answer_navigation_container"
         android:name="androidx.navigation.fragment.NavHostFragment"
