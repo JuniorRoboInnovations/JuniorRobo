@@ -66,8 +66,4 @@ class QuestionItemAdapter(
                 oldItem == newItem
         }
     }
-    fun swapData(data : List<QuestionItem>){
-        this.data = data
-        notifyDataSetChanged()
-    }
 }

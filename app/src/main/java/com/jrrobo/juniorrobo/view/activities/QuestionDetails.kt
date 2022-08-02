@@ -13,23 +13,23 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityQuestionDetailsBinding
 import com.jrrobo.juniorrobo.network.EndPoints
+import com.jrrobo.juniorrobo.view.adapter.AnswerItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-abstract class QuestionDetails : AppCompatActivity() {
+class QuestionDetails : AppCompatActivity() {
 
-    private val TAG: String = javaClass.simpleName
-
-    private lateinit var croppedPhotoUri: Uri
-
-    private lateinit var studentProfileData: StudentProfileData
+//    private val TAG: String = javaClass.simpleName
+//
+//    private lateinit var croppedPhotoUri: Uri
 
     // view binding object
     private lateinit var binding: ActivityQuestionDetailsBinding
@@ -46,54 +46,47 @@ abstract class QuestionDetails : AppCompatActivity() {
         binding.apply {
             textViewQuestion.text = questionItem?.question
             textViewQuestionTag.text = questionItem?.question_sub_text
-            // load the image from Server
-            lifecycleScope.launch {
-
-                Log.d(TAG, "populateProfileForm: Glide called")
-                Glide.with(binding.root)
-                    .load(EndPoints.GET_IMAGE+studentProfileData.UserImage)
-                    .error(R.drawable.ic_baseline_person_24)
-                    .into(binding.profileImage)
-            }
-
-            binding.answerCardviewQuestionImage.setOnClickListener {
-
-                var dialogImagePreview: AlertDialog? = null
-
-                val builder: AlertDialog.Builder = AlertDialog.Builder(applicationContext)
-                val customLayout: View = layoutInflater.inflate(R.layout.dialog_image_preview, null)
-                customLayout.findViewById<ImageView>(R.id.imageview_dialog_image_preview)
-                    .setImageURI(croppedPhotoUri)
-                builder.setView(customLayout)
-
-                builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
-                    override fun onClick(p0: DialogInterface?, p1: Int) {
-                        dialogImagePreview!!.dismiss()
-                    }
-                })
-                dialogImagePreview = builder.create()
-
-                dialogImagePreview.show()
-            }
         }
+
+//        binding.answersRv.apply {
+//            layoutManager = LinearLayoutManager(this@QuestionDetails)
+//       //     adapter = AnswerItemAdapter()
+//        }
+
+//        binding.answerCardviewQuestionImage.setOnClickListener {
+//
+//            var dialogImagePreview: AlertDialog? = null
+//
+//            val builder: AlertDialog.Builder = AlertDialog.Builder(applicationContext)
+//            val customLayout: View = layoutInflater.inflate(R.layout.dialog_image_preview, null)
+//            customLayout.findViewById<ImageView>(R.id.imageview_dialog_image_preview)
+//                .setImageURI(croppedPhotoUri)
+//            builder.setView(customLayout)
+//
+//            builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
+//                override fun onClick(p0: DialogInterface?, p1: Int) {
+//                    dialogImagePreview!!.dismiss()
+//                }
+//            })
+//            dialogImagePreview = builder.create()
+//
+//            dialogImagePreview.show()
+//        }
 
         binding.buttonAnswerThis.setOnClickListener {
             val intent = Intent(this, AnswerAQuestion::class.java)
             intent.putExtra("question_item_for_answer", questionItem)
             startActivity(intent)
-
-            binding.answersRv.layoutTransition?.enableTransitionType(LayoutTransition.CHANGING)
-
-            binding.buttonSeeAnswer.setOnClickListener {view: View ->
-                val v = if (binding.answersRv.visibility == View.GONE) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-                TransitionManager.beginDelayedTransition(binding.answersRv, AutoTransition())
-                binding.answersRv.visibility = v
-                binding.buttonSeeAnswer.visibility = View.GONE
             }
+
+        binding.buttonSeeAnswer.setOnClickListener {view: View ->
+            val v = if (binding.answersRv.visibility == View.GONE) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            binding.answersRv.visibility = v
+           binding.buttonSeeAnswer.visibility = View.GONE
         }
     }
 

@@ -12,8 +12,6 @@ import com.jrrobo.juniorrobo.network.EndPoints
 
 class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<AnswerItemAdapter.AnswerViewHolder>() {
 
-    //private val studentImage = EndPoints.GET_IMAGE + StudentProfileData.UserImage
-
     override fun getItemCount() = list.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
@@ -32,12 +30,7 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
         fun bind(answerItem: AnswerItem){
 
             binding.answerText.text = answerItem.answer
-       /*     binding.apply {
-                Glide.with(binding.root)
-                        .load(EndPoints.GET_IMAGE + studentProfileData.UserImage)
-                        .error(R.drawable.ic_default_avatar)
-                        .into(binding.answerImage)
-                }*/
+
             }
         }
     }

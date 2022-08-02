@@ -21,9 +21,6 @@
         <activity
             android:name=".view.activities.AnswerAQuestion"
             android:exported="false" />
-        <activity
-            android:name=".view.activities.QuestionDetails"
-            android:exported="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -34,6 +31,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+        <activity
+            android:name=".view.activities.QuestionDetails"
+            android:exported="true" />
 
         <activity
             android:name=".view.activities.AskQuestionActivity"
