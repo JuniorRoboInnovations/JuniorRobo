@@ -50,7 +50,11 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        val adapter = QuestionItemRvAdapter{ questionItem->
+            val intent = Intent(requireContext(), QuestionDetails::class.java)
+            intent.putExtra("question_item", questionItem)
+            startActivity(intent)
+        }
 
         // making the network calls with coroutines
         lifecycleScope.launch {
@@ -82,6 +86,13 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
                         }
                     }
                     chipGroup?.check(allQuestionChipId)
+
+                    chipGroup?.setOnCheckedChangeListener { group, checkedId ->
+                        chip = group.findViewById(checkedId)
+                        Log.d(TAG, "onViewCreated: ChipGroup->${chip.text} clicked")
+                        Log.d(TAG, "onViewCreated: Adapter data-> ${adapter.currentList.filter { questionItem ->
+                            questionItem.question_sub_text == chip.text }}")
+                    }
                 }
 
             }
@@ -102,11 +113,7 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
         with(_binding?.rvQuestionsList){
             this?.layoutManager = LinearLayoutManager(requireContext())
 
-            this?.adapter = QuestionItemRvAdapter{ questionItem->
-                val intent = Intent(requireContext(), QuestionDetails::class.java)
-                intent.putExtra("question_item", questionItem)
-                startActivity(intent)
-            }
+            this?.adapter = adapter
         }
 
         //paging data

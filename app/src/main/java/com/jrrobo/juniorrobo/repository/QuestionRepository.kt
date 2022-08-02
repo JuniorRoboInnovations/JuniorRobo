@@ -67,7 +67,7 @@ class QuestionRepository @Inject constructor(
     override suspend fun getAllQuestionsWithoutPaging(cat_id: Int?): NetworkRequestResource<List<QuestionItem>> {
         return try {
             Log.d(TAG, "getQuestions: before api call")
-            val response = juniorRoboApi.getAllQuestionListWithoutPaging(cat_id,0,10)
+            val response = juniorRoboApi.getAllQuestionListWithoutPaging(cat_id,0,50)
             Log.d(TAG, "getQuestions: after api call")
 
             val result = response.body()
