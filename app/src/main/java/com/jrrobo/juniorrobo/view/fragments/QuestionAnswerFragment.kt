@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
+import com.google.android.material.snackbar.Snackbar
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.FragmentQuestionAnswerBinding
@@ -50,6 +51,8 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var questions: List<QuestionItem>? = null
+
         val adapter = QuestionItemRvAdapter{ questionItem->
             val intent = Intent(requireContext(), QuestionDetails::class.java)
             intent.putExtra("question_item", questionItem)
@@ -61,42 +64,62 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             Log.d(TAG, "onViewCreated: calling getQuestionCategories")
             viewModel.getQuestionCategories()
 
-//            Log.d(TAG, "onViewCreated: calling getAllQuestions")
-//            viewModel.getQuestions(2)
-
             Log.d(TAG, "onViewCreated: calling getAllQuestionsWithoutPaging")
             viewModel.getQuestionsWithoutPaging(null)
         }
 
         viewModel.questionCategoriesLiveData.observe(requireActivity(), Observer {
             val listOfQuestionCategories: List<QuestionCategoryItem> = it
-            binding?.apply {
+            binding?.let {
+
+                binding?.chipGroupQuestionCategoriesChips?.removeAllViews()
 
                 context?.let {
                     var chip: Chip
                     val chipGroup = binding?.chipGroupQuestionCategoriesChips
 
-                    var allQuestionChipId: Int = 1
+                    chip=Chip(context)
+                    chip.text = "All"
+                    chip.isCheckable = true
+                    chipGroup?.addView(chip)
+                    val allQuestionChipId: Int = chip.id
+
                     for (questionCategory in listOfQuestionCategories) {
                         chip = Chip(context)
                         chip.text = questionCategory.categoryTitle
+                        chip.isCheckable = true
                         chipGroup?.addView(chip)
-                        if (questionCategory.categoryTitle == "All") {
-                            allQuestionChipId = chip.id
-                        }
                     }
-                    chipGroup?.check(allQuestionChipId)
-
-                    chipGroup?.setOnCheckedChangeListener { group, checkedId ->
-                        chip = group.findViewById(checkedId)
-                        Log.d(TAG, "onViewCreated: ChipGroup->${chip.text} clicked")
-                        Log.d(TAG, "onViewCreated: Adapter data-> ${adapter.currentList.filter { questionItem ->
-                            questionItem.question_sub_text == chip.text }}")
-                    }
+                    binding?.chipGroupQuestionCategoriesChips?.check(allQuestionChipId)
                 }
 
             }
         })
+
+        binding?.chipGroupQuestionCategoriesChips?.setOnCheckedChangeListener { group, checkedId ->
+            val chip = group.findViewById<Chip>(checkedId)
+            var modifiedQuestionList: List<QuestionItem>? = null
+
+            if(chip.text.equals("All")){
+                modifiedQuestionList=questions
+            }
+            else{
+                 modifiedQuestionList= questions?.filter { questionItem ->
+                     questionItem.question_sub_text == chip.text
+                 }
+            }
+            adapter.submitList(null)
+            if (modifiedQuestionList!=null && modifiedQuestionList.isEmpty()) {
+                Snackbar.make(
+                    binding!!.rvQuestionsList,
+                    "Oops! No Questions. Be the first one to ask.",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+            adapter.submitList(modifiedQuestionList)
+            binding?.rvQuestionsList?.smoothScrollToPosition(0)
+
+        }
 
 //        val adapter = QuestionItemAdapter(this@QuestionAnswerFragment)
 //        binding?.apply {
@@ -116,16 +139,17 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             this?.adapter = adapter
         }
 
-        //paging data
+        //questions data begin
         viewModel.questionsWithoutPaging.observe(viewLifecycleOwner, Observer {
-            (binding?.rvQuestionsList?.adapter as QuestionItemRvAdapter).submitList(it)
+            questions = it // update the question list
+            (binding?.rvQuestionsList?.adapter as QuestionItemRvAdapter).submitList(questions)
             // if empty fetch from network
             if(it.isEmpty()){
                 Log.d(TAG, "onViewCreated: rv empty")
                 viewModel.getQuestionsWithoutPaging(null)
             }
         })
-        //paging data
+        //question data end
 
 
         // handle the FAB to open the AskQuestionActivity
@@ -136,15 +160,15 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     }
 
     // set the view binding object to null upon destroying the view
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-////        _binding = null
-//    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-//    override fun onDetach() {
-//        super.onDetach()
-//        _binding = null
-//    }
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
 
     override fun onItemClick(questionItem: QuestionItem) {
         val intent = Intent(requireContext(), QuestionDetails::class.java)
