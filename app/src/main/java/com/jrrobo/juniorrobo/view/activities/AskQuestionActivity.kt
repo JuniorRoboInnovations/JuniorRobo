@@ -19,11 +19,15 @@ import androidx.lifecycle.lifecycleScope
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
+import com.google.android.material.snackbar.Snackbar
 import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.databinding.ActivityAskQuestionBinding
 import com.jrrobo.juniorrobo.viewmodel.ActivityAskQuestionActivityViewModel
+import com.jrrobo.juniorrobo.viewmodel.FragmentProfileViewModel
+import com.jrrobo.juniorrobo.viewmodel.FragmentQuestionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AskQuestionActivity : AppCompatActivity() {
@@ -184,17 +188,46 @@ class AskQuestionActivity : AppCompatActivity() {
         }
 
         binding.buttonPostQuestion.setOnClickListener {
-            Log.d(TAG, pkStudentId.toString())
-            viewModel.postQuestionItem(
-                QuestionItemToAsk(
-                    binding.editTextQuestion.text.toString(),
-                    binding.editTextQuestionDescription.text.toString(),
-                    "All",
-                    pkStudentId,
-                    null,
-                    1
+            Log.d(TAG, "onCreate: Student pkID->${pkStudentId}")
+            lifecycleScope.launch {
+                viewModel.postQuestionItem(
+                    QuestionItemToAsk(
+                        binding.editTextQuestion.text.toString(),
+                        binding.editTextQuestionDescription.text.toString(),
+                        "All",
+                        pkStudentId,
+                        null,
+                        1
+                    )
                 )
-            )
+                viewModel.postQuestionEventFlow.collect {
+                    when (it) {
+                        is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Loading -> {
+
+                        }
+
+                        is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Failure -> {
+                            Snackbar.make(
+                                binding.editTextQuestion,
+                                "Couldn't post the question!",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+
+                        // upon successful POST event
+                        is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Success -> {
+                            Snackbar.make(
+                                binding.editTextQuestion,
+                                "Successfully posted the question!",
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                        else -> {
+                            Unit
+                        }
+                    }
+                }
+            }
         }
     }
 
