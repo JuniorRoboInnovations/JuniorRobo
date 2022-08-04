@@ -42,7 +42,18 @@ class FragmentQuestionsViewModel @Inject constructor(
                 is NetworkRequestResource.Success -> {
                     if (response.data != null) {
                         Log.d(TAG, response.data.toString())
-                        _questionsWithoutPaging.postValue(response.data)
+                        var parsedQuestions = response.data
+                        // filtering of data, currently 1 is for all the questions that are posted
+                        // TODO : need to be optimized
+                        if(cat_id!= null && cat_id!=1){
+                            parsedQuestions= parsedQuestions.filter { questionItem ->
+                                questionItem.question_sub_text == questionCategoriesLiveData.value?.find { questionCategoryItem ->
+                                    questionCategoryItem.pkCategoryId == cat_id
+                                }?.categoryTitle
+                            }
+                        }
+                        _questionsWithoutPaging.postValue(parsedQuestions)
+
                     }
                 }
                 is NetworkRequestResource.Error -> {
