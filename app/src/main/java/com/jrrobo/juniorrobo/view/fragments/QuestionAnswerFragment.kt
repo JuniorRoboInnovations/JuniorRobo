@@ -128,18 +128,6 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
                     }?.pkCategoryId)
                 }
             }
-
-//            adapter.submitList(questions)
-//            adapter.submitList(null)
-//            if (modifiedQuestionList!=null && modifiedQuestionList.isEmpty()) {
-//                Snackbar.make(
-//                    binding!!.rvQuestionsList,
-//                    "Oops! No Questions. Be the first one to ask.",
-//                    Snackbar.LENGTH_LONG
-//                ).show()
-//            }
-//            adapter.submitList(modifiedQuestionList)
-
         }
 
 //        val adapter = QuestionItemAdapter(this@QuestionAnswerFragment)
@@ -164,10 +152,6 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             (binding?.rvQuestionsList?.adapter as QuestionItemRvAdapter).submitList(it)
             binding?.rvQuestionsList?.smoothScrollToPosition(0)
             if(it.isEmpty()){
-//                Snackbar.make(binding!!.rvQuestionsList,
-//                    "Oops! No Questions. Be the first one to ask.",
-//                    Snackbar.LENGTH_LONG
-//                ).show()
                 val toast = Toast.makeText(requireContext(), "Oops! No Questions. Be the first one to ask.",
                     Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.CENTER, 0, 0)
