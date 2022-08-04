@@ -93,6 +93,7 @@ interface JuniorRoboApi {
         @Query("cat_id") cat_id: Int?,
         @Query("skip") skip: Int?,
         @Query("take") take: Int?,
+        @Query("keyword") keyword: String?
     ): Response<List<QuestionItem>>
 
 }

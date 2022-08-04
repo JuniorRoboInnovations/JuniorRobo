@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -53,7 +54,7 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var questions: List<QuestionItem>? = null
+        val catNameToCatIdMap: HashMap<String,Int> = HashMap()
 
         val adapter = QuestionItemRvAdapter{ questionItem->
             val intent = Intent(requireContext(), QuestionDetails::class.java)
@@ -74,7 +75,6 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
         viewModel.questionCategoriesLiveData.observe(requireActivity(), Observer {
             listOfQuestionCategories = it
             binding?.let {
-
                 binding?.chipGroupQuestionCategoriesChips?.removeAllViews()
 
                 context?.let {
@@ -97,6 +97,7 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
 
                     listOfQuestionCategories?.let {
                         for (questionCategory in listOfQuestionCategories!!) {
+                            catNameToCatIdMap[questionCategory.categoryTitle] = questionCategory.pkCategoryId
                             chip = Chip(context)
                             chip.text = questionCategory.categoryTitle
                             chip.isCheckable = true
@@ -113,19 +114,19 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             val chip = group.findViewById<Chip>(checkedId)
             if(chip.text.equals("All")){
                 lifecycleScope.launch {
-                    viewModel.getQuestionsWithoutPaging(null)
+                    viewModel.getQuestionsWithoutPaging(null,null)
                 }
             }
             else if(chip.text.equals("My questions")){
                 lifecycleScope.launch {
-                    viewModel.getQuestionsWithoutPaging(1)
+                    viewModel.getQuestionsWithoutPaging(1,null)
                 }
             }
             else{
                 lifecycleScope.launch{
                     viewModel.getQuestionsWithoutPaging(listOfQuestionCategories?.find { questionCategoryItem ->
                         questionCategoryItem.categoryTitle == chip.text
-                    }?.pkCategoryId)
+                    }?.pkCategoryId,null)
                 }
             }
         }
@@ -168,6 +169,24 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             val intent = Intent(requireActivity(), AskQuestionActivity::class.java)
             startActivity(intent)
         }
+        //Search View
+        binding?.questionsSearchView?.isSubmitButtonEnabled = true
+        binding?.questionsSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query.let {
+                    lifecycleScope.launch {
+                        val chipGroup = binding?.chipGroupQuestionCategoriesChips
+                        val chip = chipGroup!!.findViewById<Chip>(chipGroup.checkedChipId)
+                        viewModel.getQuestionsWithoutPaging(catNameToCatIdMap[chip.text],query?.trim().toString())
+                    }
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
     }
 
     // set the view binding object to null upon destroying the view

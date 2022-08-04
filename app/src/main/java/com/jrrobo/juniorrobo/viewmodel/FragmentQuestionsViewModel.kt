@@ -35,10 +35,10 @@ class FragmentQuestionsViewModel @Inject constructor(
     val questionsWithoutPaging : LiveData<List<QuestionItem>>
         get() = _questionsWithoutPaging
 
-    fun getQuestionsWithoutPaging(cat_id: Int?){
+    fun getQuestionsWithoutPaging(cat_id: Int?,keyword:String?){
         viewModelScope.launch(dispatchers.io) {
             Log.d(TAG, "getQuestions: making api call from FragmentQuestionsViewModel")
-            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id)) {
+            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id,keyword)) {
                 is NetworkRequestResource.Success -> {
                     if (response.data != null) {
                         Log.d(TAG, response.data.toString())
