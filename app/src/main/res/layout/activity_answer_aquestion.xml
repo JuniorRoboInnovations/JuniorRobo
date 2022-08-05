@@ -53,6 +53,7 @@
             android:text="@string/take_picture"
             android:textColor="@color/yellow_600"
             app:icon="@drawable/ic_camera"
+            app:iconGravity="textStart"
             app:iconTint="@color/yellow_600" />
     </LinearLayout>
 

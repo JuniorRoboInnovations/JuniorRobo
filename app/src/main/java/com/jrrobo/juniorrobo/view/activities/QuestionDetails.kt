@@ -1,35 +1,65 @@
 package com.jrrobo.juniorrobo.view.activities
 
-import android.animation.LayoutTransition
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.util.Log
+import androidx.lifecycle.Observer
 import android.view.View
-import android.widget.ImageView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.jrrobo.juniorrobo.R
-import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityQuestionDetailsBinding
-import com.jrrobo.juniorrobo.network.EndPoints
 import com.jrrobo.juniorrobo.view.adapter.AnswerItemAdapter
+import com.jrrobo.juniorrobo.viewmodel.ActivityAnswerAQuestionViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class QuestionDetails : AppCompatActivity() {
 
-//    private val TAG: String = javaClass.simpleName
-//
-//    private lateinit var croppedPhotoUri: Uri
+    private val TAG: String = javaClass.simpleName
+
+    private val viewModel: ActivityAnswerAQuestionViewModel by viewModels()
+
+    /* private val list = listOf<AnswerItem>(
+        AnswerItem(
+            id = 72,
+            "Hello Answer",
+            null,
+            student_image = "null",
+            Date()
+        ),
+        AnswerItem(
+            id = 72,
+            "Hello Answer",
+            null,
+            student_image = "null",
+            Date()
+        ),
+        AnswerItem(
+            id = 72,
+            "Hello Answer",
+            null,
+            student_image = "null",
+            Date()
+        ),
+        AnswerItem(
+            id = 72,
+            "Hello Answer",
+            null,
+            student_image = "null",
+            Date()
+        ),
+        AnswerItem(
+            id = 72,
+            "Hello Answer",
+            null,
+            student_image = "null",
+            Date()
+        )
+    )*/
+
+    // private val adapterRv = AnswerItemAdapter(list)
 
     // view binding object
     private lateinit var binding: ActivityQuestionDetailsBinding
@@ -40,7 +70,7 @@ class QuestionDetails : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.title = "Solution"
-
+        viewModel.getAnswer(70)
         val questionItem = intent.extras!!.getParcelable<QuestionItem>("question_item")
 
         binding.apply {
@@ -48,36 +78,11 @@ class QuestionDetails : AppCompatActivity() {
             textViewQuestionTag.text = questionItem?.question_sub_text
         }
 
-//        binding.answersRv.apply {
-//            layoutManager = LinearLayoutManager(this@QuestionDetails)
-//       //     adapter = AnswerItemAdapter()
-//        }
-
-//        binding.answerCardviewQuestionImage.setOnClickListener {
-//
-//            var dialogImagePreview: AlertDialog? = null
-//
-//            val builder: AlertDialog.Builder = AlertDialog.Builder(applicationContext)
-//            val customLayout: View = layoutInflater.inflate(R.layout.dialog_image_preview, null)
-//            customLayout.findViewById<ImageView>(R.id.imageview_dialog_image_preview)
-//                .setImageURI(croppedPhotoUri)
-//            builder.setView(customLayout)
-//
-//            builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
-//                override fun onClick(p0: DialogInterface?, p1: Int) {
-//                    dialogImagePreview!!.dismiss()
-//                }
-//            })
-//            dialogImagePreview = builder.create()
-//
-//            dialogImagePreview.show()
-//        }
-
         binding.buttonAnswerThis.setOnClickListener {
             val intent = Intent(this, AnswerAQuestion::class.java)
             intent.putExtra("question_item_for_answer", questionItem)
             startActivity(intent)
-            }
+        }
 
         binding.buttonSeeAnswer.setOnClickListener {view: View ->
             val v = if (binding.answersRv.visibility == View.GONE) {
@@ -86,7 +91,18 @@ class QuestionDetails : AppCompatActivity() {
                 View.GONE
             }
             binding.answersRv.visibility = v
-           binding.buttonSeeAnswer.visibility = View.GONE
+            binding.buttonSeeAnswer.visibility = View.GONE
+        }
+
+        binding.answersRv.apply {
+            viewModel.answers.observe(this@QuestionDetails, Observer {
+                binding.answersRv.layoutManager = LinearLayoutManager(applicationContext)
+                binding.answersRv.adapter = AnswerItemAdapter(it)
+                if (it.isEmpty()) {
+                    Log.d(TAG, "onViewCreated: rv empty")
+                    viewModel.getAnswer(70)
+                }
+            })
         }
     }
 

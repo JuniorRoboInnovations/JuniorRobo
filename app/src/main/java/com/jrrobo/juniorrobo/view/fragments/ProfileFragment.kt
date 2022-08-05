@@ -313,13 +313,11 @@ class ProfileFragment : Fragment() {
 
         // load the image from Server
         lifecycleScope.launch {
-
                 Log.d(TAG, "populateProfileForm: Glide called")
                 Glide.with(binding.root)
                     .load(EndPoints.GET_IMAGE+studentProfileData.UserImage)
                     .error(R.drawable.ic_baseline_person_24)
                     .into(binding.shapeableImageViewProfile)
-
         }
         
         

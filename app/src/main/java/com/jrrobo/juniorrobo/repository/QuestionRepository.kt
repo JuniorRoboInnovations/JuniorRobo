@@ -97,6 +97,4 @@ class QuestionRepository @Inject constructor(
         pagingSourceFactory = { QuestionItemPagingSource(juniorRoboApi, cat_id) }
     ).liveData
 
-
-
 }

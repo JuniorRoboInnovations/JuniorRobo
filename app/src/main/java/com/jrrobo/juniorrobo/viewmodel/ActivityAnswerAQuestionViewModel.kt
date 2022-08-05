@@ -1,10 +1,9 @@
 package com.jrrobo.juniorrobo.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
+import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.repository.AnswerRepository
 import com.jrrobo.juniorrobo.utility.DataStorePreferencesManager
 import com.jrrobo.juniorrobo.utility.DispatcherProvider
@@ -50,4 +49,40 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
     }
 
     fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
+
+    //Answer Image getter to be implemented
+    //Answer Request GET to be implemented
+
+    sealed class GetAnswerItemEvent {
+        class Success(val resultText: String) : GetAnswerItemEvent()
+        class Failure(val errorText: String) : GetAnswerItemEvent()
+        object Loading : GetAnswerItemEvent()
+        object Empty : GetAnswerItemEvent()
+    }
+
+    private val _answers = MutableLiveData<List<AnswerItem>>()
+    val answers : LiveData<List<AnswerItem>>
+        get() = _answers
+
+    fun getAnswer(
+        q_id: Int
+    ){
+        viewModelScope.launch(dispatchers.io) {
+            Log.d(TAG, "getAnswers: making api call from ActivityAnswerAQuestionViewModel")
+            when (val response = answerRepository.getAnswer(q_id)) {
+                is NetworkRequestResource.Success -> {
+                    if (response.data != null) {
+                        Log.d(TAG, response.data.toString())
+                        _answers.postValue(response.data)
+                    }
+                }
+                is NetworkRequestResource.Error -> {
+                    Log.d(TAG, "getQuestions: Error->${response.message}")
+                }
+            }
+        }
+    }
+    companion object {
+        private const val DEFAULT_QUESTION_CATEGORY_ID = 1
+    }
 }

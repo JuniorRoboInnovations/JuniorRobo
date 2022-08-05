@@ -84,7 +84,6 @@ interface JuniorRoboApi {
         @Query("cat_id") cat_id: Int = 0,
         @Query("skip") skip: Int,
         @Query("take") take: Int,
-        @Query("keyword") keyword: String =""
     ): Response<List<QuestionItem>>
 
 
@@ -96,4 +95,11 @@ interface JuniorRoboApi {
         @Query("take") take: Int?,
     ): Response<List<QuestionItem>>
 
+
+    @GET(EndPoints.APP_QUE_ANS)
+    suspend fun getAnswerList(
+        @Query("q_id") q_id: Int,
+        @Query("skip") skip: Int,
+        @Query("take") take: Int
+    ): Response<List<AnswerItem>>
 }

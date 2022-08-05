@@ -1,5 +1,6 @@
 package com.jrrobo.juniorrobo.repository
 
+import android.util.Log
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.network.JuniorRoboApi
 import com.jrrobo.juniorrobo.utility.NetworkRequestResource
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 class AnswerRepository @Inject constructor(
     private val juniorRoboApi: JuniorRoboApi
 ) : MainAnswerRepository {
-
+    private val TAG: String = javaClass.simpleName
     override suspend fun postAnswer(answerItem: AnswerItem): NetworkRequestResource<String> {
         return try {
 
@@ -42,4 +43,26 @@ class AnswerRepository @Inject constructor(
             NetworkRequestResource.Error(e.message ?: "Unable to update the profile")
         }
     }
+
+    override suspend fun getAnswer(q_id: Int): NetworkRequestResource<List<AnswerItem>> {
+        return try {
+            Log.d(TAG, "getAnswer: before api call")
+            val response = juniorRoboApi.getAnswerList(q_id,0,10)
+            Log.d(TAG, "getAnswer: after api call")
+
+            val result = response.body()
+
+            if (result != null) {
+                Log.d(TAG,"getAnswer---->"+ result.toString())
+                NetworkRequestResource.Success(result)
+            } else {
+                Log.d(TAG, response.toString())
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            NetworkRequestResource.Error(e.message ?: "Unable to get Answers")
+        }
+    }
+
+
 }
