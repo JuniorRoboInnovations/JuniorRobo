@@ -18,7 +18,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/answer_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Hi this is a sample answer"
             android:layout_marginStart="10dp"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="6dp"
             android:layout_marginTop="6dp"

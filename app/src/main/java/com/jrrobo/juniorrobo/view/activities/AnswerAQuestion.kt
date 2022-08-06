@@ -50,7 +50,7 @@ class AnswerAQuestion : AppCompatActivity() {
         binding.buttonPostAnswer.setOnClickListener {
             viewModel.postAnswer(
                 AnswerItem(
-                    1,
+                    questionItem.id,
                     binding.editTextAnswer.text.toString(),
                     null,
                     "null",

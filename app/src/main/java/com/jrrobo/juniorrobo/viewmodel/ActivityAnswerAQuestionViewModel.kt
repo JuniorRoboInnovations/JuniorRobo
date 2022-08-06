@@ -2,6 +2,7 @@ package com.jrrobo.juniorrobo.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.paging.cachedIn
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.repository.AnswerRepository

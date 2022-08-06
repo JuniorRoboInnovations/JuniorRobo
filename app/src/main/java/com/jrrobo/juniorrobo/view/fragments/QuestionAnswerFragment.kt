@@ -105,7 +105,7 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
 
             this?.adapter = QuestionItemRvAdapter { questionItem ->
                 val intent = Intent(requireContext(), QuestionDetails::class.java)
-                intent.putExtra("question_item", questionItem)
+                intent.putExtra("questionItem", questionItem)
                 startActivity(intent)
             }
         }
@@ -163,7 +163,7 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
 
     override fun onItemClick(questionItem: QuestionItem) {
         val intent = Intent(requireContext(), QuestionDetails::class.java)
-        intent.putExtra("question_item", questionItem)
+        intent.putExtra("q_id", questionItem.id)
         startActivity(intent)
     }
 }
