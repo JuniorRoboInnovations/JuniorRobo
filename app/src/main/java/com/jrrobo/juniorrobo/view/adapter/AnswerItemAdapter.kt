@@ -10,6 +10,7 @@ import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.databinding.AnswerItemBinding
 import com.jrrobo.juniorrobo.network.EndPoints
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -33,16 +34,13 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
         fun bind(item: AnswerItem){
 
             binding.answerText.text = item.answer
-            GlobalScope.launch {
-
+            GlobalScope.launch(Dispatchers.Main){
                 Log.d(TAG, "populateAnswer: Glide called")
                 Glide.with(binding.root)
                     .load(EndPoints.GET_IMAGE+ item.student_image)
                     .error(R.drawable.ic_baseline_file_copy_24)
                     .into(binding.answerImage)
-
             }
-            binding.answerRating.rating = item.id.toFloat()
         }
     }
 

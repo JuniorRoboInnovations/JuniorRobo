@@ -54,7 +54,7 @@ class AnswerAQuestion : AppCompatActivity() {
                     binding.editTextAnswer.text.toString(),
                     null,
                     "null",
-                    Date()
+                    ""
                 )
             )
         }

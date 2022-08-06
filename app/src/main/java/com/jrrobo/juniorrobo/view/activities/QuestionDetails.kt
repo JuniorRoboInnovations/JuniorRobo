@@ -3,11 +3,12 @@ package com.jrrobo.juniorrobo.view.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.lifecycle.Observer
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityQuestionDetailsBinding
 import com.jrrobo.juniorrobo.view.adapter.AnswerItemAdapter
@@ -21,46 +22,6 @@ class QuestionDetails : AppCompatActivity() {
 
     private val viewModel: ActivityAnswerAQuestionViewModel by viewModels()
 
-    /* private val list = listOf<AnswerItem>(
-        AnswerItem(
-            id = 72,
-            "Hello Answer",
-            null,
-            student_image = "null",
-            Date()
-        ),
-        AnswerItem(
-            id = 72,
-            "Hello Answer",
-            null,
-            student_image = "null",
-            Date()
-        ),
-        AnswerItem(
-            id = 72,
-            "Hello Answer",
-            null,
-            student_image = "null",
-            Date()
-        ),
-        AnswerItem(
-            id = 72,
-            "Hello Answer",
-            null,
-            student_image = "null",
-            Date()
-        ),
-        AnswerItem(
-            id = 72,
-            "Hello Answer",
-            null,
-            student_image = "null",
-            Date()
-        )
-    )*/
-
-    // private val adapterRv = AnswerItemAdapter(list)
-
     // view binding object
     private lateinit var binding: ActivityQuestionDetailsBinding
 
@@ -70,7 +31,7 @@ class QuestionDetails : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.title = "Solution"
-        viewModel.getAnswer(70)
+        viewModel.getAnswer(71)
         val questionItem = intent.extras!!.getParcelable<QuestionItem>("question_item")
 
         binding.apply {
@@ -96,13 +57,18 @@ class QuestionDetails : AppCompatActivity() {
 
         binding.answersRv.apply {
             viewModel.answers.observe(this@QuestionDetails, Observer {
-                binding.answersRv.layoutManager = LinearLayoutManager(applicationContext)
-                binding.answersRv.adapter = AnswerItemAdapter(it)
+                layoutManager = LinearLayoutManager(this@QuestionDetails)
+                adapter = AnswerItemAdapter(it)
+
                 if (it.isEmpty()) {
                     Log.d(TAG, "onViewCreated: rv empty")
-                    viewModel.getAnswer(70)
+                    viewModel.getAnswer(71)
                 }
+
+                Log.e(TAG, "onCreate: Adapter -> ${adapter.toString()}", )
             })
+
+
         }
     }
 

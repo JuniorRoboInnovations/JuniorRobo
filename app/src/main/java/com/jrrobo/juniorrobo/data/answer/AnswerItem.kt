@@ -8,5 +8,5 @@ data class AnswerItem(
     val answer: String,
     val student: Int?,
     val student_image: String,
-    val date: Date
+    val date: String
 )

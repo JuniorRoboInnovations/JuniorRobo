@@ -59,6 +59,7 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
         object Loading : GetAnswerItemEvent()
         object Empty : GetAnswerItemEvent()
     }
+    private val currentQuestionCategoryId = MutableLiveData(ActivityAnswerAQuestionViewModel.DEFAULT_QUESTION_CATEGORY_ID)
 
     private val _answers = MutableLiveData<List<AnswerItem>>()
     val answers : LiveData<List<AnswerItem>>
