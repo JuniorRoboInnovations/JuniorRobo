@@ -7,9 +7,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import android.widget.Toast
-
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -63,7 +61,6 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             intent.putExtra("question_item", questionItem)
             startActivity(intent)
         }
-
 
         // making the network calls with coroutines
         lifecycleScope.launch {
@@ -146,34 +143,20 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
 //        }
 
 
-        with(_binding?.rvQuestionsList) {
+        with(_binding?.rvQuestionsList){
             this?.layoutManager = LinearLayoutManager(requireContext())
-
-
-            this?.adapter = QuestionItemRvAdapter { questionItem ->
-                val intent = Intent(requireContext(), QuestionDetails::class.java)
-                intent.putExtra("questionItem", questionItem)
-                startActivity(intent)
-            }
             this?.adapter = adapter
         }
 
         //questions data begin
         viewModel.questionsWithoutPaging.observe(viewLifecycleOwner, Observer {
             (binding?.rvQuestionsList?.adapter as QuestionItemRvAdapter).submitList(it)
-
-            // if empty fetch from network
-            if (it.isEmpty()) {
-                Log.d(TAG, "onViewCreated: rv empty")
-                viewModel.getQuestionsWithoutPaging(null)
-
             binding?.rvQuestionsList?.smoothScrollToPosition(0)
             if(it.isEmpty()){
                 val toast = Toast.makeText(requireContext(), "Oops! No Questions. Be the first one to ask.",
                     Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.CENTER, 0, 0)
                 toast.show()
-
             }
 
 
@@ -186,15 +169,6 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             val intent = Intent(requireActivity(), AskQuestionActivity::class.java)
             startActivity(intent)
         }
-
-
-        //Search View
-        binding?.questionsSearchView?.isSubmitButtonEnabled = true
-        binding?.questionsSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String): Boolean {
-                query.let {
-                    searchUsers(it)
-
         //Search View
         binding?.questionsSearchView?.isSubmitButtonEnabled = true
         binding?.questionsSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -205,34 +179,9 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
                         val chip = chipGroup!!.findViewById<Chip>(chipGroup.checkedChipId)
                         viewModel.getQuestionsWithoutPaging(catNameToCatIdMap[chip.text],query?.trim().toString())
                     }
-
                 }
                 return true
             }
-
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                newText.let {
-                    searchUsers(it)
-                }
-                return true
-            }
-
-        })
-    }
-
-    private fun searchUsers(query: String) {
-    }
-// set the view binding object to null upon destroying the view
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-////        _binding = null
-//    }
-
-//    override fun onDetach() {
-//        super.onDetach()
-//        _binding = null
-//    }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 return true
@@ -251,10 +200,9 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
         _binding = null
     }
 
-
     override fun onItemClick(questionItem: QuestionItem) {
         val intent = Intent(requireContext(), QuestionDetails::class.java)
-        intent.putExtra("q_id", questionItem.id)
+        intent.putExtra("question_item", questionItem)
         startActivity(intent)
     }
 }

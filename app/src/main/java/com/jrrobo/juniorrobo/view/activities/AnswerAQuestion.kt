@@ -45,12 +45,12 @@ class AnswerAQuestion : AppCompatActivity() {
             textViewQuestionTagForAnswer.text = questionItem?.question_sub_text
         }
 
-        Log.d(TAG, questionItem!!.id.toString())
+//        Log.d(TAG, questionItem!!.id.toString())
 
         binding.buttonPostAnswer.setOnClickListener {
             viewModel.postAnswer(
                 AnswerItem(
-                    questionItem.id,
+                    questionItem!!.id,
                     binding.editTextAnswer.text.toString(),
                     null,
                     "null",
