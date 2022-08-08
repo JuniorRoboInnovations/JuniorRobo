@@ -96,7 +96,8 @@ class OtpVerificationFragment : Fragment() {
 
                     // collect the Success event of the OTP verification response
                     is FragmentLoginViewModel.OtpEvent.Success -> {
-                        Log.d(TAG, otpResponseEvent.resultText)
+
+                        Log.d(TAG, "Success->"+otpResponseEvent.resultText)
 
                         // dismiss previous dialogs
                         alertDialog!!.dismiss()
@@ -130,7 +131,7 @@ class OtpVerificationFragment : Fragment() {
 
                     // collect the otp verification response event for any failure occurred
                     is FragmentLoginViewModel.OtpEvent.Failure -> {
-                        Log.d(TAG, otpResponseEvent.errorText)
+                        Log.d(TAG, "Failure->"+otpResponseEvent.errorText)
 
                         // dismiss the previous alert dialogs
                         alertDialog!!.dismiss()

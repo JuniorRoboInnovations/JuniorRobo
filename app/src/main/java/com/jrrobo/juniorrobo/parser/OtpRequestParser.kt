@@ -4,7 +4,7 @@ import org.json.JSONObject
 
 // data class which holds the data for the OTP request
 data class OtpRequest(
-    val success: Boolean,
+    val status: String,
     val message: String,
 )
 
@@ -22,11 +22,11 @@ object OtpRequestParser {
     fun otpRequest(jsonData: String): OtpRequest {
         return try {
             OtpRequest(
-                JSONObject(jsonData).getBoolean("success"),
-                JSONObject(jsonData).getJSONObject("item").getString("message")
+                JSONObject(jsonData).getString("status"),
+                JSONObject(jsonData).getString("message")
             )
         } catch (e: Exception) {
-            OtpRequest(false, "Something went wrong")
+            OtpRequest("Failure", "Something went wrong")
         }
     }
 
