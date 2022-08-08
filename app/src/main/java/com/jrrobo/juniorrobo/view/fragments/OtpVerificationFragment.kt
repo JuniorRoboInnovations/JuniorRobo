@@ -186,6 +186,7 @@ class OtpVerificationFragment : Fragment() {
                         // build the alert dialog for showing the close button
                         alertDialogBuilder =
                             AlertDialog.Builder(requireActivity())
+                        Log.d(TAG, "onCreateView:Succes-> ${otpRequestEvent.resultText}")
                         alertDialogBuilder!!.setMessage(otpRequestEvent.resultText)
                         alertDialogBuilder!!.setCancelable(false)
                         alertDialogBuilder!!.setNegativeButton(
@@ -209,6 +210,7 @@ class OtpVerificationFragment : Fragment() {
                         // build the alert dialog to show the error message
                         alertDialogBuilder =
                             AlertDialog.Builder(requireActivity())
+                        Log.d(TAG, "onCreateView:Failure ${otpRequestEvent.errorText}")
                         alertDialogBuilder!!.setMessage(otpRequestEvent.errorText)
                         alertDialogBuilder!!.setCancelable(false)
                         alertDialogBuilder!!.setNegativeButton(
