@@ -7,8 +7,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -16,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
@@ -24,8 +28,6 @@ import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.databinding.ActivityAskQuestionBinding
 import com.jrrobo.juniorrobo.viewmodel.ActivityAskQuestionActivityViewModel
-import com.jrrobo.juniorrobo.viewmodel.FragmentProfileViewModel
-import com.jrrobo.juniorrobo.viewmodel.FragmentQuestionsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -56,6 +58,11 @@ class AskQuestionActivity : AppCompatActivity() {
     // non null version of the picked file uri
     private val pickedFileUri
         get() = _pickedFileUri!!
+
+    // map to convert category name to category id
+    private val catNameToCatIdMap: HashMap<String,Int> = HashMap()
+
+
 
     // CropImage contract (for Can Hub image cropper)
     // for handling the response of the image picker
@@ -193,11 +200,11 @@ class AskQuestionActivity : AppCompatActivity() {
                 viewModel.postQuestionItem(
                     QuestionItemToAsk(
                         binding.editTextQuestion.text.toString(),
-                        binding.editTextQuestionDescription.text.toString(),
+                        binding.autoCompleteTextView.text.toString(),
                         "All",
                         pkStudentId,
                         null,
-                        1
+                        catNameToCatIdMap[binding.autoCompleteTextView.text.toString()]?:13
                     )
                 )
                 viewModel.postQuestionEventFlow.collect {
@@ -221,6 +228,16 @@ class AskQuestionActivity : AppCompatActivity() {
                                 "Successfully posted the question!",
                                 Snackbar.LENGTH_LONG
                             ).show()
+                            clearTextFields()
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                // go to fromQuestionAnswerActivity
+                                val intent = Intent(this@AskQuestionActivity, FromQuestionAnswerActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                this@AskQuestionActivity.finish()
+                            }, 3000)
+                            Log.d(TAG, "onCreate: Question posted->${it.questionItemPostResponse.toString()}")
+
                         }
                         else -> {
                             Unit
@@ -230,6 +247,29 @@ class AskQuestionActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun clearTextFields() {
+        binding.editTextQuestion.text = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            Log.d(TAG, "onViewCreated: calling getQuestionCategories")
+            viewModel.getQuestionCategories()
+        }
+        val categoryList : ArrayList<String> = ArrayList()
+        viewModel.questionCategoriesLiveData.observe(this, Observer {
+            for(categoryItem in it){
+                catNameToCatIdMap[categoryItem.categoryTitle] = categoryItem.pkCategoryId
+                categoryList.add(categoryItem.categoryTitle)
+            }
+            val dropDownListAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,categoryList)
+            binding.autoCompleteTextView.setAdapter(dropDownListAdapter)
+        })
+
+    }
+
 
     // function to check whether the camera permission is granted by the user or not
     private fun hasCameraPermission() =
@@ -265,4 +305,6 @@ class AskQuestionActivity : AppCompatActivity() {
 //            Log.d(TAG, permissions[1])
 //        }
 //    }
+
+
 }

@@ -18,7 +18,6 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.google.android.material.snackbar.Snackbar
-import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.databinding.FragmentProfileBinding
 import com.jrrobo.juniorrobo.network.EndPoints
@@ -52,17 +51,16 @@ class ProfileFragment : Fragment() {
 
     private var profilePictureFile: File? = null
 
+    private var imageViewClicked: Boolean = false
+
+    private var profileData : StudentProfileData? = null
+
     private val cropImageActivity = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             croppedPhotoUri = result.uriContent!!
-
-//            profilePictureFile = File(croppedPhotoUri.path.toString())
             profilePictureFile = File(result.getUriFilePath(requireContext()).toString())
-            Log.d(TAG, "setting up image view from cropImageActivity: ")
-            binding.shapeableImageViewProfile.setImageURI(croppedPhotoUri)
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,18 +71,13 @@ class ProfileFragment : Fragment() {
         // when the profile fragment is opened the edit texts should be disabled
         disableEditTexts()
 
-
-
-
         // after clicking on the Edit Profile button then only enable all the edit texts to enter the data into it
         binding.buttonProfileEditButton.setOnClickListener {
             enableEditTexts()
+            enableImageClicks()
 
-            // imageview for user profile
-            binding.shapeableImageViewProfile.isClickable = true
-            binding.shapeableImageViewProfile.isEnabled =true
             binding.shapeableImageViewProfile.setOnClickListener {
-                viewModel.imageViewClickedLiveData.value = true
+
                 // check the camera permission by the user and if not granted request the permission
                 if (!hasCameraPermission()) {
                     ActivityCompat.requestPermissions(
@@ -95,7 +88,7 @@ class ProfileFragment : Fragment() {
                         CAMERA_PERMISSION_REQUEST_CODE
                     )
                 } else {
-
+                    imageViewClicked = true
                     // if the permission is granted launch the camera intent
                     cropImageActivity.launch(
                         options {
@@ -104,6 +97,9 @@ class ProfileFragment : Fragment() {
                             setImageSource(includeGallery = true, includeCamera = true)
                         }
                     )
+                    if(croppedPhotoUri != null){
+                        binding.shapeableImageViewProfile.setImageURI(croppedPhotoUri)
+                    }
                 }
             }
 
@@ -115,188 +111,147 @@ class ProfileFragment : Fragment() {
         var pkStudentId: Int = -1
 
         // launch coroutine for requesting the primary key and displaying the profile data
-        lifecycleScope.launchWhenStarted {
 
-            //TODO : changed here used if block
-            Log.d(TAG, "onCreateView: ${viewModel.imageViewClickedLiveData.value.toString()}")
+        // request the primary key
+        viewModel.getPkStudentIdPreference().observe(requireActivity(), Observer {
+            // assign the primary key from the data store preference
+            pkStudentId = it
+            if(!imageViewClicked) {
+                viewModel.getStudentProfile(pkStudentId)
+            }
+        })
 
-            // request the primary key
-            viewModel.getPkStudentIdPreference().observe(requireActivity(), Observer {
-                // assign the primary key from the data store preference
-                Log.d(TAG, "onCreateView: i am pk observer and caliing getStudentProfile")
-                pkStudentId = it
-                viewModel.imageViewClickedLiveData.let {
-                    if(it.value==null || it.value == false){
-                        viewModel.getStudentProfile(pkStudentId)
+        // call the GET request only when image view is not clicked
+        lifecycleScope.launch{
+            viewModel.profileGetFlow.collect {
+                when (it) {
+                    is FragmentProfileViewModel.ProfileGetEvent.Loading -> {
+
                     }
-                }
 
-            })
+                    is FragmentProfileViewModel.ProfileGetEvent.Failure -> {
+                        Snackbar.make(
+                            binding.buttonProfileUpdateButton,
+                            "Couldn't get profile details",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
 
-
-            // call the GET request only when image view is not clicked
-            viewModel.imageViewClickedLiveData.let {
-                if (it.value == null || it.value == false) {
-                    Log.d(TAG, "onCreateView: below is profileGetFlow")
-                    // from the profile GET request flow, collect the events of the GET request to display the profile data
-                    viewModel.profileGetFlow.collect {
-                        when (it) {
-                            is FragmentProfileViewModel.ProfileGetEvent.Loading -> {
-
-                            }
-
-                            is FragmentProfileViewModel.ProfileGetEvent.Failure -> {
-                                Snackbar.make(
-                                    binding.buttonProfileUpdateButton,
-                                    "Couldn't get profile details",
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                            }
-
-                            // upon successful GET event populate the profile data
-                            is FragmentProfileViewModel.ProfileGetEvent.Success -> {
-
-                                // assign the data to all the edit texts
-                                Log.d(TAG, "onCreateView: profileGetFlow called Glide")
-                                populateProfileForm(it.parsedStudentProfileData)
-                                viewModel.profileData.value = it.parsedStudentProfileData
-                            }
-                            else -> {
-                                Unit
-                            }
-                        }
+                    // upon successful GET event populate the profile data
+                    is FragmentProfileViewModel.ProfileGetEvent.Success -> {
+                        // assign the data to all the edit texts
+                        populateProfileForm(it.parsedStudentProfileData)
+                        profileData = it.parsedStudentProfileData
+                    }
+                    else -> {
+                        Unit
                     }
                 }
             }
         }
 
-        // upon clicking the update profile button disable the edit texts and the entered data will
-        // as it is
+        // upon clicking the update profile button disable the edit texts and the entered data will be populated
         binding.buttonProfileUpdateButton.setOnClickListener {
 
             disableEditTexts()
             binding.buttonProfileUpdateButton.visibility = View.INVISIBLE
             binding.buttonProfileEditButton.visibility = View.VISIBLE
 
-            Log.d(TAG, "onCreateView:imageViewClicked----> ${viewModel.imageViewClickedLiveData.value}")
-            Log.d(TAG, "onCreateView:userImage----> ${viewModel.profileData.value?.UserImage}")
+            if(!imageViewClicked) {
+                val profileUpdate =
+                    StudentProfileData(
+                        pkStudentId,
+                        binding.editTextFirstName.text.toString(),
+                        binding.editTextLastName.text.toString(),
+                        binding.editTextEmail.text.toString(),
+                        binding.editTextMobileNumber.text.toString(),
+                        profileData?.userImage?:"default.jpg",
+                        binding.editTextCity.text.toString()
+                    )
+                updateProfile(profileUpdate)
+                profileData = profileUpdate // if any field is changed but image not changed
+            }
+            else {
+                Log.d(TAG, "onCreateView: ${profilePictureFile.toString()}")
+                viewModel.uploadProfileImage(profilePictureFile)
+                lifecycleScope.launch {
+                    viewModel.imageUploadFlow.collect{
+                        when(it){
+                            is FragmentProfileViewModel.ImageUploadEvent.Loading ->{
 
-            viewModel.imageViewClickedLiveData.let {
-                if(it.value==null || it.value == false){
-                    // create an object for POST request, to update the user data
-                    val profileUpdate =
-                        StudentProfileData(
-                            pkStudentId,
-                            binding.editTextFirstName.text.toString(),
-                            binding.editTextLastName.text.toString(),
-                            binding.editTextEmail.text.toString(),
-                            binding.editTextMobileNumber.text.toString(),
-                            viewModel.profileData.value?.UserImage?:"default.jpg",
-                            binding.editTextCity.text.toString()
-                        )
-
-                    updateProfile(profileUpdate)
-                    viewModel.profileData.value = profileUpdate // if any field is changed but image not changed
-                }
-                else{
-                    //"ddc276df-449a-475a-8be7-44d0f433d5b6.png" default image
-                    // launch coroutine for uploading image
-
-                    lifecycleScope.launch {
-                        viewModel.uploadProfileImage(profilePictureFile)
-                        viewModel.imageUploadFlow.collect{
-                            when(it){
-                                is FragmentProfileViewModel.ImageUploadEvent.Loading ->{
-
+                            }
+                            is FragmentProfileViewModel.ImageUploadEvent.Success ->{
+                                var imageName = it.hashedImageName
+                                if(imageName == "error"){
+                                    Snackbar.make(
+                                        binding.buttonProfileUpdateButton,
+                                        "Couldn't upload image!",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                    imageName="default.jpg"
                                 }
-                                is FragmentProfileViewModel.ImageUploadEvent.Success ->{
-                                    val profileUpdate =
-                                        StudentProfileData(
-                                            pkStudentId,
-                                            binding.editTextFirstName.text.toString(),
-                                            binding.editTextLastName.text.toString(),
-                                            binding.editTextEmail.text.toString(),
-                                            binding.editTextMobileNumber.text.toString(),
-                                            it.hashedImageName,
-                                            binding.editTextCity.text.toString()
-                                        )
+                                val profileUpdate = StudentProfileData(pkStudentId,
+                                    binding.editTextFirstName.text.toString(),
+                                    binding.editTextLastName.text.toString(),
+                                    binding.editTextEmail.text.toString(),
+                                    binding.editTextMobileNumber.text.toString(),
+                                    imageName,
+                                    binding.editTextCity.text.toString()
+                                )
+                                updateProfile(profileUpdate)
+                                profileData = profileUpdate // if any field is changed along with image
+                            }
+                            is FragmentProfileViewModel.ImageUploadEvent.Failure->{
+                                Snackbar.make(
+                                    binding.buttonProfileUpdateButton,
+                                    "Couldn't upload image!",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            }
+                            else ->{
 
-                                    Log.d(TAG, "onCreateView: The StudentProfileData object has image=${profileUpdate.UserImage}")
-                                    Log.d(TAG, "onCreateView: making call to update Profile")
-                                    updateProfile(profileUpdate)
-                                    Log.d(TAG, "onCreateView: Successfully uploaded image: ${it.hashedImageName}")
-                                    viewModel.profileData.value = profileUpdate // if any field is changed but image also changed
-                                }
-                                else ->{
-                                    val profileUpdate =
-                                        StudentProfileData(
-                                            pkStudentId,
-                                            binding.editTextFirstName.text.toString(),
-                                            binding.editTextLastName.text.toString(),
-                                            binding.editTextEmail.text.toString(),
-                                            binding.editTextMobileNumber.text.toString(),
-                                            viewModel.profileData.value?.UserImage?:"default.jpg",
-                                            binding.editTextCity.text.toString()
-                                        )
-                                    updateProfile(profileUpdate)
-                                    viewModel.profileData.value = profileUpdate // if any field is changed but image also changed
-                                }
                             }
                         }
-
                     }
                 }
+
             }
         }
 
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume: called")
-    }
-
 
 
     private fun updateProfile(profileUpdate: StudentProfileData) {
+        // launch the update profile function
+        viewModel.updateProfile(profileUpdate)
+
         // launch the coroutine for updating the profile from the above data
         lifecycleScope.launch {
-
-            // launch the update profile function
-            viewModel.updateProfile(profileUpdate)
-
             // collect the flow of the Profile Update event
             viewModel.profileUpdateFlow.collect {
                 when (it) {
                     is FragmentProfileViewModel.ProfileUpdateEvent.Loading -> {
-                        Snackbar.make(
-                            binding.buttonProfileUpdateButton,
-                            "Please Wait",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
 
+                    }
                     // upon successful update of the profile set the data store preference of profile created status to true
                     is FragmentProfileViewModel.ProfileUpdateEvent.Success -> {
-
                         Snackbar.make(
                             binding.buttonProfileUpdateButton,
-                            "Profile updated successfully",
+                            "Profile updated successfully!",
                             Snackbar.LENGTH_SHORT
                         ).show()
-                        Log.d(TAG, "updateProfile: profileUpdateFlow called Glide")
                         populateProfileForm(it.parsedStudentProfileData)
-                        //after updating populate the edit text
-
                         viewModel.setProfileCreatedStatus(true)
+                        disableImageClicks()
+                    }
+                    is FragmentProfileViewModel.ProfileUpdateEvent.Failure->{
                         disableImageClicks()
                     }
                     else -> {
                         Unit
-                        disableImageClicks()
                     }
-
                 }
             }
         }
@@ -304,62 +259,29 @@ class ProfileFragment : Fragment() {
 
     // function which populates the profile edit texts
     private fun populateProfileForm(studentProfileData: StudentProfileData) {
-        binding.editTextFirstName.setText(studentProfileData.FirstName)
-        binding.editTextLastName.setText(studentProfileData.LastName)
-        binding.editTextMobileNumber.setText(studentProfileData.Mobile)
-        binding.editTextEmail.setText(studentProfileData.Email)
-        binding.editTextCity.setText(studentProfileData.City)
-        binding.textViewUserName.text =
-            "${studentProfileData.FirstName} ${studentProfileData.LastName}"
-
+        binding.editTextFirstName.setText(studentProfileData.firstName)
+        binding.editTextLastName.setText(studentProfileData.lastName)
+        binding.editTextMobileNumber.setText(studentProfileData.mobile)
+        binding.editTextEmail.setText(studentProfileData.email)
+        binding.editTextCity.setText(studentProfileData.city)
+        binding.textViewUserName.text = "${studentProfileData.firstName} ${studentProfileData.lastName}"
+        Log.d(TAG, "populateProfileForm: called")
         // load the image from Server
         lifecycleScope.launch {
-
-                Log.d(TAG, "populateProfileForm: Glide called")
-                Glide.with(binding.root)
-                    .load(EndPoints.GET_IMAGE+studentProfileData.UserImage)
-                    .into(binding.shapeableImageViewProfile)
-
-        }
-        
-        
-/*
-        lifecycleScope.launch {
-            viewModel.getImage(studentProfileData.UserImage)
-
-            viewModel.imageGetFlow.collect{
-                when (it) {
-                    is FragmentProfileViewModel.ImageGetEvent.Loading -> {
-                    }
-
-                    // upon successful update of the profile set the data store preference of profile created status to true
-                    is FragmentProfileViewModel.ImageGetEvent.Success -> {
-
-                        val body: ResponseBody = it.responseBody
-                        val bytes = body.bytes()
-                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                        binding.shapeableImageViewProfile.setImageBitmap(bitmap)
-                    }
-                    is FragmentProfileViewModel.ImageGetEvent.Failure-> {
-//                        binding.shapeableImageViewProfile.setImageDrawable(ResourcesCompat.getDrawable(
-//                            resources, R.drawable.ic_baseline_person_24,null))
-                        //setting default person image when image is not loaded
-                    }
-                    else -> {
-                        Unit
-                    }
-                }
-            }
+            Glide.with(binding.root)
+                .load(EndPoints.GET_IMAGE + studentProfileData.userImage)
+                .into(binding.shapeableImageViewProfile)
         }
 
- */
+    }
+
+    private fun enableImageClicks() {
+        binding.shapeableImageViewProfile.isEnabled =true
     }
 
     private fun disableImageClicks(){
-        viewModel.imageViewClickedLiveData.value = false
-        binding.shapeableImageViewProfile.isClickable = false
+        imageViewClicked = false
         binding.shapeableImageViewProfile.isEnabled =false
-        binding.shapeableImageViewProfile.setOnClickListener(null)
     }
 
 

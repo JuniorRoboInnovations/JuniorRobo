@@ -35,14 +35,14 @@ interface JuniorRoboApi {
     @POST(EndPoints.APP_STUDENT)
     suspend fun postUpdateProfile(
         @Body studentProfileData: StudentProfileData,
-    ): Response<String>
+    ): Response<StudentProfileData>
 
 
     // GET request for updating the profile of the student
     @GET(EndPoints.APP_STUDENT)
     suspend fun getStudentProfile(
         @Query("id") id: Int,
-    ): Response<String>
+    ): Response<StudentProfileData>
 
 
     // POST request to add the asked question to backend

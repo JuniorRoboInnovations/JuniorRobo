@@ -1,9 +1,8 @@
 package com.jrrobo.juniorrobo.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemPostResponse
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.repository.QuestionRepository
@@ -60,8 +59,28 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
                 }
             }
         }
+    }
 
+    private val _questionCategoriesLiveData = MutableLiveData<List<QuestionCategoryItem>>()
 
+    val questionCategoriesLiveData: LiveData<List<QuestionCategoryItem>>
+        get() = _questionCategoriesLiveData
+
+    fun getQuestionCategories() {
+        viewModelScope.launch(dispatcher.io) {
+
+            when (val response = questionRepository.getQuestionCategories()) {
+                is NetworkRequestResource.Success -> {
+                    if (response.data != null) {
+                        Log.d(TAG, response.data.toString())
+                        _questionCategoriesLiveData.postValue(response.data!!)
+                    }
+                }
+                is NetworkRequestResource.Error -> {
+                    Log.d(TAG, "getQuestionCategories: Error->${response.message}")
+                }
+            }
+        }
     }
 
     fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()

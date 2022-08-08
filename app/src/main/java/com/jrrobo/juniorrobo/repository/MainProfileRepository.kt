@@ -13,11 +13,11 @@ interface MainProfileRepository {
 
     suspend fun updateProfile(
         studentProfileData: StudentProfileData
-    ): NetworkRequestResource<String>
+    ): NetworkRequestResource<StudentProfileData>
 
     suspend fun getStudentProfile(
         id: Int
-    ): NetworkRequestResource<String>
+    ): NetworkRequestResource<StudentProfileData>
 
     suspend fun uploadImage(
         image: File)

@@ -29,7 +29,7 @@ class ProfileRepository @Inject constructor(
     // function for requesting the OTP after entering the contact number
     override suspend fun updateProfile(
         studentProfileData: StudentProfileData,
-    ): NetworkRequestResource<String> {
+    ): NetworkRequestResource<StudentProfileData> {
         return try {
 
             // get the response from the API
@@ -61,7 +61,7 @@ class ProfileRepository @Inject constructor(
     }
 
     // for GET request of the API to fetch the already existing student with his/her primary key
-    override suspend fun getStudentProfile(id: Int): NetworkRequestResource<String> {
+    override suspend fun getStudentProfile(id: Int): NetworkRequestResource<StudentProfileData> {
         return try {
 
             // get the response from the API
@@ -125,8 +125,7 @@ class ProfileRepository @Inject constructor(
             //creating request body for file
             val requestFile  = image.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             // MultipartBody.Part is used to send also the actual filename
-            val body  = MultipartBody.Part.createFormData("file", image.getName(), requestFile)
-
+            val body  = MultipartBody.Part.createFormData("file", image.name, requestFile)
             // get the response from the API
             val response = juniorRoboApi.postImage(body)
 
