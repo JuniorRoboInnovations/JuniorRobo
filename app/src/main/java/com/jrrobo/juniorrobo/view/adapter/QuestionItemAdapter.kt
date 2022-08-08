@@ -48,7 +48,7 @@ class QuestionItemAdapter(
             binding.apply {
                 textViewQuestionItemQuestion.text = currentItem?.question
                 textViewQuestionItemDescription.text = currentItem?.question_sub_text
-                textViewQuestionItemStudentName.text = currentItem?.id.toString()
+                //textViewQuestionItemStudentName.text = currentItem?.id.toString()
             }
         }
     }

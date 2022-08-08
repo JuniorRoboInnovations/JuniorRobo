@@ -92,7 +92,11 @@
     <string name="all_questions">All</string>
     <string name="maths_questions">Maths</string>
     <string name="olympiad_questions">Olympiad</string>
+
     <string name="see_solutions">SEE SOLUTIONS</string>
+
+    <string name="category">Category</string>
+
     <!--chip text strings ends here-->
 
 </resources>

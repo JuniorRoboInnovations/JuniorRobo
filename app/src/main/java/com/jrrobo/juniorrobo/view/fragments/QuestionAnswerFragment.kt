@@ -3,9 +3,13 @@ package com.jrrobo.juniorrobo.view.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
+import android.widget.Toast
+
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -52,41 +56,83 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val catNameToCatIdMap: HashMap<String,Int> = HashMap()
+
+        val adapter = QuestionItemRvAdapter{ questionItem->
+            val intent = Intent(requireContext(), QuestionDetails::class.java)
+            intent.putExtra("question_item", questionItem)
+            startActivity(intent)
+        }
+
 
         // making the network calls with coroutines
         lifecycleScope.launch {
             Log.d(TAG, "onViewCreated: calling getQuestionCategories")
             viewModel.getQuestionCategories()
 
-//            Log.d(TAG, "onViewCreated: calling getAllQuestions")
-//            viewModel.getQuestions(2)
-
             Log.d(TAG, "onViewCreated: calling getAllQuestionsWithoutPaging")
-            viewModel.getQuestionsWithoutPaging(null)
+//            viewModel.getQuestionsWithoutPaging(null)
         }
 
+        var listOfQuestionCategories: List<QuestionCategoryItem>? = null
         viewModel.questionCategoriesLiveData.observe(requireActivity(), Observer {
-            val listOfQuestionCategories: List<QuestionCategoryItem> = it
-            binding?.apply {
+            listOfQuestionCategories = it
+            binding?.let {
+                binding?.chipGroupQuestionCategoriesChips?.removeAllViews()
 
                 context?.let {
                     var chip: Chip
                     val chipGroup = binding?.chipGroupQuestionCategoriesChips
 
-                    var allQuestionChipId: Int = 1
-                    for (questionCategory in listOfQuestionCategories) {
-                        chip = Chip(context)
-                        chip.text = questionCategory.categoryTitle
-                        chipGroup?.addView(chip)
-                        if (questionCategory.categoryTitle == "All") {
-                            allQuestionChipId = chip.id
+                    // All question category
+                    chip=Chip(context)
+                    chip.text = "All"
+                    chip.isCheckable = true
+                    chipGroup?.addView(chip)
+
+                    val allQuestionChipId: Int = chip.id
+
+                    // My questions category
+                    chip=Chip(context)
+                    chip.text = "My questions"
+                    chip.isCheckable = true
+                    chipGroup?.addView(chip)
+
+                    listOfQuestionCategories?.let {
+                        for (questionCategory in listOfQuestionCategories!!) {
+                            catNameToCatIdMap[questionCategory.categoryTitle] = questionCategory.pkCategoryId
+                            chip = Chip(context)
+                            chip.text = questionCategory.categoryTitle
+                            chip.isCheckable = true
+                            chipGroup?.addView(chip)
                         }
                     }
-                    chipGroup?.check(allQuestionChipId)
+                    binding?.chipGroupQuestionCategoriesChips?.check(allQuestionChipId)
                 }
 
             }
         })
+
+        binding?.chipGroupQuestionCategoriesChips?.setOnCheckedChangeListener { group, checkedId ->
+            val chip = group.findViewById<Chip>(checkedId)
+            if(chip.text.equals("All")){
+                lifecycleScope.launch {
+                    viewModel.getQuestionsWithoutPaging(null,null)
+                }
+            }
+            else if(chip.text.equals("My questions")){
+                lifecycleScope.launch {
+                    viewModel.getQuestionsWithoutPaging(1,null)
+                }
+            }
+            else{
+                lifecycleScope.launch{
+                    viewModel.getQuestionsWithoutPaging(listOfQuestionCategories?.find { questionCategoryItem ->
+                        questionCategoryItem.categoryTitle == chip.text
+                    }?.pkCategoryId,null)
+                }
+            }
+        }
 
 //        val adapter = QuestionItemAdapter(this@QuestionAnswerFragment)
 //        binding?.apply {
@@ -103,23 +149,36 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
         with(_binding?.rvQuestionsList) {
             this?.layoutManager = LinearLayoutManager(requireContext())
 
+
             this?.adapter = QuestionItemRvAdapter { questionItem ->
                 val intent = Intent(requireContext(), QuestionDetails::class.java)
                 intent.putExtra("questionItem", questionItem)
                 startActivity(intent)
             }
+            this?.adapter = adapter
         }
 
-        //paging data
+        //questions data begin
         viewModel.questionsWithoutPaging.observe(viewLifecycleOwner, Observer {
             (binding?.rvQuestionsList?.adapter as QuestionItemRvAdapter).submitList(it)
+
             // if empty fetch from network
             if (it.isEmpty()) {
                 Log.d(TAG, "onViewCreated: rv empty")
                 viewModel.getQuestionsWithoutPaging(null)
+
+            binding?.rvQuestionsList?.smoothScrollToPosition(0)
+            if(it.isEmpty()){
+                val toast = Toast.makeText(requireContext(), "Oops! No Questions. Be the first one to ask.",
+                    Toast.LENGTH_SHORT)
+                toast.setGravity(Gravity.CENTER, 0, 0)
+                toast.show()
+
             }
+
+
         })
-        //paging data
+        //question data end
 
 
         // handle the FAB to open the AskQuestionActivity
@@ -128,15 +187,29 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             startActivity(intent)
         }
 
+
         //Search View
         binding?.questionsSearchView?.isSubmitButtonEnabled = true
         binding?.questionsSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String): Boolean {
                 query.let {
                     searchUsers(it)
+
+        //Search View
+        binding?.questionsSearchView?.isSubmitButtonEnabled = true
+        binding?.questionsSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query.let {
+                    lifecycleScope.launch {
+                        val chipGroup = binding?.chipGroupQuestionCategoriesChips
+                        val chip = chipGroup!!.findViewById<Chip>(chipGroup.checkedChipId)
+                        viewModel.getQuestionsWithoutPaging(catNameToCatIdMap[chip.text],query?.trim().toString())
+                    }
+
                 }
                 return true
             }
+
 
             override fun onQueryTextChange(newText: String): Boolean {
                 newText.let {
@@ -160,6 +233,24 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
 //        super.onDetach()
 //        _binding = null
 //    }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+    }
+
+    // set the view binding object to null upon destroying the view
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        _binding = null
+    }
+
 
     override fun onItemClick(questionItem: QuestionItem) {
         val intent = Intent(requireContext(), QuestionDetails::class.java)

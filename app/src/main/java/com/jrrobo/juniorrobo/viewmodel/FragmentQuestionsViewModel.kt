@@ -36,14 +36,25 @@ class FragmentQuestionsViewModel @Inject constructor(
     val questionsWithoutPaging : LiveData<List<QuestionItem>>
         get() = _questionsWithoutPaging
 
-    fun getQuestionsWithoutPaging(cat_id: Int?){
+    fun getQuestionsWithoutPaging(cat_id: Int?,keyword:String?){
         viewModelScope.launch(dispatchers.io) {
             Log.d(TAG, "getQuestions: making api call from FragmentQuestionsViewModel")
-            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id)) {
+            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id,keyword)) {
                 is NetworkRequestResource.Success -> {
                     if (response.data != null) {
                         Log.d(TAG, response.data.toString())
-                        _questionsWithoutPaging.postValue(response.data)
+                        var parsedQuestions = response.data
+                        // filtering of data, currently 1 is for all the questions that are posted
+                        // TODO : need to be optimized
+                        if(cat_id!= null && cat_id!=1 && cat_id!=13){
+                            parsedQuestions= parsedQuestions.filter { questionItem ->
+                                questionItem.question_sub_text == questionCategoriesLiveData.value?.find { questionCategoryItem ->
+                                    questionCategoryItem.pkCategoryId == cat_id
+                                }?.categoryTitle
+                            }
+                        }
+                        _questionsWithoutPaging.postValue(parsedQuestions)
+
                     }
                 }
                 is NetworkRequestResource.Error -> {

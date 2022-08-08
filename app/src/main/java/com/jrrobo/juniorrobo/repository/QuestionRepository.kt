@@ -39,21 +39,19 @@ class QuestionRepository @Inject constructor(
                 NetworkRequestResource.Error(response.message())
             }
         } catch (e: Exception) {
+            Log.d(TAG, "postQuestionItem: ${e.message}")
             NetworkRequestResource.Error(e.message ?: "Unable to post question")
         }
     }
 
     override suspend fun getQuestionCategories(): NetworkRequestResource<List<QuestionCategoryItem>> {
         return try {
-            Log.d(TAG, "getQuestionCategories: before api call")
             val response = juniorRoboApi.getQuestionCategories()
-            Log.d(TAG, "getQuestionCategories: after api call")
             
             
             val result = response.body()
 
             if (result != null) {
-                Log.d(TAG,":getQuestionCategories---->"+ result.toString())
                 NetworkRequestResource.Success(result)
             } else {
                 Log.d(TAG, response.toString())
@@ -64,23 +62,20 @@ class QuestionRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAllQuestionsWithoutPaging(cat_id: Int?): NetworkRequestResource<List<QuestionItem>> {
+    override suspend fun getAllQuestionsWithoutPaging(cat_id: Int?,keyword:String?): NetworkRequestResource<List<QuestionItem>> {
         return try {
-            Log.d(TAG, "getQuestions: before api call")
-            val response = juniorRoboApi.getAllQuestionListWithoutPaging(cat_id,0,10)
-            Log.d(TAG, "getQuestions: after api call")
+            val response = juniorRoboApi.getAllQuestionListWithoutPaging(cat_id,0,50,keyword)
 
             val result = response.body()
 
             if (result != null) {
-                Log.d(TAG,"getQuestions---->"+ result.toString())
                 NetworkRequestResource.Success(result)
             } else {
                 Log.d(TAG, response.toString())
                 NetworkRequestResource.Error(response.message())
             }
         } catch (e: Exception) {
-            NetworkRequestResource.Error(e.message ?: "Unable to get question categories")
+            NetworkRequestResource.Error(e.message ?: "Unable to get questions")
         }
     }
 

@@ -20,7 +20,7 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
             binding.apply {
                 textViewQuestionItemQuestion.text = item.question
                 textViewQuestionItemDescription.text = item.question_sub_text
-                textViewQuestionItemStudentName.text = item.id.toString()
+//                textViewQuestionItemStudentName.text = item.id.toString()
             }
         }
 

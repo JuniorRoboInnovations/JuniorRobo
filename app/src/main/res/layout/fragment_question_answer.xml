@@ -18,14 +18,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+
     <HorizontalScrollView
         android:id="@+id/horizontal_scroll_view_question_chip_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/questions_searchView">
+
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group_question_categories_chips"
@@ -44,13 +49,25 @@
         </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/questions_searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_view_style"
+        app:iconifiedByDefault="false"
+        app:queryHint="Search Here"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_question_chip_group"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="5dp"
         android:id="@+id/rv_questions_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_view_question_chip_group" />
+        app:layout_constraintTop_toBottomOf="@id/questions_searchView"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_ask_question"

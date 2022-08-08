@@ -1,9 +1,9 @@
 package com.jrrobo.juniorrobo.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
+import com.jrrobo.juniorrobo.data.questionitem.QuestionItemPostResponse
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.repository.QuestionRepository
 import com.jrrobo.juniorrobo.utility.DataStorePreferencesManager
@@ -24,7 +24,7 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
     private val TAG: String = javaClass.simpleName
 
     sealed class PostQuestionItemEvent {
-        class Success(val resultText: String) : PostQuestionItemEvent()
+        class Success(val questionItemPostResponse: QuestionItemPostResponse) : PostQuestionItemEvent()
         class Failure(val errorText: String) : PostQuestionItemEvent()
         object Loading : PostQuestionItemEvent()
         object Empty : PostQuestionItemEvent()
@@ -46,23 +46,38 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
                 is NetworkRequestResource.Error -> {
                     _postQuestionEventFlow.value =
                         PostQuestionItemEvent.Failure(response.message!!)
-                    Log.d(TAG, response.toString())
                 }
 
                 is NetworkRequestResource.Success -> {
 
-                    // parse the requested body
-                    val successResponse = response.data
-
-                    Log.d(TAG, successResponse.toString())
-
-                    if (successResponse!!.success) {
+                    val parsedData= response.data
+                    if(parsedData!=null){
                         _postQuestionEventFlow.value =
-                            PostQuestionItemEvent.Success(successResponse.message)
-                    } else {
-                        _postQuestionEventFlow.value =
-                            PostQuestionItemEvent.Failure(successResponse.message)
+                            PostQuestionItemEvent.Success(parsedData)
                     }
+                    Log.d(TAG, "postQuestionItem: ${parsedData}")
+                }
+            }
+        }
+    }
+
+    private val _questionCategoriesLiveData = MutableLiveData<List<QuestionCategoryItem>>()
+
+    val questionCategoriesLiveData: LiveData<List<QuestionCategoryItem>>
+        get() = _questionCategoriesLiveData
+
+    fun getQuestionCategories() {
+        viewModelScope.launch(dispatcher.io) {
+
+            when (val response = questionRepository.getQuestionCategories()) {
+                is NetworkRequestResource.Success -> {
+                    if (response.data != null) {
+                        Log.d(TAG, response.data.toString())
+                        _questionCategoriesLiveData.postValue(response.data!!)
+                    }
+                }
+                is NetworkRequestResource.Error -> {
+                    Log.d(TAG, "getQuestionCategories: Error->${response.message}")
                 }
             }
         }
