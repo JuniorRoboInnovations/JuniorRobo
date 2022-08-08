@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
+import com.jrrobo.juniorrobo.di.AppModule
 import com.jrrobo.juniorrobo.network.JuniorRoboApi
 import com.jrrobo.juniorrobo.repository.QuestionRepository
 import com.jrrobo.juniorrobo.utility.DispatcherProvider

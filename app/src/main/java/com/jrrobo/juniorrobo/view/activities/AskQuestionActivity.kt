@@ -134,6 +134,8 @@ class AskQuestionActivity : AppCompatActivity() {
         }
 
         binding.cardviewQuestionImage.setOnClickListener {
+            binding.previewImageTest.visibility = View.VISIBLE
+            binding.previewImageTest.setImageURI(croppedPhotoUri)
 
             var dialogImagePreview: AlertDialog? = null
 

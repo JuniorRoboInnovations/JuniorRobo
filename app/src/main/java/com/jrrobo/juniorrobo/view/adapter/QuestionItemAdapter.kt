@@ -12,7 +12,7 @@ import com.jrrobo.juniorrobo.databinding.QuestionItemBinding
 class QuestionItemAdapter(
     private val questionItemClickListener: OnQuestionItemClickListener
 ) : PagingDataAdapter<QuestionItem, QuestionItemAdapter.QuestionViewHolder>(QUESTION_COMPARATOR) {
-
+    private var data : List<QuestionItem> = ArrayList()
     private val TAG: String = javaClass.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {

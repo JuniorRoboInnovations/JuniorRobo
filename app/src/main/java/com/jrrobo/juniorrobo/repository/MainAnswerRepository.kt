@@ -12,4 +12,8 @@ interface MainAnswerRepository {
     suspend fun postAnswer(
         answerItem: AnswerItem
     ): NetworkRequestResource<String>
+
+    suspend fun getAnswer(
+        q_id: Int
+    ): NetworkRequestResource<List<AnswerItem>>
 }

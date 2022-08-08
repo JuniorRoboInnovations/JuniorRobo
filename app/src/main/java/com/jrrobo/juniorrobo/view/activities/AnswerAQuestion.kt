@@ -11,6 +11,7 @@ import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityAnswerAquestionBinding
 import com.jrrobo.juniorrobo.viewmodel.ActivityAnswerAQuestionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 /**
  * Activity for answering a particular question
@@ -49,10 +50,11 @@ class AnswerAQuestion : AppCompatActivity() {
         binding.buttonPostAnswer.setOnClickListener {
             viewModel.postAnswer(
                 AnswerItem(
+                    questionItem.id,
                     binding.editTextAnswer.text.toString(),
                     null,
-                    null,
-                    questionItem!!.id
+                    "null",
+                    ""
                 )
             )
         }

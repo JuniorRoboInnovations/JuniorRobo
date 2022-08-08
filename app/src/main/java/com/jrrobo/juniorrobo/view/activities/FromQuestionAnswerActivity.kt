@@ -1,13 +1,23 @@
 package com.jrrobo.juniorrobo.view.activities
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.databinding.ActivityFromQuestionAnswerBinding
+import com.jrrobo.juniorrobo.di.AppModule
+import com.jrrobo.juniorrobo.utility.NetworkRequestResource
+import com.jrrobo.juniorrobo.view.adapter.QuestionItemAdapter
 import com.jrrobo.juniorrobo.view.fragments.LiveClassesFragment
 import com.jrrobo.juniorrobo.view.fragments.ProfileFragment
 import com.jrrobo.juniorrobo.view.fragments.QuestionAnswerFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.internal.notify
 
 @AndroidEntryPoint
 class FromQuestionAnswerActivity : AppCompatActivity() {

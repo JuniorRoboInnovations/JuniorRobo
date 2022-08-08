@@ -53,21 +53,8 @@
             android:text="@string/take_picture"
             android:textColor="@color/yellow_600"
             app:icon="@drawable/ic_camera"
+            app:iconGravity="textStart"
             app:iconTint="@color/yellow_600" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_attach_file_for_answer"
-            style="@style/Widget.App.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/black"
-            android:text="@string/attach_file"
-            android:textColor="@color/yellow_600"
-            app:icon="@drawable/ic_attachment"
-            app:iconTint="@color/yellow_600" />
-
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
