@@ -26,7 +26,7 @@ import com.jrrobo.juniorrobo.viewmodel.FragmentQuestionsViewModel
 import kotlinx.coroutines.launch
 
 
-class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemClickListener {
+class QuestionAnswerFragment : Fragment(){
 
     // TAG for logging purpose
     private val TAG: String = javaClass.simpleName
@@ -198,11 +198,5 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     override fun onDetach() {
         super.onDetach()
         _binding = null
-    }
-
-    override fun onItemClick(questionItem: QuestionItem) {
-        val intent = Intent(requireContext(), QuestionDetails::class.java)
-        intent.putExtra("question_item", questionItem)
-        startActivity(intent)
     }
 }

@@ -39,9 +39,9 @@ class QuestionDetails : AppCompatActivity() {
 
         supportActionBar?.title = "Solution"
 
-        val questionId = intent.extras!!.getParcelable<QuestionItem>("questionItem")
+        val questionId = intent.extras?.getParcelable<QuestionItem>("question_item")
         if (questionId != null) {
-           // viewModel.getAnswer(questionId.id)
+//            viewModel.getAnswer(questionId.id)
             viewModel.getAnswer(93)
 
         }else{
