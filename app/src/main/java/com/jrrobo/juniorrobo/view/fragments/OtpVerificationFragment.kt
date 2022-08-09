@@ -1,21 +1,27 @@
 package com.jrrobo.juniorrobo.view.fragments
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.jrrobo.juniorrobo.databinding.FragmentOtpVerificationBinding
 import com.jrrobo.juniorrobo.utility.Utilities
+import com.jrrobo.juniorrobo.view.activities.FromQuestionAnswerActivity
 import com.jrrobo.juniorrobo.viewmodel.FragmentLoginViewModel
 
 class OtpVerificationFragment : Fragment() {
@@ -102,30 +108,14 @@ class OtpVerificationFragment : Fragment() {
                         // dismiss previous dialogs
                         alertDialog!!.dismiss()
 
-                        // build the alert dialog for redirecting the user to home page
-                        alertDialogBuilder =
-                            AlertDialog.Builder(requireActivity())
-                        alertDialogBuilder!!.setMessage(otpResponseEvent.resultText)
-                        alertDialogBuilder!!.setCancelable(false)
-                        alertDialogBuilder!!.setNegativeButton(
-                            "GO TO HOME",
-                            object : DialogInterface.OnClickListener {
-                                override fun onClick(p0: DialogInterface?, p1: Int) {
-                                    alertDialog!!.dismiss()
-
-                                    val navigationDirections =
-                                        OtpVerificationFragmentDirections.actionOtpVerificationFragmentToFromQuestionAnswerActivity(
-                                            contactNumber
-                                        )
-                                    findNavController().navigate(
-                                        navigationDirections
-                                    )
-                                }
-                            })
-
-                        alertDialog = alertDialogBuilder!!.create()
-                        alertDialog!!.show()
-
+                        // go to home page
+                        val navigationDirections =
+                            OtpVerificationFragmentDirections.actionOtpVerificationFragmentToFromQuestionAnswerActivity(
+                                contactNumber
+                            )
+                        findNavController().navigate(
+                            navigationDirections
+                        )
                         viewModel.setOtpVerificationStatus(true)
                     }
 
