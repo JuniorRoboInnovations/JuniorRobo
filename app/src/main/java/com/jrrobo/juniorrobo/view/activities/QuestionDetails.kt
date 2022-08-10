@@ -41,9 +41,11 @@ class QuestionDetails : AppCompatActivity() {
 
         val questionId = intent.extras?.getParcelable<QuestionItem>("question_item")
         if (questionId != null) {
-//            viewModel.getAnswer(questionId.id)
-            viewModel.getAnswer(93)
-
+            viewModel.getAnswer(questionId.id)
+            /**
+             * For checking if there is no answers in backend
+             *  viewModel.getAnswer(93)
+             */
         }else{
             Log.e(TAG, "onCreate: ${questionId}", )
         }
@@ -84,8 +86,11 @@ class QuestionDetails : AppCompatActivity() {
                         .show()
                     Log.d(TAG, "onViewCreated: rv empty")
                     if (questionId != null) {
-                      //  viewModel.getAnswer(questionId.id)
-                        viewModel.getAnswer(93)
+                        viewModel.getAnswer(questionId.id)
+                        /**
+                         * For checking if there is no answers in backend
+                         *  viewModel.getAnswer(93)
+                         */
                     }
                 }
                 else{
