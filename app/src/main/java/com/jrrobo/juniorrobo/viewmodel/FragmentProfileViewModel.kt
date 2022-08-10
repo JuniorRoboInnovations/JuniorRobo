@@ -1,7 +1,6 @@
 package com.jrrobo.juniorrobo.viewmodel
 
 import android.util.Log
-import android.widget.ExpandableListView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -64,14 +63,10 @@ class FragmentProfileViewModel @Inject constructor(
                 // when the NetworkResource is Success set the Profile update request event to
                 // Success state with the data got by the network resource
                 is NetworkRequestResource.Success -> {
-                    try {
-                        _profileUpdateFlow.value =
-                            ProfileUpdateEvent.Success(updateProfileResponse.data!!)
-                    }
-                    catch (e : Exception){
-                        _profileUpdateFlow.value =
-                            ProfileUpdateEvent.Failure(e.message.toString())
-                    }
+
+                    _profileUpdateFlow.value =
+                        ProfileUpdateEvent.Success(updateProfileResponse.data!!)
+
                     Log.d(TAG, updateProfileResponse.data.toString())
                 }
             }
@@ -115,14 +110,9 @@ class FragmentProfileViewModel @Inject constructor(
                     is NetworkRequestResource.Success -> {
 
                         // parse the response of the image upload POST request
-                        try {
-                            _imageUploadFlow.value =
-                                ImageUploadEvent.Success(uploadImageResponse.data.toString())
-                        }
-                        catch (e :Exception){
-                            _imageUploadFlow.value =
-                                ImageUploadEvent.Failure(e.message.toString())
-                        }
+                        _imageUploadFlow.value =
+                            ImageUploadEvent.Success(uploadImageResponse.data.toString())
+
                         Log.d(TAG, uploadImageResponse.data.toString())
                     }
                 }
@@ -172,13 +162,13 @@ class FragmentProfileViewModel @Inject constructor(
                 }
 
                 is NetworkRequestResource.Success -> {
-                    try {
-                        _profileGetFlow.value = ProfileGetEvent.Success(profileGetResponse.data!!)
-                    }
-                    catch (e: Exception){
-                        _profileGetFlow.value =
-                            ProfileGetEvent.Failure(e.message.toString())
-                    }
+//                    val studentProfileGetData: StudentProfileData =
+//                        ProfileUpdateRequestsParser.parseStudentProfileGetResponse(
+//                            profileGetResponse.data.toString()
+//                        )
+
+                    _profileGetFlow.value = ProfileGetEvent.Success(profileGetResponse.data!!)
+
                     Log.d(TAG, profileGetResponse.toString())
                 }
             }
