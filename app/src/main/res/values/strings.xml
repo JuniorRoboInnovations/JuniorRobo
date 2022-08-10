@@ -92,6 +92,10 @@
     <string name="maths_questions">Maths</string>
     <string name="olympiad_questions">Olympiad</string>
     <string name="category">Category</string>
+    <string name="subject">Subject:</string>
+    <string name="question_mark">Question Mark</string>
+    <string name="question_image">Question Image</string>
+    <string name="image">Image:</string>
     <!--chip text strings ends here-->
 
 </resources>

@@ -9,5 +9,6 @@ data class QuestionItemToAsk(
     val QuestionType: String,
     val FkStudentId: Int,
     val FkTeacherId: Int?,
-    val FkCategoryId: Int
+    val FkCategoryId: Int,
+    val QuestionImage: String?
 )

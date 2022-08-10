@@ -269,10 +269,9 @@ class ProfileFragment : Fragment() {
         // load the image from Server
         lifecycleScope.launch {
             Glide.with(binding.root)
-                .load(EndPoints.GET_IMAGE + studentProfileData.userImage)
+                .load(EndPoints.GET_IMAGE + "/student/" + studentProfileData.userImage)
                 .into(binding.shapeableImageViewProfile)
         }
-
     }
 
     private fun enableImageClicks() {

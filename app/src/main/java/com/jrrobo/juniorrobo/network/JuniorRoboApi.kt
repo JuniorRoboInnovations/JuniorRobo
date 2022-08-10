@@ -68,6 +68,7 @@ interface JuniorRoboApi {
     @Multipart
     @POST(EndPoints.IMAGE_UPLOAD)
     suspend fun postImage(
+        @Query("type") type: String,
         @Part image : MultipartBody.Part
     ): Response<String>
 

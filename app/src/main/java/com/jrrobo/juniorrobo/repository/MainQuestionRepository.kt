@@ -6,6 +6,7 @@ import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemPostResponse
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.utility.NetworkRequestResource
+import java.io.File
 
 /**
  * Interfaced the actual class QuestionRepository to mock this object for testing purpose
@@ -15,6 +16,11 @@ interface MainQuestionRepository {
     suspend fun postQuestionItem(
         questionItemToAsk: QuestionItemToAsk
     ): NetworkRequestResource<QuestionItemPostResponse>
+
+    suspend fun postQuestionImage(
+        image: File
+    ): NetworkRequestResource<String>
+
 
     suspend fun getQuestionCategories(): NetworkRequestResource<List<QuestionCategoryItem>>
 

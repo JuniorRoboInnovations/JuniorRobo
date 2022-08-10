@@ -121,13 +121,12 @@ class ProfileRepository @Inject constructor(
 
     override suspend fun uploadImage(image: File): NetworkRequestResource<String> {
         return try {
-            Log.d(TAG, "uploadImage: Before api call")
             //creating request body for file
             val requestFile  = image.asRequestBody("multipart/form-data".toMediaTypeOrNull())
             // MultipartBody.Part is used to send also the actual filename
             val body  = MultipartBody.Part.createFormData("file", image.name, requestFile)
             // get the response from the API
-            val response = juniorRoboApi.postImage(body)
+            val response = juniorRoboApi.postImage("student",body)
 
             // get the Scalar converter's body of the response provided by the API
             val result = response.body()

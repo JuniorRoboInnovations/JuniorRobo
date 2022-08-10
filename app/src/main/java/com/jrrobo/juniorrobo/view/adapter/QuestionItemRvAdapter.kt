@@ -1,12 +1,16 @@
 package com.jrrobo.juniorrobo.view.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.QuestionItemBinding
+import com.jrrobo.juniorrobo.network.EndPoints
 
 class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAdapter<QuestionItem, QuestionItemRvAdapter.ViewHolder>(DiffCallback()) {
     inner class ViewHolder(private val binding: QuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -22,8 +26,16 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
                 textViewQuestionItemDescription.text = item.question_sub_text
 //                textViewQuestionItemStudentName.text = item.id.toString()
             }
-        }
+            item.image.let {
+                binding.textViewQuestionItemImageLabel.visibility = View.VISIBLE
+                binding.textViewQuestionItemQuestion.visibility = View.VISIBLE
 
+                Glide.with(binding.root)
+                    .load(EndPoints.GET_IMAGE + "/question/" + item.image)
+                    .error(R.drawable.ic_image_black)
+                    .into(binding.imageViewQuestionItemImage)
+                }
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

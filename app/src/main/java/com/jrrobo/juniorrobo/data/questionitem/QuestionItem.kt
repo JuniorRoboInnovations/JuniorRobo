@@ -28,5 +28,6 @@ data class QuestionItem(
     val id:Int,
     val question:String,
     val question_sub_text:String,
+    val image:String?,
     val date:String
 ):Parcelable

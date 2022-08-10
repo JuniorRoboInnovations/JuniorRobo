@@ -26,10 +26,10 @@ class EndPoints {
         const val APP_QUE_ANS: String = "appQueAns"
 
         // Endpoint for uploading images and files
-        const val IMAGE_UPLOAD: String = "http://jrrobo.com/FileUpload/UploadImage?type=student"
+        const val IMAGE_UPLOAD: String = "http://jrrobo.com/FileUpload/UploadImage"
 
         //Endpoint to get image from server
-        const val GET_IMAGE: String ="http://jrrobo.com/uploads/student/"
+        const val GET_IMAGE: String ="http://jrrobo.com/uploads/"
 
         //Endpoint to get all question without paging
         const val GET_ALL_QUESTIONS = ""

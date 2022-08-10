@@ -12,6 +12,7 @@ import com.jrrobo.juniorrobo.utility.NetworkRequestResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,7 +56,7 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
                         _postQuestionEventFlow.value =
                             PostQuestionItemEvent.Success(parsedData)
                     }
-                    Log.d(TAG, "postQuestionItem: ${parsedData}")
+                    Log.d(TAG, "postQuestionItem: $parsedData")
                 }
             }
         }
@@ -73,7 +74,7 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
                 is NetworkRequestResource.Success -> {
                     if (response.data != null) {
                         Log.d(TAG, response.data.toString())
-                        _questionCategoriesLiveData.postValue(response.data!!)
+                        _questionCategoriesLiveData.postValue(response.data)
                     }
                 }
                 is NetworkRequestResource.Error -> {
@@ -82,6 +83,46 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
             }
         }
     }
+
+    sealed class PostQuestionImageEvent {
+        class Success(val questionImagePostResponse: String) : PostQuestionImageEvent()
+        class Failure(val errorText: String) : PostQuestionImageEvent()
+        object Loading : PostQuestionImageEvent()
+        object Empty : PostQuestionImageEvent()
+    }
+
+    private val _postQuestionImageEventFlow =
+        MutableStateFlow<PostQuestionImageEvent>(PostQuestionImageEvent.Empty)
+
+    val postQuestionImageEventFlow: MutableStateFlow<PostQuestionImageEvent>
+        get() = _postQuestionImageEventFlow
+
+    fun postQuestionImage(questionImage: File) {
+        viewModelScope.launch(dispatcher.io) {
+
+            _postQuestionImageEventFlow.value = PostQuestionImageEvent.Loading
+
+            when (val response = questionRepository.postQuestionImage(questionImage)) {
+
+                is NetworkRequestResource.Error -> {
+                    _postQuestionImageEventFlow.value =
+                        PostQuestionImageEvent.Failure(response.message!!)
+                }
+
+                is NetworkRequestResource.Success -> {
+
+                    val parsedData= response.data
+                    if(parsedData!=null){
+                        _postQuestionImageEventFlow.value =
+                            PostQuestionImageEvent.Success(parsedData)
+                    }
+                    Log.d(TAG, "postQuestionItem: $parsedData")
+                }
+            }
+        }
+    }
+
+
 
     fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
 }
