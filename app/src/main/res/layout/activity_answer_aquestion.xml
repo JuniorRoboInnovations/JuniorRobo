@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.activities.AnswerAQuestion">
 
     <com.google.android.material.textview.MaterialTextView
@@ -37,25 +38,68 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_question_tag_for_answer">
+        android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_take_picture_for_answer"
+            android:id="@+id/button_take_picture"
             style="@style/Widget.App.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:backgroundTint="@android:color/black"
             android:text="@string/take_picture"
             android:textColor="@color/yellow_600"
             app:icon="@drawable/ic_camera"
-            app:iconGravity="textStart"
             app:iconTint="@color/yellow_600" />
     </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview_answer_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imageview_image_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/ic_image_black" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/question_pic_text"
+                style="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@+id/imageview_image_icon"
+                android:maxEms="10"
+                android:text="@string/question_picture" />
+            <ImageButton
+                android:id="@+id/image_button_clear_answer_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical|end"
+                android:background="@drawable/ic_close_black"
+                android:clickable="true"
+                android:focusable="true" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/answer_image_preview"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        tools:src="@mipmap/ic_launcher"
+        android:visibility="gone"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout_answer"
@@ -66,11 +110,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/button_post_answer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        android:layout_weight="1">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_answer"
@@ -91,9 +131,10 @@
         android:layout_marginBottom="8dp"
         android:text="@string/post_answer"
         app:icon="@drawable/ic_send"
+        app:backgroundTint="@color/pink_700"
         app:iconGravity="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

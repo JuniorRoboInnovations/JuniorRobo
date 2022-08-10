@@ -1,6 +1,8 @@
 package com.jrrobo.juniorrobo.network
 
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
+import com.jrrobo.juniorrobo.data.answer.AnswerItemPost
+import com.jrrobo.juniorrobo.data.answer.AnswerItemPostResponse
 import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
@@ -60,8 +62,8 @@ interface JuniorRoboApi {
     // POST request to post an answer for question with question ID
     @POST(EndPoints.APP_QUE_ANS)
     suspend fun postAnswerForQuestionId(
-        @Body answerItem: AnswerItem
-    ): Response<String>
+        @Body answerItemPost: AnswerItemPost
+    ): Response<AnswerItemPostResponse>
 
 
 //     POST request for uploading images

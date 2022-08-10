@@ -2,20 +2,22 @@ package com.jrrobo.juniorrobo.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.*
-import androidx.paging.cachedIn
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
-import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
+import com.jrrobo.juniorrobo.data.answer.AnswerItemPost
+import com.jrrobo.juniorrobo.data.answer.AnswerItemPostResponse
 import com.jrrobo.juniorrobo.repository.AnswerRepository
 import com.jrrobo.juniorrobo.utility.DataStorePreferencesManager
 import com.jrrobo.juniorrobo.utility.DispatcherProvider
 import com.jrrobo.juniorrobo.utility.NetworkRequestResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.security.auth.login.LoginException
 
 @HiltViewModel
 class ActivityAnswerAQuestionViewModel @Inject constructor(
-    private val dispatchers: DispatcherProvider,
+    private val dispatcher: DispatcherProvider,
     private val answerRepository: AnswerRepository,
     private val dataStorePreferencesManager: DataStorePreferencesManager
 ) : ViewModel() {
@@ -23,27 +25,39 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
     private val TAG: String = javaClass.simpleName
 
     sealed class PostAnswerItemEvent {
-        class Success(val resultText: String) : PostAnswerItemEvent()
+        class Success(val answerItemPostResponse: AnswerItemPostResponse) : PostAnswerItemEvent()
         class Failure(val errorText: String) : PostAnswerItemEvent()
         object Loading : PostAnswerItemEvent()
         object Empty : PostAnswerItemEvent()
     }
 
-    // function requesting the OTP taking the entered contact number as parameter
-    fun postAnswer(
-        answerItem: AnswerItem
-    ) {
+    private val _postAnswerEventFlow = MutableStateFlow<PostAnswerItemEvent>(PostAnswerItemEvent.Empty)
 
-        // using the repository object request for the OTP
-        viewModelScope.launch(dispatchers.io) {
-            when (val response = answerRepository.postAnswer(answerItem)) {
+    val postAnswerEventFlow: MutableStateFlow<PostAnswerItemEvent>
+        get() = _postAnswerEventFlow
+
+    // function requesting the OTP taking the entered contact number as parameter
+    fun postAnswer(answerItemPost: AnswerItemPost) {
+
+        viewModelScope.launch(dispatcher.io) {
+
+            _postAnswerEventFlow.value = PostAnswerItemEvent.Loading
+
+            when (val response = answerRepository.postAnswer(answerItemPost)) {
 
                 is NetworkRequestResource.Error -> {
-                    Log.d(TAG, response.message.toString())
+                    _postAnswerEventFlow.value =PostAnswerItemEvent.Failure(response.message!!)
                 }
 
                 is NetworkRequestResource.Success -> {
-                    Log.d(TAG, response.data.toString())
+
+                    val parsedData= response.data
+                    if(parsedData!=null){
+                        _postAnswerEventFlow.value =PostAnswerItemEvent.Success(parsedData)
+                    }
+                    Log.d(TAG, "postQuestionItem: ${parsedData}")
+
+                    Log.e(TAG,"${response.data}")
                 }
             }
         }
@@ -69,7 +83,7 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
     fun getAnswer(
         q_id: Int
     ){
-        viewModelScope.launch(dispatchers.io) {
+        viewModelScope.launch(dispatcher.io) {
             Log.d(TAG, "getAnswers: making api call from ActivityAnswerAQuestionViewModel")
             when (val response = answerRepository.getAnswer(q_id)) {
                 is NetworkRequestResource.Success -> {
