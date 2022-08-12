@@ -116,10 +116,12 @@ class ProfileFragment : Fragment() {
         viewModel.getPkStudentIdPreference().observe(requireActivity(), Observer {
             // assign the primary key from the data store preference
             pkStudentId = it
-            if(!imageViewClicked) {
-                viewModel.getStudentProfile(pkStudentId)
-            }
         })
+
+        if(!imageViewClicked) {
+            viewModel.getStudentProfile(pkStudentId)
+        }
+
 
         // call the GET request only when image view is not clicked
         lifecycleScope.launch{

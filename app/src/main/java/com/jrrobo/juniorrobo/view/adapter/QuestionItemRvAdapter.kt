@@ -26,9 +26,9 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
                 textViewQuestionItemDescription.text = item.question_sub_text
 //                textViewQuestionItemStudentName.text = item.id.toString()
             }
-            item.image.let {
+            if(item.image !=null) {
                 binding.textViewQuestionItemImageLabel.visibility = View.VISIBLE
-                binding.textViewQuestionItemQuestion.visibility = View.VISIBLE
+                binding.imageViewQuestionItemImage.visibility = View.VISIBLE
 
                 Glide.with(binding.root)
                     .load(EndPoints.GET_IMAGE + "/question/" + item.image)
@@ -36,6 +36,7 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
                     .into(binding.imageViewQuestionItemImage)
                 }
             }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

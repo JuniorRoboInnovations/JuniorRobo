@@ -36,7 +36,7 @@ object OtpRequestParser {
             OtpResponse(
                 JSONObject(jsonData).getString("status"),
                 JSONObject(jsonData).getString("message"),
-                JSONObject(jsonData).getJSONObject("data").getInt("pkStudentId")
+                JSONObject(jsonData).getInt("data")
             )
         } catch (e: Exception) {
             OtpResponse(

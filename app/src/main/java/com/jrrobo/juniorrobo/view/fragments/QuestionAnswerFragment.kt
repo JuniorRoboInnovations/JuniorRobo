@@ -16,17 +16,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
-import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.FragmentQuestionAnswerBinding
 import com.jrrobo.juniorrobo.view.activities.AskQuestionActivity
 import com.jrrobo.juniorrobo.view.activities.QuestionDetails
-import com.jrrobo.juniorrobo.view.adapter.QuestionItemAdapter
 import com.jrrobo.juniorrobo.view.adapter.QuestionItemRvAdapter
 import com.jrrobo.juniorrobo.viewmodel.FragmentQuestionsViewModel
 import kotlinx.coroutines.launch
 
 
-class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemClickListener {
+class QuestionAnswerFragment : Fragment() {
 
     // TAG for logging purpose
     private val TAG: String = javaClass.simpleName
@@ -48,11 +46,26 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
         // Inflate the layout for this fragment using view binding object
         _binding = FragmentQuestionAnswerBinding.inflate(inflater, container, false)
 
+
+
+
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        // primary key of the student initialised to -1
+        var pkStudentId: Int = -1
+
+        // launch coroutine for requesting the primary key and displaying the profile data
+
+        // request the primary key
+        viewModel.getPkStudentIdPreference().observe(requireActivity(), Observer {
+            // assign the primary key from the data store preference
+            pkStudentId = it
+        })
 
         val catNameToCatIdMap: HashMap<String,Int> = HashMap()
 
@@ -114,19 +127,19 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
             val chip = group.findViewById<Chip>(checkedId)
             if(chip.text.equals("All")){
                 lifecycleScope.launch {
-                    viewModel.getQuestionsWithoutPaging(null,null)
+                    viewModel.getQuestionsWithoutPaging(null,null,null)
                 }
             }
             else if(chip.text.equals("My questions")){
                 lifecycleScope.launch {
-                    viewModel.getQuestionsWithoutPaging(1,null)
+                    viewModel.getQuestionsWithoutPaging(1,null,pkStudentId)
                 }
             }
             else{
                 lifecycleScope.launch{
                     viewModel.getQuestionsWithoutPaging(listOfQuestionCategories?.find { questionCategoryItem ->
                         questionCategoryItem.categoryTitle == chip.text
-                    }?.pkCategoryId,null)
+                    }?.pkCategoryId,null,null)
                 }
             }
         }
@@ -177,7 +190,13 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
                     lifecycleScope.launch {
                         val chipGroup = binding?.chipGroupQuestionCategoriesChips
                         val chip = chipGroup!!.findViewById<Chip>(chipGroup.checkedChipId)
-                        viewModel.getQuestionsWithoutPaging(catNameToCatIdMap[chip.text],query?.trim().toString())
+                        val categoryId = catNameToCatIdMap[chip.text]
+                        if(chip.text == "My questions"){
+                            viewModel.getQuestionsWithoutPaging(categoryId,query?.trim().toString(),pkStudentId)
+                        }
+                        else{
+                            viewModel.getQuestionsWithoutPaging(categoryId,query?.trim().toString(),null)
+                        }
                     }
                 }
                 return true
@@ -198,11 +217,5 @@ class QuestionAnswerFragment : Fragment(), QuestionItemAdapter.OnQuestionItemCli
     override fun onDetach() {
         super.onDetach()
         _binding = null
-    }
-
-    override fun onItemClick(questionItem: QuestionItem) {
-        val intent = Intent(requireContext(), QuestionDetails::class.java)
-        intent.putExtra("question_item", questionItem)
-        startActivity(intent)
     }
 }

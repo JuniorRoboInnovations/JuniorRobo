@@ -69,7 +69,6 @@ class ProfileRepository @Inject constructor(
 
             // get the Scalar converter's body of the response provided by the API
             val result = response.body()
-
             // check whether the response was successful and is it null
             if (response.isSuccessful && result != null) {
 
@@ -80,6 +79,7 @@ class ProfileRepository @Inject constructor(
 
                 // wrap the response around the NetworkRequestResource sealed class for ease of error handling
                 // with the Error object
+                Log.d(TAG, "getStudentProfile: ${response.body()}")
                 NetworkRequestResource.Error(response.message())
             }
         } catch (e: Exception) {

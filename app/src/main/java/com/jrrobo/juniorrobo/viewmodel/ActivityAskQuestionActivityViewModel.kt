@@ -41,12 +41,13 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
         viewModelScope.launch(dispatcher.io) {
 
             _postQuestionEventFlow.value = PostQuestionItemEvent.Loading
-
+            Log.d(TAG, "postQuestionItem: making and api call")
             when (val response = questionRepository.postQuestionItem(questionItemToAsk)) {
 
                 is NetworkRequestResource.Error -> {
                     _postQuestionEventFlow.value =
-                        PostQuestionItemEvent.Failure(response.message!!)
+                        PostQuestionItemEvent.Failure(response.message.toString())
+                    Log.d(TAG, "postQuestionItem: Failure->${response.message.toString()}")
                 }
 
                 is NetworkRequestResource.Success -> {

@@ -172,39 +172,38 @@ class AskQuestionActivity : AppCompatActivity() {
         }
 
         // attach file button to launch the file picker with permission
-        binding.buttonAttachFile.setOnClickListener {
+//        binding.buttonAttachFile.setOnClickListener {
+//
+//            // request read and write permissions before launching the file picker intent
+//            if (!(hasReadExternalStoragePermission() && hasWriteExternalStoragePermission())) {
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(
+//                        Manifest.permission.READ_EXTERNAL_STORAGE,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                    ),
+//                    READ_WRITE_EXTERNAL_PERMISSION_REQUEST_CODE
+//                )
+//            } else {
+//                attachFileActivity.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
+//                    type = "application/pdf"
+//                })
+//            }
+//        }
 
-            // request read and write permissions before launching the file picker intent
-            if (!(hasReadExternalStoragePermission() && hasWriteExternalStoragePermission())) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ),
-                    READ_WRITE_EXTERNAL_PERMISSION_REQUEST_CODE
-                )
-            } else {
-                attachFileActivity.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
-                    type = "application/pdf"
-                })
-            }
-        }
-
-        binding.cardviewQuestionFile.setOnClickListener {
-            val objIntent = Intent(Intent.ACTION_VIEW)
-            objIntent.setDataAndType(pickedFileUri, "application/pdf")
-            objIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            objIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(objIntent)
-        }
+//        binding.cardviewQuestionFile.setOnClickListener {
+//            val objIntent = Intent(Intent.ACTION_VIEW)
+//            objIntent.setDataAndType(pickedFileUri, "application/pdf")
+//            objIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//            objIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            startActivity(objIntent)
+//        }
 
         binding.buttonPostQuestion.setOnClickListener {
             Log.d(TAG, "onCreate: Student pkID->${pkStudentId}")
-
-            questionImageFile?.let {
+            if(questionImageFile!=null){
                 lifecycleScope.launch {
-                    viewModel.postQuestionImage(it)
+                    viewModel.postQuestionImage(questionImageFile!!)
 
                     //collect the hashed question image name
                     viewModel.postQuestionImageEventFlow.collect {
@@ -255,12 +254,27 @@ class AskQuestionActivity : AppCompatActivity() {
                     }
                 }
             }
+            else{
+                postQuestionItem(
+                    QuestionItemToAsk(
+                        binding.editTextQuestion.text.toString(),
+                        binding.autoCompleteTextView.text.toString(),
+                        "All",
+                        pkStudentId,
+                        null,
+                        catNameToCatIdMap[binding.autoCompleteTextView.text.toString()]
+                            ?: 13,
+                        null
+                    )
+                )
+            }
         }
     }
 
     private fun postQuestionItem(questionItemToAsk: QuestionItemToAsk) {
+        Log.d(TAG, "postQuestionItem: posting question")
+        viewModel.postQuestionItem(questionItemToAsk)
         lifecycleScope.launch {
-            viewModel.postQuestionItem(questionItemToAsk)
             viewModel.postQuestionEventFlow.collect {
                 when (it) {
                     is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Loading -> {

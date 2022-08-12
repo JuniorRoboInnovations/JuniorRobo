@@ -5,7 +5,7 @@ class EndPoints {
     companion object {
 
         // Base URL provided
-        const val BASE_URL: String = "http://jrrobo.com/api/"
+        const val BASE_URL: String = "https://jrrobo.com/api/"
 
         // Endpoint for requesting OTP
         const val APP_SMS: String = "appSms"
@@ -26,10 +26,10 @@ class EndPoints {
         const val APP_QUE_ANS: String = "appQueAns"
 
         // Endpoint for uploading images and files
-        const val IMAGE_UPLOAD: String = "http://jrrobo.com/FileUpload/UploadImage"
+        const val IMAGE_UPLOAD: String = "https://jrrobo.com/FileUpload/UploadImage"
 
         //Endpoint to get image from server
-        const val GET_IMAGE: String ="http://jrrobo.com/uploads/"
+        const val GET_IMAGE: String ="https://jrrobo.com/uploads/"
 
         //Endpoint to get all question without paging
         const val GET_ALL_QUESTIONS = ""

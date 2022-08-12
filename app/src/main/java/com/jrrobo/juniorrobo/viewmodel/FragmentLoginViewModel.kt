@@ -116,7 +116,7 @@ class FragmentLoginViewModel @Inject constructor(
 
                     if (successResponse.status == "Success") {
                         _otpResponseFlow.value = OtpEvent.Success(successResponse.message)
-
+                        Log.d(TAG, "responseOtp: ${successResponse.pkStudentId}")
                         dataStorePreferencesManager.setPkStudentId(successResponse.pkStudentId)
 
                         Log.d(TAG, successResponse.pkStudentId.toString())

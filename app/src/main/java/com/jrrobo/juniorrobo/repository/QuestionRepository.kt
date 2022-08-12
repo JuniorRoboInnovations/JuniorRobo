@@ -36,7 +36,7 @@ class QuestionRepository @Inject constructor(
             val response = juniorRoboApi.postQuestionItem(questionItemToAsk)
 
             val result = response.body()
-
+            Log.d(TAG, "postQuestionItem: ${response.body()} ")
             if (response.isSuccessful && result != null) {
                 NetworkRequestResource.Success(result)
             } else {
@@ -101,9 +101,9 @@ class QuestionRepository @Inject constructor(
         }
     }
 
-    override suspend fun getAllQuestionsWithoutPaging(cat_id: Int?,keyword:String?): NetworkRequestResource<List<QuestionItem>> {
+    override suspend fun getAllQuestionsWithoutPaging(cat_id: Int?,keyword:String?,u_id:Int?): NetworkRequestResource<List<QuestionItem>> {
         return try {
-            val response = juniorRoboApi.getAllQuestionListWithoutPaging(cat_id,0,50,keyword)
+            val response = juniorRoboApi.getAllQuestionListWithoutPaging(u_id,cat_id,0,50,keyword)
 
             val result = response.body()
 

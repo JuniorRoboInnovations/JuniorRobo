@@ -8,6 +8,7 @@ import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.network.JuniorRoboApi
 import com.jrrobo.juniorrobo.repository.QuestionRepository
+import com.jrrobo.juniorrobo.utility.DataStorePreferencesManager
 import com.jrrobo.juniorrobo.utility.DispatcherProvider
 import com.jrrobo.juniorrobo.utility.NetworkRequestResource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class FragmentQuestionsViewModel @Inject constructor(
     private val questionRepository: QuestionRepository,
     private val dispatchers: DispatcherProvider,
+    private val dataStorePreferencesManager: DataStorePreferencesManager,
     private val juniorRoboApi: JuniorRoboApi
 ) : ViewModel() {
 
@@ -34,9 +36,9 @@ class FragmentQuestionsViewModel @Inject constructor(
     val questionsWithoutPaging : LiveData<List<QuestionItem>>
         get() = _questionsWithoutPaging
 
-    fun getQuestionsWithoutPaging(cat_id: Int?,keyword:String?){
+    fun getQuestionsWithoutPaging(cat_id: Int?,keyword:String?,u_id:Int?){
         viewModelScope.launch(dispatchers.io) {
-            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id,keyword)) {
+            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id,keyword,u_id)) {
                 is NetworkRequestResource.Success -> {
                     try {
                         if (response.data != null) {
@@ -96,6 +98,7 @@ class FragmentQuestionsViewModel @Inject constructor(
             }
         }
     }
+    fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
 
     companion object {
         private const val DEFAULT_QUESTION_CATEGORY_ID = 1
