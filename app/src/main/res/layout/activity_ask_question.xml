@@ -29,19 +29,6 @@
             app:icon="@drawable/ic_camera"
             app:iconTint="@color/yellow_600" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_attach_file"
-            style="@style/Widget.App.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/black"
-            android:text="@string/attach_file"
-            android:textColor="@color/yellow_600"
-            app:icon="@drawable/ic_attachment"
-            app:iconTint="@color/yellow_600" />
-
     </LinearLayout>
 
     <LinearLayout

@@ -29,7 +29,9 @@ import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.databinding.ActivityAskQuestionBinding
 import com.jrrobo.juniorrobo.viewmodel.ActivityAskQuestionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.io.File
 
 @AndroidEntryPoint
 class AskQuestionActivity : AppCompatActivity() {
@@ -59,6 +61,9 @@ class AskQuestionActivity : AppCompatActivity() {
     private val pickedFileUri
         get() = _pickedFileUri!!
 
+    private var questionImageFile: File? = null
+
+
     // map to convert category name to category id
     private val catNameToCatIdMap: HashMap<String,Int> = HashMap()
 
@@ -71,7 +76,7 @@ class AskQuestionActivity : AppCompatActivity() {
             croppedPhotoUri = result.uriContent!!
 
 //            binding.setImageURI(croppedPhotoUri)
-
+            questionImageFile = File(result.getUriFilePath(this).toString())
             binding.cardviewQuestionImage.visibility = View.VISIBLE
         }
     }
@@ -169,81 +174,143 @@ class AskQuestionActivity : AppCompatActivity() {
         }
 
         // attach file button to launch the file picker with permission
-        binding.buttonAttachFile.setOnClickListener {
+//        binding.buttonAttachFile.setOnClickListener {
+//
+//            // request read and write permissions before launching the file picker intent
+//            if (!(hasReadExternalStoragePermission() && hasWriteExternalStoragePermission())) {
+//                ActivityCompat.requestPermissions(
+//                    this,
+//                    arrayOf(
+//                        Manifest.permission.READ_EXTERNAL_STORAGE,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                    ),
+//                    READ_WRITE_EXTERNAL_PERMISSION_REQUEST_CODE
+//                )
+//            } else {
+//                attachFileActivity.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
+//                    type = "application/pdf"
+//                })
+//            }
+//        }
 
-            // request read and write permissions before launching the file picker intent
-            if (!(hasReadExternalStoragePermission() && hasWriteExternalStoragePermission())) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ),
-                    READ_WRITE_EXTERNAL_PERMISSION_REQUEST_CODE
-                )
-            } else {
-                attachFileActivity.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
-                    type = "application/pdf"
-                })
-            }
-        }
-
-        binding.cardviewQuestionFile.setOnClickListener {
-            val objIntent = Intent(Intent.ACTION_VIEW)
-            objIntent.setDataAndType(pickedFileUri, "application/pdf")
-            objIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            objIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(objIntent)
-        }
+//        binding.cardviewQuestionFile.setOnClickListener {
+//            val objIntent = Intent(Intent.ACTION_VIEW)
+//            objIntent.setDataAndType(pickedFileUri, "application/pdf")
+//            objIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//            objIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            startActivity(objIntent)
+//        }
 
         binding.buttonPostQuestion.setOnClickListener {
             Log.d(TAG, "onCreate: Student pkID->${pkStudentId}")
-            lifecycleScope.launch {
-                viewModel.postQuestionItem(
+            if(questionImageFile!=null){
+                lifecycleScope.launch {
+                    viewModel.postQuestionImage(questionImageFile!!)
+
+                    //collect the hashed question image name
+                    viewModel.postQuestionImageEventFlow.collect {
+                        when (it) {
+                            is ActivityAskQuestionActivityViewModel.PostQuestionImageEvent.Loading -> {
+
+                            }
+
+                            is ActivityAskQuestionActivityViewModel.PostQuestionImageEvent.Failure -> {
+                                Snackbar.make(
+                                    binding.editTextQuestion,
+                                    "Couldn't upload the question image!",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                                postQuestionItem(
+                                    QuestionItemToAsk(
+                                        binding.editTextQuestion.text.toString(),
+                                        binding.autoCompleteTextView.text.toString(),
+                                        "All",
+                                        pkStudentId,
+                                        null,
+                                        catNameToCatIdMap[binding.autoCompleteTextView.text.toString()]
+                                            ?: 13,
+                                        null
+                                    )
+                                )
+                            }
+
+                            // upon successful POST event
+                            is ActivityAskQuestionActivityViewModel.PostQuestionImageEvent.Success -> {
+                                postQuestionItem(
+                                    QuestionItemToAsk(
+                                        binding.editTextQuestion.text.toString(),
+                                        binding.autoCompleteTextView.text.toString(),
+                                        "All",
+                                        pkStudentId,
+                                        null,
+                                        catNameToCatIdMap[binding.autoCompleteTextView.text.toString()]
+                                            ?: 13,
+                                        it.questionImagePostResponse // hashed name
+                                    )
+                                )
+                            }
+                            else -> {
+                                Unit
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+                postQuestionItem(
                     QuestionItemToAsk(
                         binding.editTextQuestion.text.toString(),
                         binding.autoCompleteTextView.text.toString(),
                         "All",
                         pkStudentId,
                         null,
-                        catNameToCatIdMap[binding.autoCompleteTextView.text.toString()]?:13
+                        catNameToCatIdMap[binding.autoCompleteTextView.text.toString()]
+                            ?: 13,
+                        null
                     )
                 )
-                viewModel.postQuestionEventFlow.collect {
-                    when (it) {
-                        is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Loading -> {
+            }
+        }
+    }
 
-                        }
+    private fun postQuestionItem(questionItemToAsk: QuestionItemToAsk) {
+        Log.d(TAG, "postQuestionItem: posting question")
+        viewModel.postQuestionItem(questionItemToAsk)
+        lifecycleScope.launch {
+            viewModel.postQuestionEventFlow.collect {
+                when (it) {
+                    is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Loading -> {
 
-                        is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Failure -> {
-                            Snackbar.make(
-                                binding.editTextQuestion,
-                                "Couldn't post the question!",
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
+                    }
 
-                        // upon successful POST event
-                        is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Success -> {
-                            Snackbar.make(
-                                binding.editTextQuestion,
-                                "Successfully posted the question!",
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                            clearTextFields()
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                // go to fromQuestionAnswerActivity
-                                val intent = Intent(this@AskQuestionActivity, FromQuestionAnswerActivity::class.java)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                                startActivity(intent)
-                                this@AskQuestionActivity.finish()
-                            }, 3000)
-                            Log.d(TAG, "onCreate: Question posted->${it.questionItemPostResponse.toString()}")
+                    is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Failure -> {
+                        Snackbar.make(
+                            binding.editTextQuestion,
+                            "Couldn't post the question!",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
 
-                        }
-                        else -> {
-                            Unit
-                        }
+                    // upon successful POST event
+                    is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Success -> {
+                        Snackbar.make(
+                            binding.editTextQuestion,
+                            "Successfully posted the question!",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                        clearTextFields()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            // go to fromQuestionAnswerActivity
+                            val intent = Intent(this@AskQuestionActivity, FromQuestionAnswerActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                            this@AskQuestionActivity.finish()
+                        }, 3000)
+                        Log.d(TAG, "onCreate: Question posted->${it.questionItemPostResponse.toString()}")
+
+                    }
+                    else -> {
+                        Unit
                     }
                 }
             }

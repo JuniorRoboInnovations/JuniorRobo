@@ -9,6 +9,7 @@ import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.di.AppModule
 import com.jrrobo.juniorrobo.network.JuniorRoboApi
 import com.jrrobo.juniorrobo.repository.QuestionRepository
+import com.jrrobo.juniorrobo.utility.DataStorePreferencesManager
 import com.jrrobo.juniorrobo.utility.DispatcherProvider
 import com.jrrobo.juniorrobo.utility.NetworkRequestResource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class FragmentQuestionsViewModel @Inject constructor(
     private val questionRepository: QuestionRepository,
     private val dispatchers: DispatcherProvider,
+    private val dataStorePreferencesManager: DataStorePreferencesManager,
     private val juniorRoboApi: JuniorRoboApi
 ) : ViewModel() {
 
@@ -27,7 +29,6 @@ class FragmentQuestionsViewModel @Inject constructor(
     private val currentQuestionCategoryId = MutableLiveData(DEFAULT_QUESTION_CATEGORY_ID)
 
     val questions = currentQuestionCategoryId.switchMap { questionCategoryId ->
-        Log.d(TAG, "making api call to fetch questions: ")
         questionRepository.getAllQuestionList(questionCategoryId, 0).cachedIn(viewModelScope)
     }
 
@@ -36,25 +37,27 @@ class FragmentQuestionsViewModel @Inject constructor(
     val questionsWithoutPaging : LiveData<List<QuestionItem>>
         get() = _questionsWithoutPaging
 
-    fun getQuestionsWithoutPaging(cat_id: Int?,keyword:String?){
+    fun getQuestionsWithoutPaging(cat_id: Int?,keyword:String?,u_id:Int?){
         viewModelScope.launch(dispatchers.io) {
-            Log.d(TAG, "getQuestions: making api call from FragmentQuestionsViewModel")
-            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id,keyword)) {
+            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id,keyword,u_id)) {
                 is NetworkRequestResource.Success -> {
-                    if (response.data != null) {
-                        Log.d(TAG, response.data.toString())
-                        var parsedQuestions = response.data
-                        // filtering of data, currently 1 is for all the questions that are posted
-                        // TODO : need to be optimized
-                        if(cat_id!= null && cat_id!=1 && cat_id!=13){
-                            parsedQuestions= parsedQuestions.filter { questionItem ->
-                                questionItem.question_sub_text == questionCategoriesLiveData.value?.find { questionCategoryItem ->
-                                    questionCategoryItem.pkCategoryId == cat_id
-                                }?.categoryTitle
+                    try {
+                        if (response.data != null) {
+                            var parsedQuestions = response.data
+                            // filtering of data, currently 1 is for all the questions that are posted
+                            // TODO : need to be optimized
+                            if (cat_id != null && cat_id != 1 && cat_id != 13) {
+                                parsedQuestions = parsedQuestions.filter { questionItem ->
+                                    questionItem.question_sub_text == questionCategoriesLiveData.value?.find { questionCategoryItem ->
+                                        questionCategoryItem.pkCategoryId == cat_id
+                                    }?.categoryTitle
+                                }
                             }
+                            _questionsWithoutPaging.postValue(parsedQuestions)
                         }
-                        _questionsWithoutPaging.postValue(parsedQuestions)
-
+                    }
+                    catch (e : Exception){
+                        Log.d(TAG, "getQuestions: Error->${e.message}")
                     }
                 }
                 is NetworkRequestResource.Error -> {
@@ -80,9 +83,14 @@ class FragmentQuestionsViewModel @Inject constructor(
 
             when (val response = questionRepository.getQuestionCategories()) {
                 is NetworkRequestResource.Success -> {
-                    if (response.data != null) {
-                        Log.d(TAG, response.data.toString())
-                        _questionCategoriesLiveData.postValue(response.data!!)
+                    try {
+                        if (response.data != null) {
+                            Log.d(TAG, response.data.toString())
+                            _questionCategoriesLiveData.postValue(response.data)
+                        }
+                    }
+                    catch (e : Exception){
+                        Log.d(TAG, "getQuestionCategories: Error->${e.message}")
                     }
                 }
                 is NetworkRequestResource.Error -> {
@@ -91,6 +99,7 @@ class FragmentQuestionsViewModel @Inject constructor(
             }
         }
     }
+    fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
 
     companion object {
         private const val DEFAULT_QUESTION_CATEGORY_ID = 1

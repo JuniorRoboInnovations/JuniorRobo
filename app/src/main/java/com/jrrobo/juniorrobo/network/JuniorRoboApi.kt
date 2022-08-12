@@ -70,6 +70,7 @@ interface JuniorRoboApi {
     @Multipart
     @POST(EndPoints.IMAGE_UPLOAD)
     suspend fun postImage(
+        @Query("type") type: String,
         @Part image : MultipartBody.Part
     ): Response<String>
 
@@ -92,6 +93,7 @@ interface JuniorRoboApi {
     // GET request to fetch all the question items to display in the question answer list without paging
     @GET(EndPoints.APP_QUESTION)
     suspend fun getAllQuestionListWithoutPaging(
+        @Query("u_id") u_id: Int?,
         @Query("cat_id") cat_id: Int?,
         @Query("skip") skip: Int?,
         @Query("take") take: Int?,

@@ -116,10 +116,12 @@ class ProfileFragment : Fragment() {
         viewModel.getPkStudentIdPreference().observe(requireActivity(), Observer {
             // assign the primary key from the data store preference
             pkStudentId = it
-            if(!imageViewClicked) {
-                viewModel.getStudentProfile(pkStudentId)
-            }
         })
+
+        if(!imageViewClicked) {
+            viewModel.getStudentProfile(pkStudentId)
+        }
+
 
         // call the GET request only when image view is not clicked
         lifecycleScope.launch{
@@ -269,10 +271,9 @@ class ProfileFragment : Fragment() {
         // load the image from Server
         lifecycleScope.launch {
             Glide.with(binding.root)
-                .load(EndPoints.GET_IMAGE + studentProfileData.userImage)
+                .load(EndPoints.GET_IMAGE + "/student/" + studentProfileData.userImage)
                 .into(binding.shapeableImageViewProfile)
         }
-
     }
 
     private fun enableImageClicks() {

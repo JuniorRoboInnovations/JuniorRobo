@@ -49,8 +49,7 @@
     <string name="update_profile">UPDATE PROFILE</string>
     <string name="cancel">Cancel</string>
     <string name="change">Change</string>
-    <string name="answer_this">SEE SOLUTION</string>
-    <string name="answer_this_button">ANSWER THIS</string>
+    <string name="answer_this">Answer This</string>
     <string name="post_answer">POST ANSWER</string>
     <!--Button strings ends here-->
 
@@ -92,11 +91,11 @@
     <string name="all_questions">All</string>
     <string name="maths_questions">Maths</string>
     <string name="olympiad_questions">Olympiad</string>
-
-    <string name="see_solutions">SEE SOLUTIONS</string>
-
     <string name="category">Category</string>
-
+    <string name="subject">Subject:</string>
+    <string name="question_mark">Question Mark</string>
+    <string name="question_image">Question Image</string>
+    <string name="image">Image:</string>
     <!--chip text strings ends here-->
 
 </resources>

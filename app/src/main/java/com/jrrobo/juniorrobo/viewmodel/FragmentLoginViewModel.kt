@@ -65,7 +65,7 @@ class FragmentLoginViewModel @Inject constructor(
                     val successResponse =
                         OtpRequestParser.otpRequest(otpResponse.data.toString())
 
-                    if (successResponse.success) {
+                    if (successResponse.status == "Success") {
                         _otpRequestFlow.value = OtpEvent.Success(successResponse.message)
                     } else {
                         _otpRequestFlow.value = OtpEvent.Failure(successResponse.message)
@@ -116,7 +116,7 @@ class FragmentLoginViewModel @Inject constructor(
 
                     if (successResponse.status == "Success") {
                         _otpResponseFlow.value = OtpEvent.Success(successResponse.message)
-
+                        Log.d(TAG, "responseOtp: ${successResponse.pkStudentId}")
                         dataStorePreferencesManager.setPkStudentId(successResponse.pkStudentId)
 
                         Log.d(TAG, successResponse.pkStudentId.toString())
