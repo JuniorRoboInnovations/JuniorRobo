@@ -22,7 +22,7 @@ class AnswerRepository @Inject constructor(
 
             // get the response from the API
             val response = juniorRoboApi.postAnswerForQuestionId(answerItemPost)
-
+            Log.e(TAG, "postAnswer: ${response.body()}")
             // get the Scalar converter's body of the response provided by the API
             val result = response.body()
 

@@ -29,9 +29,9 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
     override fun onBindViewHolder(holder: AnswerViewHolder, position: Int) {
         holder.bind(list[position])
 
-        //Animation of Answer recycler view
-        holder.itemView.startAnimation(AnimationUtils
-            .loadAnimation(holder.itemView.context,R.anim.anim_one))
+//        //Animation of Answer recycler view
+//        holder.itemView.startAnimation(AnimationUtils
+//            .loadAnimation(holder.itemView.context,R.anim.anim_one))
     }
 
     inner class AnswerViewHolder(
@@ -48,7 +48,6 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
                     Log.d(TAG, "populateAnswer: Glide called")
                     Glide.with(binding.root)
                         .load(EndPoints.GET_IMAGE + item.student_image)
-                        .error(R.drawable.ic_baseline_file_copy_24)
                         .into(binding.answerImage)
                 }
             }

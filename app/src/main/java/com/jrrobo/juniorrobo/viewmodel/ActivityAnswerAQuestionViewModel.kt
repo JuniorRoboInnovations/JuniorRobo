@@ -86,6 +86,7 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
         viewModelScope.launch(dispatcher.io) {
             Log.d(TAG, "getAnswers: making api call from ActivityAnswerAQuestionViewModel")
             when (val response = answerRepository.getAnswer(q_id)) {
+
                 is NetworkRequestResource.Success -> {
                     if (response.data != null) {
                         Log.d(TAG, response.data.toString())
@@ -93,7 +94,7 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
                     }
                 }
                 is NetworkRequestResource.Error -> {
-                    Log.d(TAG, "getQuestions: Error->${response.message}")
+                    Log.d(TAG, "getAnswers: Error->${response.message}")
                 }
             }
         }

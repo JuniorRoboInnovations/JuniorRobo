@@ -146,6 +146,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_verify_otp"
         style="@style/Widget.App.Button"
+        app:backgroundTint="@color/pink_700"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

@@ -29,6 +29,7 @@ import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityAnswerAquestionBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.security.auth.login.LoginException
 
 /**
  * Activity for answering a particular question
@@ -140,13 +141,14 @@ class AnswerAQuestion : AppCompatActivity() {
         }
 
         binding.buttonPostAnswer.setOnClickListener {
+            val text = binding.editTextAnswer.text
             lifecycleScope.launch {
                 viewModel.postAnswer(
                     AnswerItemPost(
-                        snswer = binding.editTextAnswer.toString(),
-                        FkStudentId = 1,
-                        FkQuestionId = questionItem!!.id,
-                        FkTeacherId = 1
+                        snswer = text.toString(),
+                        null,
+                        null,
+                        FkQuestionId = questionItem!!.id
                     )
                 )
                 viewModel.postAnswerEventFlow.collect {
@@ -156,6 +158,8 @@ class AnswerAQuestion : AppCompatActivity() {
                         }
 
                         is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Failure -> {
+                            Log.e(TAG,"on post: ${viewModel.postAnswerEventFlow.toString()}")
+
                             Snackbar.make(
                                 binding.editTextAnswer,
                                 "Couldn't post the answer!",
@@ -165,6 +169,7 @@ class AnswerAQuestion : AppCompatActivity() {
 
                         // upon successful POST event
                         is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Success -> {
+                            onBackPressed()
                             Snackbar.make(
                                 binding.editTextAnswer,
                                 "Successfully posted the answer!",
@@ -172,12 +177,10 @@ class AnswerAQuestion : AppCompatActivity() {
                             ).show()
                             clearTextFields()
                             Handler(Looper.getMainLooper()).postDelayed({
+
                                 // go to fromQuestionAnswerActivity
-                                val intent = Intent(
-                                    this@AnswerAQuestion,
-                                    QuestionDetails::class.java
-                                )
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                val intent = Intent(this@AnswerAQuestion, QuestionDetails::class.java)
+                                intent.putExtra("question_item", questionItem)
                                 startActivity(intent)
                                 this@AnswerAQuestion.finish()
                             }, 3000)
@@ -195,6 +198,11 @@ class AnswerAQuestion : AppCompatActivity() {
             }
         }
     }
+
+    override fun onBackPressed() {
+
+    }
+
     private fun clearTextFields() {
         binding.editTextAnswer.text = null
     }

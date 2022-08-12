@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityQuestionDetailsBinding
@@ -40,6 +41,7 @@ class QuestionDetails : AppCompatActivity() {
         supportActionBar?.title = "Solution"
 
         val questionId = intent.extras?.getParcelable<QuestionItem>("question_item")
+
         if (questionId != null) {
             viewModel.getAnswer(questionId.id)
             /**
@@ -76,32 +78,38 @@ class QuestionDetails : AppCompatActivity() {
 
         binding.answersRv.apply {
             viewModel.answers.observe(this@QuestionDetails, Observer {
-                layoutManager = LinearLayoutManager(this@QuestionDetails)
-                adapter = AnswerItemAdapter(it)
 
-                if (it.isEmpty()) {
-                    binding.answersRv.visibility = View.GONE
-                    binding.noDataImage.visibility = View.VISIBLE
-                    Toast.makeText(this@QuestionDetails,"No Answers available. Be the first to Answer",Toast.LENGTH_SHORT)
-                        .show()
-                    Log.d(TAG, "onViewCreated: rv empty")
-                    if (questionId != null) {
-                        viewModel.getAnswer(questionId.id)
-                        /**
-                         * For checking if there is no answers in backend
-                         *  viewModel.getAnswer(93)
-                         */
+                    layoutManager = LinearLayoutManager(this@QuestionDetails)
+                    adapter = AnswerItemAdapter(it)
+
+                    if (it.isEmpty()) {
+                        binding.answersRv.visibility = View.GONE
+                        binding.noDataImage.visibility = View.VISIBLE
+                        Toast.makeText(this@QuestionDetails,"No Answers available. Be the first to Answer",Toast.LENGTH_SHORT)
+                            .show()
+                        Log.d(TAG, "onViewCreated: rv empty")
+                        if (questionId != null) {
+                            viewModel.getAnswer(questionId.id)
+                            /**
+                             * For checking if there is no answers in backend
+                             *  viewModel.getAnswer(93)
+                             */
+                        }
                     }
+                    else{
+                        binding.answersRv.visibility = View.VISIBLE
+                        binding.noDataImage.visibility = View.GONE
+                    }
+                if (it.size > 5) {
+                    binding.buttonAnswerThis.isEnabled = false
+                    Snackbar.make(
+                        binding.answersRv,
+                        "Sorry! Couldn't post more answers",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
-                else{
-                    binding.answersRv.visibility = View.VISIBLE
-                    binding.noDataImage.visibility = View.GONE
 
-                }
-            })
-
-
+                })
+            }
         }
     }
-
-}

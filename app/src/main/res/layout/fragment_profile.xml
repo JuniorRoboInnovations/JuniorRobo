@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_user_name"
                 app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
-                app:strokeColor="@color/pink_500"
+                app:strokeColor="@color/pink_700"
                 app:strokeWidth="3dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -180,6 +180,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
+                app:backgroundTint="@color/pink_700"
                 android:text="@string/edit_profile"
                 app:icon="@drawable/ic_edit_white"
                 app:iconGravity="textStart" />
@@ -192,6 +193,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
+                app:backgroundTint="@color/pink_700"
                 android:text="@string/update_profile"
                 android:visibility="invisible"
                 app:icon="@drawable/ic_check_white"
