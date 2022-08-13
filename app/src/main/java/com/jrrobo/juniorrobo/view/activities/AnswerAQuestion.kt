@@ -26,9 +26,13 @@ import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.data.answer.AnswerItemPost
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
+import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.databinding.ActivityAnswerAquestionBinding
+import com.jrrobo.juniorrobo.viewmodel.ActivityAskQuestionActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.security.auth.login.LoginException
 
 /**
@@ -49,21 +53,32 @@ class AnswerAQuestion : AppCompatActivity() {
     // uri class variable for image pick and displaying the image and preview the picked image
     private lateinit var croppedPhotoUri: Uri
 
+    private var answerImageFile: File? = null
+
+
     // CropImage contract (for Can Hub image cropper)
     // for handling the response of the image picker
     private val cropImageActivity = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             croppedPhotoUri = result.uriContent!!
 
+            answerImageFile = File(result.getUriFilePath(this).toString())
             binding.cardviewAnswerImage.visibility = View.VISIBLE
         }
     }
+
+    private lateinit var questionItemIntent: QuestionItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAnswerAquestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val questionItem = intent.extras?.getParcelable<QuestionItem>("question_item_for_answer")
+
+        if (questionItem != null) {
+            questionItemIntent = questionItem
+        }
 
         var pkStudentId: Int = -1
         lifecycleScope.launchWhenStarted {
@@ -141,75 +156,130 @@ class AnswerAQuestion : AppCompatActivity() {
         }
 
         binding.buttonPostAnswer.setOnClickListener {
-            val text = binding.editTextAnswer.text
-            lifecycleScope.launch {
-                viewModel.postAnswer(
-                    AnswerItemPost(
-                        snswer = text.toString(),
-                        null,
-                        null,
-                        FkQuestionId = questionItem!!.id
-                    )
-                )
-                viewModel.postAnswerEventFlow.collect {
-                    when (it) {
-                        is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Loading -> {
 
-                        }
+            val answertext = binding.editTextAnswer.text.toString()
 
-                        is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Failure -> {
-                            Log.e(TAG,"on post: ${viewModel.postAnswerEventFlow.toString()}")
+            if (answerImageFile != null) {
+                lifecycleScope.launch {
+                    viewModel.postAnswerImage(answerImageFile!!)
 
-                            Snackbar.make(
-                                binding.editTextAnswer,
-                                "Couldn't post the answer!",
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
+                    //collect the hashed answer image name
+                    viewModel.postAnswerImageEventFlow.collect {
+                        when (it) {
+                            is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Loading -> {
 
-                        // upon successful POST event
-                        is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Success -> {
-                            onBackPressed()
-                            Snackbar.make(
-                                binding.editTextAnswer,
-                                "Successfully posted the answer!",
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                            clearTextFields()
-                            Handler(Looper.getMainLooper()).postDelayed({
+                            }
 
-                                // go to fromQuestionAnswerActivity
-                                val intent = Intent(this@AnswerAQuestion, QuestionDetails::class.java)
-                                intent.putExtra("question_item", questionItem)
-                                startActivity(intent)
-                                this@AnswerAQuestion.finish()
-                            }, 3000)
-                            Log.d(
-                                TAG,
-                                "onCreate: Answer posted->${it.answerItemPostResponse}"
-                            )
+                            is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Failure -> {
+                                Snackbar.make(
+                                    binding.editTextAnswer,
+                                    "Couldn't upload the answer image!",
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                                postAnswerItem(
+                                    AnswerItemPost(
+                                        answertext,
+                                        pkStudentId,
+                                        null,
+                                        questionItem!!.id
+                                        //null to be passed in answer image field
+                                    )
+                                )
+                            }
 
-                        }
-                        else -> {
-                            Unit
+                            // upon successful POST event
+                            is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Success -> {
+                                postAnswerItem(
+                                    AnswerItemPost(
+                                        answertext,
+                                        pkStudentId,
+                                        null,
+                                        questionItem!!.id
+                                        //Answer image field to be added
+                                        //it.answerImagePostResponse
+                                    )
+                                )
+                            }
+                            else -> {
+                                Unit
+                            }
                         }
                     }
                 }
             }
+            else{
+                postAnswerItem(
+                    AnswerItemPost(
+                        answertext,
+                        pkStudentId,
+                        null,
+                        questionItem!!.id
+
+                    //null to be passed in answer image field
+                    )
+                )
+            }
+        }
+
+    }
+
+private fun postAnswerItem(answerItemPost: AnswerItemPost){
+    viewModel.postAnswer(answerItemPost)
+    lifecycleScope.launch {
+        viewModel.postAnswerEventFlow.collect {
+            when (it) {
+                is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Loading -> {
+
+                }
+
+                is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Failure -> {
+                    Snackbar.make(
+                        binding.editTextAnswer,
+                        "Couldn't post the answer!",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
+                // upon successful POST event
+                is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Success -> {
+
+                    Snackbar.make(
+                        binding.editTextAnswer,
+                        "Successfully posted the answer!",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    clearTextFields()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        // go to fromQuestionAnswerActivity
+                        val intent = Intent(this@AnswerAQuestion, QuestionDetails::class.java)
+                        intent.putExtra("question_item", questionItemIntent)
+                        startActivity(intent)
+                        this@AnswerAQuestion.finish()
+                    }, 3000)
+                    Log.d(
+                        TAG,
+                        "onCreate: Answer posted->${it.answerItemPostResponse}"
+                    )
+
+                }
+                else -> {
+                    Unit
+                }
+            }
         }
     }
+}
+override fun onBackPressed() {
 
-    override fun onBackPressed() {
+}
 
-    }
-
-    private fun clearTextFields() {
-        binding.editTextAnswer.text = null
-    }
-    // function to check whether the camera permission is granted by the user or not
-    private fun hasCameraPermission() =
-        ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
+private fun clearTextFields() {
+    binding.editTextAnswer.text = null
+}
+// function to check whether the camera permission is granted by the user or not
+private fun hasCameraPermission() =
+    ActivityCompat.checkSelfPermission(
+        this,
+        Manifest.permission.CAMERA
+    ) == PackageManager.PERMISSION_GRANTED
 }

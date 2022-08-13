@@ -1,5 +1,8 @@
 package com.jrrobo.juniorrobo.data.answer
 
+/**
+ * for getting the response of POST request of AnswerItem
+ */
 data class AnswerItemPostResponse(
     val pkAnswerId: Int,
     val snswer: String,

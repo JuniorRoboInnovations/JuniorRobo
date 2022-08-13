@@ -4,6 +4,7 @@ import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.data.answer.AnswerItemPost
 import com.jrrobo.juniorrobo.data.answer.AnswerItemPostResponse
 import com.jrrobo.juniorrobo.utility.NetworkRequestResource
+import java.io.File
 
 /**
  *  Mocked repository for ease of testing of AnswerRepository
@@ -14,6 +15,10 @@ interface MainAnswerRepository {
     suspend fun postAnswer(
         answerItemPost: AnswerItemPost
     ): NetworkRequestResource<AnswerItemPostResponse>
+
+    suspend fun postAnswerImage(
+        image: File
+    ): NetworkRequestResource<String>
 
     suspend fun getAnswer(
         q_id: Int

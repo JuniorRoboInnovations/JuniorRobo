@@ -12,6 +12,7 @@ import com.jrrobo.juniorrobo.utility.NetworkRequestResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 import javax.security.auth.login.LoginException
 
@@ -66,7 +67,49 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
             }
         }
     }
+    sealed class PostAnswerImageEvent {
+        class Success(val answerImagePostResponse: String) : PostAnswerImageEvent()
+        class Failure(val errorText: String) : PostAnswerImageEvent()
+        object Loading : PostAnswerImageEvent()
+        object Empty : PostAnswerImageEvent()
+    }
 
+    private val _postAnswerImageEventFlow =
+        MutableStateFlow<PostAnswerImageEvent>(PostAnswerImageEvent.Empty)
+
+    val postAnswerImageEventFlow: MutableStateFlow<PostAnswerImageEvent>
+        get() = _postAnswerImageEventFlow
+
+    fun postAnswerImage(answerImage: File) {
+        viewModelScope.launch(dispatcher.io) {
+
+            _postAnswerImageEventFlow.value = PostAnswerImageEvent.Loading
+
+            when (val response = answerRepository.postAnswerImage(answerImage)) {
+
+                is NetworkRequestResource.Error -> {
+                    _postAnswerImageEventFlow.value =
+                        PostAnswerImageEvent.Failure(response.message!!)
+                }
+
+                is NetworkRequestResource.Success -> {
+                    try {
+                        val parsedData= response.data
+                        if(parsedData!=null){
+                            _postAnswerImageEventFlow.value =
+                                PostAnswerImageEvent.Success(parsedData)
+                        }
+                        Log.d(TAG, "postAnswerItem: $parsedData")
+
+                    }
+                    catch (e : Exception){
+                        _postAnswerImageEventFlow.value= PostAnswerImageEvent.Failure(e.message.toString())
+                    }
+
+                }
+            }
+        }
+    }
     fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
 
     //Answer Image getter to be implemented
