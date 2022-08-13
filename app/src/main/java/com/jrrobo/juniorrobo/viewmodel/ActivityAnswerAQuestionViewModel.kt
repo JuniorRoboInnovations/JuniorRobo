@@ -51,13 +51,17 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
 
                 is NetworkRequestResource.Success -> {
 
-                    val parsedData= response.data
-                    if(parsedData!=null){
-                        _postAnswerEventFlow.value =PostAnswerItemEvent.Success(parsedData)
+                    try {
+                        val parsedData= response.data
+                        if(parsedData!=null){
+                            _postAnswerEventFlow.value =PostAnswerItemEvent.Success(parsedData)
+                        }
+                        Log.d(TAG, "postQuestionItem: ${parsedData}")
+                        Log.e(TAG,"${response.data}")
                     }
-                    Log.d(TAG, "postQuestionItem: ${parsedData}")
-
-                    Log.e(TAG,"${response.data}")
+                    catch (e : Exception){
+                        _postAnswerEventFlow.value = PostAnswerItemEvent.Failure(e.message.toString())
+                    }
                 }
             }
         }
@@ -88,10 +92,17 @@ class ActivityAnswerAQuestionViewModel @Inject constructor(
             when (val response = answerRepository.getAnswer(q_id)) {
 
                 is NetworkRequestResource.Success -> {
-                    if (response.data != null) {
-                        Log.d(TAG, response.data.toString())
-                        _answers.postValue(response.data)
+
+                    try {
+                        if (response.data != null) {
+                            Log.d(TAG, response.data.toString())
+                            _answers.postValue(response.data)
+                        }
                     }
+                    catch (e : Exception){
+                        Log.d(TAG, "getAnswers: Error->${e.message.toString()}")
+                    }
+
                 }
                 is NetworkRequestResource.Error -> {
                     Log.d(TAG, "getAnswers: Error->${response.message}")

@@ -30,6 +30,10 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
                 textViewQuestionItemDescription.text = item.question_sub_text
 //                textViewQuestionItemStudentName.text = item.id.toString()
             }
+            binding.imageViewQuestionItemImage.setImageDrawable(null)
+            binding.textViewQuestionItemImageLabel.visibility = View.GONE
+            binding.imageViewQuestionItemImage.visibility = View.GONE
+
             if(item.image !=null) {
                 binding.textViewQuestionItemImageLabel.visibility = View.VISIBLE
                 binding.imageViewQuestionItemImage.visibility = View.VISIBLE

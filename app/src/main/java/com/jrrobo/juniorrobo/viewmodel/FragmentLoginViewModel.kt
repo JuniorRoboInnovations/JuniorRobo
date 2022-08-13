@@ -61,15 +61,21 @@ class FragmentLoginViewModel @Inject constructor(
                 // Success state with the data got by the network resource
                 is NetworkRequestResource.Success -> {
 
-                    // parse the requested body
-                    val successResponse =
-                        OtpRequestParser.otpRequest(otpResponse.data.toString())
+                    try {
+                        // parse the requested body
+                        val successResponse =
+                            OtpRequestParser.otpRequest(otpResponse.data.toString())
 
-                    if (successResponse.status == "Success") {
-                        _otpRequestFlow.value = OtpEvent.Success(successResponse.message)
-                    } else {
-                        _otpRequestFlow.value = OtpEvent.Failure(successResponse.message)
+                        if (successResponse.status == "Success") {
+                            _otpRequestFlow.value = OtpEvent.Success(successResponse.message)
+                        } else {
+                            _otpRequestFlow.value = OtpEvent.Failure(successResponse.message)
+                        }
                     }
+                    catch (e : Exception){
+                        _otpResponseFlow.value = OtpEvent.Failure(e.message.toString())
+                    }
+
                 }
             }
         }
@@ -108,21 +114,27 @@ class FragmentLoginViewModel @Inject constructor(
                 // Success state with the data got by the network resource
                 is NetworkRequestResource.Success -> {
 
-                    Log.d(TAG, otpResponse.data.toString())
+                    try {
+                        Log.d(TAG, otpResponse.data.toString())
 
-                    // parse the requested body
-                    val successResponse =
-                        OtpRequestParser.otpResponse(otpResponse.data.toString())
+                        // parse the requested body
+                        val successResponse =
+                            OtpRequestParser.otpResponse(otpResponse.data.toString())
 
-                    if (successResponse.status == "Success") {
-                        _otpResponseFlow.value = OtpEvent.Success(successResponse.message)
-                        Log.d(TAG, "responseOtp: ${successResponse.pkStudentId}")
-                        dataStorePreferencesManager.setPkStudentId(successResponse.pkStudentId)
+                        if (successResponse.status == "Success") {
+                            _otpResponseFlow.value = OtpEvent.Success(successResponse.message)
+                            Log.d(TAG, "responseOtp: ${successResponse.pkStudentId}")
+                            dataStorePreferencesManager.setPkStudentId(successResponse.pkStudentId)
 
-                        Log.d(TAG, successResponse.pkStudentId.toString())
-                    } else {
-                        _otpResponseFlow.value = OtpEvent.Failure(successResponse.message)
+                            Log.d(TAG, successResponse.pkStudentId.toString())
+                        } else {
+                            _otpResponseFlow.value = OtpEvent.Failure(successResponse.message)
+                        }
                     }
+                    catch (e :Exception){
+                        _otpResponseFlow.value = OtpEvent.Failure(e.message.toString())
+                    }
+
                 }
             }
         }

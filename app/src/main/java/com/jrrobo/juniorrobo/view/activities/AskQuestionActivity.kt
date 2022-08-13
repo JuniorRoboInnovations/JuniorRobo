@@ -293,6 +293,7 @@ class AskQuestionActivity : AppCompatActivity() {
 
                     // upon successful POST event
                     is ActivityAskQuestionActivityViewModel.PostQuestionItemEvent.Success -> {
+                        binding.buttonPostQuestion.isEnabled = false
                         Snackbar.make(
                             binding.editTextQuestion,
                             "Successfully posted the question!",
@@ -305,7 +306,7 @@ class AskQuestionActivity : AppCompatActivity() {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                             startActivity(intent)
                             this@AskQuestionActivity.finish()
-                        }, 3000)
+                        }, 2000)
                         Log.d(TAG, "onCreate: Question posted->${it.questionItemPostResponse.toString()}")
 
                     }

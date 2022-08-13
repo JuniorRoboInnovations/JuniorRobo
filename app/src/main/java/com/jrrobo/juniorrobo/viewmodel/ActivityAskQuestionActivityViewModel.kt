@@ -51,13 +51,17 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
                 }
 
                 is NetworkRequestResource.Success -> {
-
-                    val parsedData= response.data
-                    if(parsedData!=null){
-                        _postQuestionEventFlow.value =
-                            PostQuestionItemEvent.Success(parsedData)
+                    try {
+                        val parsedData= response.data
+                        if(parsedData!=null){
+                            _postQuestionEventFlow.value =
+                                PostQuestionItemEvent.Success(parsedData)
+                        }
+                        Log.d(TAG, "postQuestionItem: $parsedData")
                     }
-                    Log.d(TAG, "postQuestionItem: $parsedData")
+                    catch (e : Exception){
+                        _postQuestionEventFlow.value= PostQuestionItemEvent.Failure(e.message.toString())
+                    }
                 }
             }
         }
@@ -73,10 +77,16 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
 
             when (val response = questionRepository.getQuestionCategories()) {
                 is NetworkRequestResource.Success -> {
-                    if (response.data != null) {
-                        Log.d(TAG, response.data.toString())
-                        _questionCategoriesLiveData.postValue(response.data)
+                    try {
+                        if (response.data != null) {
+                            Log.d(TAG, response.data.toString())
+                            _questionCategoriesLiveData.postValue(response.data)
+                        }
                     }
+                    catch (e : Exception){
+                        Log.d(TAG, "getQuestionCategories: ${e.message}")
+                    }
+
                 }
                 is NetworkRequestResource.Error -> {
                     Log.d(TAG, "getQuestionCategories: Error->${response.message}")
@@ -111,13 +121,19 @@ class ActivityAskQuestionActivityViewModel @Inject constructor(
                 }
 
                 is NetworkRequestResource.Success -> {
+                    try {
+                        val parsedData= response.data
+                        if(parsedData!=null){
+                            _postQuestionImageEventFlow.value =
+                                PostQuestionImageEvent.Success(parsedData)
+                        }
+                        Log.d(TAG, "postQuestionItem: $parsedData")
 
-                    val parsedData= response.data
-                    if(parsedData!=null){
-                        _postQuestionImageEventFlow.value =
-                            PostQuestionImageEvent.Success(parsedData)
                     }
-                    Log.d(TAG, "postQuestionItem: $parsedData")
+                    catch (e : Exception){
+                        _postQuestionImageEventFlow.value= PostQuestionImageEvent.Failure(e.message.toString())
+                    }
+
                 }
             }
         }
