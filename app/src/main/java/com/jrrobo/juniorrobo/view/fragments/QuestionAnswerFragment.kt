@@ -132,7 +132,7 @@ class QuestionAnswerFragment : Fragment() {
             }
             else if(chip.text.equals("My questions")){
                 lifecycleScope.launch {
-                    viewModel.getQuestionsWithoutPaging(1,null,pkStudentId)
+                    viewModel.getQuestionsWithoutPaging(null,null,pkStudentId)
                 }
             }
             else{
