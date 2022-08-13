@@ -40,7 +40,7 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
         fun bind(item: AnswerItem){
 
             binding.answerText.text = item.answer
-            if (item.student_image.isNullOrEmpty()) {
+            if (item.answer_image.isNullOrEmpty()) {
                 binding.answerImage.visibility = View.GONE
             }
             else {
@@ -48,10 +48,11 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
                 GlobalScope.launch(Dispatchers.Main) {
                     Log.d(TAG, "populateAnswer: Glide called")
                     Glide.with(binding.root)
-                        .load(EndPoints.GET_IMAGE + "/answer/" +item.student_image)
+                        .load(EndPoints.GET_IMAGE + "/answer/" +item.answer_image)
                         .into(binding.answerImage)
                 }
             }
+            binding.answerRating.rating = item.id.toFloat()
         }
     }
 

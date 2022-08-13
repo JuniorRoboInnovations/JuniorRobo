@@ -5,6 +5,7 @@ data class AnswerItem(
     val id : Int,
     val answer: String,
     val student: String?,
-    val student_image: String,
+    val student_image: String?,
+    val answer_image: String?,
     val date: String
 )

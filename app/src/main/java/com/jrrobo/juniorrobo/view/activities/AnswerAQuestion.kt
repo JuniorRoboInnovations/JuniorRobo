@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.util.StatsLog
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -181,22 +182,23 @@ class AnswerAQuestion : AppCompatActivity() {
                                         answertext,
                                         pkStudentId,
                                         null,
-                                        questionItem!!.id
-                                        //null to be passed in answer image field
+                                        questionItem!!.id,
+                                        null
                                     )
                                 )
                             }
 
                             // upon successful POST event
                             is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Success -> {
+                                Log.e(TAG, "onCreate: ${it.answerImagePostResponse}", )
                                 postAnswerItem(
                                     AnswerItemPost(
                                         answertext,
                                         pkStudentId,
                                         null,
-                                        questionItem!!.id
+                                        questionItem!!.id,
                                         //Answer image field to be added
-                                        //it.answerImagePostResponse
+                                        it.answerImagePostResponse
                                     )
                                 )
                             }
@@ -213,9 +215,8 @@ class AnswerAQuestion : AppCompatActivity() {
                         answertext,
                         pkStudentId,
                         null,
-                        questionItem!!.id
-
-                    //null to be passed in answer image field
+                        questionItem!!.id,
+                        null
                     )
                 )
             }
@@ -242,7 +243,7 @@ private fun postAnswerItem(answerItemPost: AnswerItemPost){
 
                 // upon successful POST event
                 is ActivityAnswerAQuestionViewModel.PostAnswerItemEvent.Success -> {
-
+                    binding.buttonPostAnswer.isEnabled = false
                     Snackbar.make(
                         binding.editTextAnswer,
                         "Successfully posted the answer!",
