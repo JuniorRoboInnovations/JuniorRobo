@@ -11,6 +11,10 @@ import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.QuestionItemBinding
 import com.jrrobo.juniorrobo.network.EndPoints
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAdapter<QuestionItem, QuestionItemRvAdapter.ViewHolder>(DiffCallback()) {
     inner class ViewHolder(private val binding: QuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -34,8 +38,8 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
                     .load(EndPoints.GET_IMAGE + "/question/" + item.image)
                     .error(R.drawable.ic_image_black)
                     .into(binding.imageViewQuestionItemImage)
-                }
             }
+        }
 
     }
 
@@ -47,6 +51,7 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
 
 }
 
