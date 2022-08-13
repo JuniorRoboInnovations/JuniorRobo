@@ -6,6 +6,10 @@ import com.jrrobo.juniorrobo.data.answer.AnswerItemPost
 import com.jrrobo.juniorrobo.data.answer.AnswerItemPostResponse
 import com.jrrobo.juniorrobo.network.JuniorRoboApi
 import com.jrrobo.juniorrobo.utility.NetworkRequestResource
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,7 +49,38 @@ class AnswerRepository @Inject constructor(
             NetworkRequestResource.Error(e.message ?: "Unable to post Answer")
         }
     }
+    override suspend fun postAnswerImage(image: File): NetworkRequestResource<String> {
+        return try {
+            //creating request body for file
+            val requestFile  = image.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            // MultipartBody.Part is used to send also the actual filename
+            val body  = MultipartBody.Part.createFormData("file", image.name, requestFile)
+            // get the response from the API
+            val response = juniorRoboApi.postImage("answer",body)
+            val result = response.body()
+            // check whether the response was successful and is it null
 
+            if (response.isSuccessful && result != null) {
+                // wrap the response around the NetworkRequestResource sealed class for ease of error handling
+                // with the Success object
+                Log.d(TAG, "uploadImage: $result")
+                NetworkRequestResource.Success(result)
+            } else {
+
+                // wrap the response around the NetworkRequestResource sealed class for ease of error handling
+                // with the Error object
+                Log.d(TAG, "uploadImage: ${response.message()}")
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+
+            // wrap the response around the NetworkRequestResource sealed class for ease of error handling
+            // with the Error object
+            Log.d(TAG, "uploadImage: ${e.message}")
+            NetworkRequestResource.Error(e.message ?: "Unable to upload the image.")
+        }
+    }
+    
     override suspend fun getAnswer(q_id: Int): NetworkRequestResource<List<AnswerItem>> {
         return try {
             Log.d(TAG, "getAnswer: before api call")

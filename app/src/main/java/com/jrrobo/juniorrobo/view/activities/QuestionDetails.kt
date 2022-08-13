@@ -1,6 +1,5 @@
 package com.jrrobo.juniorrobo.view.activities
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityQuestionDetailsBinding
 import com.jrrobo.juniorrobo.network.EndPoints
@@ -57,17 +55,19 @@ class QuestionDetails : AppCompatActivity() {
             textViewQuestionTag.text = questionId?.question_sub_text
 
             //Question Image to be updated here
-//            if (questionId?.date.isNullOrEmpty()) {
-//                answerQuestionImage.visibility = View.GONE
-//            }
-//            else {
-//                GlobalScope.launch(Dispatchers.Main) {
-//                    Glide.with(root)
-//                        .load(EndPoints.GET_IMAGE + )
-//                        .error(R.drawable.ic_baseline_file_copy_24)
-//                        .into(binding.answerImage)
-//                }
-//            }
+            if (questionId?.image.isNullOrEmpty()) {
+                answerQuestionImage.visibility = View.GONE
+            }
+            else {
+                answerQuestionImage.visibility = View.VISIBLE
+                GlobalScope.launch(Dispatchers.Main) {
+                    Glide.with(root)
+                        .load(EndPoints.GET_IMAGE +  "/question/" + questionId!!.image)
+                        .into(binding.answerQuestionImage)
+                }
+            }
+
+            Log.e(TAG, "onCreate: ${questionId?.image.toString()}", )
         }
 
         binding.buttonAnswerThis.setOnClickListener {
@@ -85,9 +85,7 @@ class QuestionDetails : AppCompatActivity() {
                     if (it.isEmpty()) {
                         binding.answersRv.visibility = View.GONE
                         binding.noDataImage.visibility = View.VISIBLE
-                        Toast.makeText(this@QuestionDetails,"No Answers available. Be the first to Answer",Toast.LENGTH_SHORT)
-                            .show()
-                        Log.d(TAG, "onViewCreated: rv empty")
+
                         if (questionId != null) {
                             viewModel.getAnswer(questionId.id)
                             /**
@@ -100,7 +98,7 @@ class QuestionDetails : AppCompatActivity() {
                         binding.answersRv.visibility = View.VISIBLE
                         binding.noDataImage.visibility = View.GONE
                     }
-                if (it.size > 5) {
+                if (it.size >= 5) {
                     binding.buttonAnswerThis.isEnabled = false
                     Snackbar.make(
                         binding.answersRv,

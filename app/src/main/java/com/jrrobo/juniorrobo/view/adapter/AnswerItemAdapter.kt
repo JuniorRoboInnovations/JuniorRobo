@@ -44,10 +44,11 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
                 binding.answerImage.visibility = View.GONE
             }
             else {
+                binding.answerImage.visibility = View.VISIBLE
                 GlobalScope.launch(Dispatchers.Main) {
                     Log.d(TAG, "populateAnswer: Glide called")
                     Glide.with(binding.root)
-                        .load(EndPoints.GET_IMAGE + item.student_image)
+                        .load(EndPoints.GET_IMAGE + "/answer/" +item.student_image)
                         .into(binding.answerImage)
                 }
             }
