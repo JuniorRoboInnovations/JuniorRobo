@@ -1,22 +1,31 @@
 package com.jrrobo.juniorrobo.view.fragments
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
+import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.databinding.FragmentQuestionAnswerBinding
+import com.jrrobo.juniorrobo.databinding.PopUpLayoutBinding
 import com.jrrobo.juniorrobo.view.activities.AskQuestionActivity
 import com.jrrobo.juniorrobo.view.activities.QuestionDetails
 import com.jrrobo.juniorrobo.view.adapter.QuestionItemRvAdapter
@@ -51,6 +60,8 @@ class QuestionAnswerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        showPopUpDialog()
 
 
         // primary key of the student initialised to -1
@@ -203,6 +214,25 @@ class QuestionAnswerFragment : Fragment() {
                 return true
             }
         })
+    }
+
+    private fun showPopUpDialog() {
+
+        lifecycleScope.launch {
+            val dialogBinding = layoutInflater.inflate(R.layout.pop_up_layout,null)
+
+            val dialog = Dialog(requireContext())
+            dialog.setContentView(dialogBinding)
+            dialog.setCancelable(true)
+//        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.show()
+
+            val  cancelButton = dialogBinding.findViewById<TextView>(R.id.text_view_cancel)
+            cancelButton.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
     }
 
     // set the view binding object to null upon destroying the view
