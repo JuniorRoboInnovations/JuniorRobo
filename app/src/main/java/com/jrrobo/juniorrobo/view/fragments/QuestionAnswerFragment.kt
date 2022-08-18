@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -74,11 +75,7 @@ class QuestionAnswerFragment : Fragment() {
             intent.putExtra("question_item", questionItem)
             startActivity(intent)
         }
-        QuestionItemRvAdapter{ questionItem->
-            val intent = Intent(requireContext(), QuestionDetails::class.java)
-            intent.putExtra("question_item", questionItem)
-            startActivity(intent)
-        }
+
 
         // making the network calls with coroutines
         lifecycleScope.launch {
@@ -243,7 +240,7 @@ class QuestionAnswerFragment : Fragment() {
                 title1.text = it.title
                 description1.text = it.description
 
-                val  cancelButton = dialogBinding.findViewById<TextView>(R.id.text_view_cancel)
+                val  cancelButton = dialogBinding.findViewById<ImageView>(R.id.image_clear_popup)
                 cancelButton.setOnClickListener {
                     dialog.dismiss()
                 }
