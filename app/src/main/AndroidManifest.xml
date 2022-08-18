@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JuniorRobo"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".view.activities.AnswerAQuestion"
             android:exported="false" />
@@ -31,10 +32,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <activity
             android:name=".view.activities.QuestionDetails"
             android:exported="true" />
-
         <activity
             android:name=".view.activities.AskQuestionActivity"
             android:exported="true" />

@@ -138,6 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="0dp"
+        android:textColor="@color/pink_700"
         android:text="@string/resend_otp"
         app:layout_constraintEnd_toEndOf="@+id/otp_verification_timeout"
         app:layout_constraintStart_toStartOf="@+id/otp_verification_timeout"

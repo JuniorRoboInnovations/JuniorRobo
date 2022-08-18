@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
-            android:textColor="@color/pink_500"
+            android:textColor="@color/pink_700"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/constraint_layout_container"
             app:layout_constraintStart_toEndOf="@id/imageView5"
@@ -104,9 +104,23 @@
             android:layout_marginEnd="6dp"
             android:layout_marginBottom="6dp"
             app:backgroundTint="@color/pink_700"
-            android:text="@string/answer_this"
+            android:text="@string/add_answer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_question_item_image" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/text_button_question_item_solution"
+            style="@style/Widget.App.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp"
+            app:backgroundTint="@color/pink_700"
+            android:text="@string/see_solution"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_view_question_item_image" />
 
 

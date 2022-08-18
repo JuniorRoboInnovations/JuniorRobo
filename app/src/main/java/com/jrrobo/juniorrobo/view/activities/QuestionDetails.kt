@@ -72,7 +72,7 @@ class QuestionDetails : AppCompatActivity() {
 
         binding.buttonAnswerThis.setOnClickListener {
             val intent = Intent(this, AnswerAQuestion::class.java)
-            intent.putExtra("question_item_for_answer", questionId)
+            intent.putExtra("question_item", questionId)
             startActivity(intent)
         }
 

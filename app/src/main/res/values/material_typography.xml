@@ -42,12 +42,14 @@
         <item name="fontFamily">@font/open_sans_regular</item>
         <item name="android:fontFamily">@font/open_sans_regular</item>
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/pink_700</item>
     </style>
 
     <style name="TextAppearance.MdcTypographyStyles.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="fontFamily">@font/open_sans_medium</item>
         <item name="android:fontFamily">@font/open_sans_medium</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/pink_700</item>
     </style>
 
     <style name="TextAppearance.MdcTypographyStyles.Body1" parent="TextAppearance.MaterialComponents.Body1">
