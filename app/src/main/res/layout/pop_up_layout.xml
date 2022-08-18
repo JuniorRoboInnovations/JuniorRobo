@@ -1,74 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="200dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipToPadding="false"
     android:orientation="vertical"
-    android:background="@color/cardview_dark_background"
-    android:padding="5dp"
-    android:layout_gravity="center">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    android:id="@+id/popup_container">
 
-    <TextView
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/text_view_cancel"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="end"
-        android:background="@color/pink_700"
-        android:gravity="center"
-        android:text="X"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="5dp" />
-
-    <LinearLayout
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/popup_constraint_layout_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:paddingBottom="40dp"
+        android:background="#ff7451">
+
+        <TextView
+            android:id="@+id/text_view_cancel"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/pink_700"
+            android:gravity="center"
+            android:text="X"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/popup_constraint_layout_container"
+            app:layout_constraintTop_toTopOf="@id/popup_constraint_layout_container" />
+
         <ImageView
+            android:id="@+id/popup_logo"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/junior_robo_logo"
+            app:layout_constraintEnd_toEndOf="@id/text_view_cancel"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="@id/popup_constraint_layout_container"
+            app:layout_constraintTop_toTopOf="@id/popup_constraint_layout_container" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/popup_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_default_avatar"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Today's Offer"
+            android:layout_marginTop="44dp"
+            android:text="Challenge of the day"
+            android:textColor="@color/pink_700"
+            style="@style/TextAppearance.MdcTypographyStyles.Subtitle2"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/popup_constraint_layout_container"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@id/popup_constraint_layout_container"
+            app:layout_constraintTop_toBottomOf="@id/popup_logo" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/popup_offer"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="5min+ access on any one of the Premium Online Course."
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            />
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:elevation="2dp"
+            android:orientation="vertical"
+            android:background="#ff7451"
+            app:cardCornerRadius="6dp"
+            app:layout_constraintEnd_toEndOf="@id/popup_constraint_layout_container"
+            app:layout_constraintStart_toStartOf="@id/popup_constraint_layout_container"
+            app:layout_constraintTop_toBottomOf="@id/popup_heading"
+            >
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            style="@style/Widget.App.Button"
-            android:text="Avail"
-            android:backgroundTint="@color/pink_700"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal"
-            />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/popup_content_container1"
+                >
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/popup_title1"
+                    android:textStyle="bold"
+                    style="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/popup_content_container1"
+                    app:layout_constraintStart_toStartOf="@id/popup_content_container1"
+                    android:text="Get 5$ off"
+                    android:textSize="16sp"
+                    />
 
-    </LinearLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/popup_description1"
+                    style="@style/TextAppearance.MdcTypographyStyles.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer 100 question and get offer"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/popup_content_container1"
+                    app:layout_constraintTop_toBottomOf="@id/popup_title1" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

@@ -3,6 +3,7 @@ package com.jrrobo.juniorrobo.viewmodel
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
+import com.jrrobo.juniorrobo.data.offer.Offer
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
@@ -98,6 +99,35 @@ class FragmentQuestionsViewModel @Inject constructor(
             }
         }
     }
+
+    private val _offerData = MutableLiveData<Offer>()
+    val offerData : LiveData<Offer>
+        get() = _offerData
+
+    fun getOffer(){
+        viewModelScope.launch(dispatchers.io) {
+            Log.d(TAG, "getQuestionCategories: making api call from FragmentQuestionsViewModel")
+
+            when (val response = questionRepository.getOffer()) {
+                is NetworkRequestResource.Success -> {
+                    try {
+                        if (response.data != null) {
+                            Log.d(TAG, response.data.toString())
+                            _offerData.postValue(response.data)
+                        }
+                    }
+                    catch (e : Exception){
+                        Log.d(TAG, "getQuestionCategories: Error->${e.message}")
+                    }
+                }
+                is NetworkRequestResource.Error -> {
+                    Log.d(TAG, "getQuestionCategories: Error->${response.message}")
+                }
+            }
+        }
+    }
+
+
     fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
 
     companion object {

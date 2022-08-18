@@ -34,6 +34,8 @@ class EndPoints {
         //Endpoint to get all question without paging
         const val GET_ALL_QUESTIONS = ""
 
+        const val APP_OFFER :String ="appOffer"
+
     }
 
 }

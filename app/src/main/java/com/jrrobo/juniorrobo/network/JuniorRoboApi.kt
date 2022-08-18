@@ -3,6 +3,7 @@ package com.jrrobo.juniorrobo.network
 import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.data.answer.AnswerItemPost
 import com.jrrobo.juniorrobo.data.answer.AnswerItemPostResponse
+import com.jrrobo.juniorrobo.data.offer.Offer
 import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
@@ -107,4 +108,8 @@ interface JuniorRoboApi {
         @Query("skip") skip: Int,
         @Query("take") take: Int
     ): Response<List<AnswerItem>>
+
+    @GET(EndPoints.APP_OFFER)
+    suspend fun getOffer(): Response<Offer>
+
 }

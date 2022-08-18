@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.liveData
+import com.jrrobo.juniorrobo.data.offer.Offer
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
@@ -118,6 +119,21 @@ class QuestionRepository @Inject constructor(
         }
     }
 
+    override suspend fun getOffer(): NetworkRequestResource<Offer> {
+        return try {
+            val response = juniorRoboApi.getOffer()
+            val result = response.body()
+
+            if (result != null) {
+                NetworkRequestResource.Success(result)
+            } else {
+                Log.d(TAG, response.toString())
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            NetworkRequestResource.Error(e.message ?: "Unable to get questions")
+        }
+    }
 
     fun getAllQuestionList(
         cat_id: Int,
