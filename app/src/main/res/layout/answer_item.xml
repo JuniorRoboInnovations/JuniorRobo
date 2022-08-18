@@ -17,15 +17,42 @@
         android:layout_height="match_parent"
         android:padding="6dp">
 
+        <LinearLayout
+            android:id="@+id/infoLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/userImage"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_baseline_person_24"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/nameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginStart="6dp"
+                app:layout_constraintStart_toEndOf="@id/userImage"
+                tools:text="Junior Robo" />
+        </LinearLayout>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/answer_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="viewStart"
+            android:textColor="@color/black"
             tools:text="Hi this is a sample answer"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/infoLinearLayout"
             app:layout_constraintStart_toStartOf="parent"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
         <RatingBar
             android:id="@+id/answer_rating"
             style="?android:attr/ratingBarStyleSmall"
@@ -37,13 +64,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
             android:stepSize="0.5"/>
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/answer_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_default_avatar"
+            android:src="@drawable/ic_launcher_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/answer_text"/>

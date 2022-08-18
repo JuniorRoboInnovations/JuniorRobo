@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.databinding.FragmentQuestionAnswerBinding
+import com.jrrobo.juniorrobo.view.activities.AnswerAQuestion
 import com.jrrobo.juniorrobo.view.activities.AskQuestionActivity
 import com.jrrobo.juniorrobo.view.activities.QuestionDetails
 import com.jrrobo.juniorrobo.view.adapter.QuestionItemRvAdapter
@@ -67,6 +68,11 @@ class QuestionAnswerFragment : Fragment() {
         val catNameToCatIdMap: HashMap<String,Int> = HashMap()
 
         val adapter = QuestionItemRvAdapter{ questionItem->
+            val intent = Intent(requireContext(), AnswerAQuestion::class.java)
+            intent.putExtra("question_item", questionItem)
+            startActivity(intent)
+        }
+        QuestionItemRvAdapter{ questionItem->
             val intent = Intent(requireContext(), QuestionDetails::class.java)
             intent.putExtra("question_item", questionItem)
             startActivity(intent)

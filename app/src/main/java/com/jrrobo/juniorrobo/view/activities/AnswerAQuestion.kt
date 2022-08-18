@@ -6,12 +6,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import com.jrrobo.juniorrobo.viewmodel.ActivityAnswerAQuestionViewModel
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.util.StatsLog
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -24,17 +22,13 @@ import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.google.android.material.snackbar.Snackbar
 import com.jrrobo.juniorrobo.R
-import com.jrrobo.juniorrobo.data.answer.AnswerItem
 import com.jrrobo.juniorrobo.data.answer.AnswerItemPost
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
-import com.jrrobo.juniorrobo.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorrobo.databinding.ActivityAnswerAquestionBinding
-import com.jrrobo.juniorrobo.viewmodel.ActivityAskQuestionActivityViewModel
+import com.jrrobo.juniorrobo.viewmodel.ActivityAnswerAQuestionViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.io.File
-import javax.security.auth.login.LoginException
 
 /**
  * Activity for answering a particular question
@@ -75,7 +69,7 @@ class AnswerAQuestion : AppCompatActivity() {
         binding = ActivityAnswerAquestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val questionItem = intent.extras?.getParcelable<QuestionItem>("question_item_for_answer")
+        val questionItem = intent.extras?.getParcelable<QuestionItem>("question_item")
 
         if (questionItem != null) {
             questionItemIntent = questionItem
@@ -251,12 +245,12 @@ private fun postAnswerItem(answerItemPost: AnswerItemPost){
                     ).show()
                     clearTextFields()
                     Handler(Looper.getMainLooper()).postDelayed({
-                        // go to fromQuestionAnswerActivity
+
                         val intent = Intent(this@AnswerAQuestion, QuestionDetails::class.java)
                         intent.putExtra("question_item", questionItemIntent)
                         startActivity(intent)
                         this@AnswerAQuestion.finish()
-                    }, 3000)
+                    }, 1000)
                     Log.d(
                         TAG,
                         "onCreate: Answer posted->${it.answerItemPostResponse}"
@@ -270,10 +264,6 @@ private fun postAnswerItem(answerItemPost: AnswerItemPost){
         }
     }
 }
-override fun onBackPressed() {
-
-}
-
 private fun clearTextFields() {
     binding.editTextAnswer.text = null
 }
