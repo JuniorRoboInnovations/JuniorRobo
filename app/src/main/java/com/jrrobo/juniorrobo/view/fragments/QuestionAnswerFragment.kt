@@ -70,11 +70,17 @@ class QuestionAnswerFragment : Fragment() {
 
         val catNameToCatIdMap: HashMap<String,Int> = HashMap()
 
-        val adapter = QuestionItemRvAdapter{ questionItem->
+        val adapter = QuestionItemRvAdapter({
             val intent = Intent(requireContext(), AnswerAQuestion::class.java)
-            intent.putExtra("question_item", questionItem)
+            intent.putExtra("question_item", it)
             startActivity(intent)
-        }
+            },
+            {
+                val intent = Intent(requireContext(), QuestionDetails::class.java)
+                intent.putExtra("question_item", it)
+                startActivity(intent)
+            }
+        )
 
 
         // making the network calls with coroutines

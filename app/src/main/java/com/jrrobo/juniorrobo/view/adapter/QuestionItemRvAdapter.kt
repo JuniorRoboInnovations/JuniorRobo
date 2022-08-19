@@ -16,11 +16,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAdapter<QuestionItem, QuestionItemRvAdapter.ViewHolder>(DiffCallback()) {
+class QuestionItemRvAdapter(private val addAnswer:(QuestionItem)->Unit,private val seeSolution:(QuestionItem)->Unit) : ListAdapter<QuestionItem, QuestionItemRvAdapter.ViewHolder>(DiffCallback()) {
     inner class ViewHolder(private val binding: QuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.textButtonQuestionItemAnswer.setOnClickListener{
-                listener.invoke(getItem(bindingAdapterPosition))
+                addAnswer.invoke(getItem(bindingAdapterPosition))
+            }
+
+            binding.textButtonQuestionItemSolution.setOnClickListener {
+                seeSolution.invoke(getItem(bindingAdapterPosition))
             }
 
         }

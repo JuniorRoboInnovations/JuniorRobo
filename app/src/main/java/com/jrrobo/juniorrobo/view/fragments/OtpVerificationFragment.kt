@@ -126,21 +126,23 @@ class OtpVerificationFragment : Fragment() {
                         // dismiss the previous alert dialogs
                         alertDialog!!.dismiss()
 
-                        // build the alert dialog for showing any failure messages
-                        alertDialogBuilder =
-                            AlertDialog.Builder(requireActivity())
-                        alertDialogBuilder!!.setMessage(otpResponseEvent.errorText)
-                        alertDialogBuilder!!.setCancelable(false)
-                        alertDialogBuilder!!.setNegativeButton(
-                            "CLOSE",
-                            object : DialogInterface.OnClickListener {
-                                override fun onClick(p0: DialogInterface?, p1: Int) {
-                                    alertDialog!!.dismiss()
-                                }
-                            })
+//                        // build the alert dialog for showing any failure messages
+//                        alertDialogBuilder =
+//                            AlertDialog.Builder(requireActivity())
+//                        alertDialogBuilder!!.setMessage(otpResponseEvent.errorText)
+//                        alertDialogBuilder!!.setCancelable(false)
+//                        alertDialogBuilder!!.setNegativeButton(
+//                            "CLOSE",
+//                            object : DialogInterface.OnClickListener {
+//                                override fun onClick(p0: DialogInterface?, p1: Int) {
+//                                    alertDialog!!.dismiss()
+//                                }
+//                            })
+//
+//                        alertDialog = alertDialogBuilder!!.create()
+//                        alertDialog!!.show()
 
-                        alertDialog = alertDialogBuilder!!.create()
-                        alertDialog!!.show()
+                        Toast.makeText(requireContext(),otpResponseEvent.errorText,Toast.LENGTH_LONG).show();
                     }
                     else -> {
                         Unit
@@ -175,21 +177,23 @@ class OtpVerificationFragment : Fragment() {
                         alertDialog!!.dismiss()
 
                         // build the alert dialog for showing the close button
-                        alertDialogBuilder =
-                            AlertDialog.Builder(requireActivity())
-                        Log.d(TAG, "onCreateView:Succes-> ${otpRequestEvent.resultText}")
-                        alertDialogBuilder!!.setMessage(otpRequestEvent.resultText)
-                        alertDialogBuilder!!.setCancelable(false)
-                        alertDialogBuilder!!.setNegativeButton(
-                            "CLOSE",
-                            object : DialogInterface.OnClickListener {
-                                override fun onClick(p0: DialogInterface?, p1: Int) {
-                                    alertDialog!!.dismiss()
-                                }
-                            })
+//                        alertDialogBuilder =
+//                            AlertDialog.Builder(requireActivity())
+//                        Log.d(TAG, "onCreateView:Succes-> ${otpRequestEvent.resultText}")
+//                        alertDialogBuilder!!.setMessage(otpRequestEvent.resultText)
+//                        alertDialogBuilder!!.setCancelable(false)
+//                        alertDialogBuilder!!.setNegativeButton(
+//                            "CLOSE",
+//                            object : DialogInterface.OnClickListener {
+//                                override fun onClick(p0: DialogInterface?, p1: Int) {
+//                                    alertDialog!!.dismiss()
+//                                }
+//                            })
+//
+//                        alertDialog = alertDialogBuilder!!.create()
+//                        alertDialog!!.show()
 
-                        alertDialog = alertDialogBuilder!!.create()
-                        alertDialog!!.show()
+                        Toast.makeText(requireContext(),otpRequestEvent.resultText,Toast.LENGTH_LONG).show()
                     }
 
                     // collect the failure event of the OTP request event
