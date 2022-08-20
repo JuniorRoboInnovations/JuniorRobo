@@ -71,7 +71,6 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
                 GlobalScope.launch(Dispatchers.Main) {
                     Glide.with(binding.root)
                         .load(EndPoints.GET_IMAGE + "/answer/" +item.student_image)
-                        .error(R.drawable.ic_baseline_person_24)
                         .into(binding.userImage)
                 }
             }
@@ -80,7 +79,6 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
 
                 var dialogImagePreview: AlertDialog? = null
 
-               Log.e(TAG, "bind: $imageString")
                 val builder: AlertDialog.Builder = AlertDialog.Builder(itemView.context)
                 val customLayout: View = LayoutInflater.from(itemView.context)
                     .inflate(R.layout.answerimage_layout_dialog, null)

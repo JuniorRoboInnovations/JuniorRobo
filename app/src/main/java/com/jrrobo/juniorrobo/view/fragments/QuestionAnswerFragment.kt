@@ -51,6 +51,7 @@ class QuestionAnswerFragment : Fragment() {
         return binding?.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -253,6 +254,7 @@ class QuestionAnswerFragment : Fragment() {
             }
         })
     }
+
 
     // set the view binding object to null upon destroying the view
     override fun onDestroyView() {

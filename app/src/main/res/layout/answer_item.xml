@@ -17,32 +17,7 @@
         android:layout_height="match_parent"
         android:padding="6dp">
 
-        <LinearLayout
-            android:id="@+id/infoLinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/userImage"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_baseline_person_24"
-            app:layout_constraintStart_toStartOf="parent"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/nameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:layout_marginStart="6dp"
-                app:layout_constraintStart_toEndOf="@id/userImage"
-                tools:text="Junior Robo" />
-        </LinearLayout>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/answer_text"
             android:layout_width="match_parent"
@@ -50,7 +25,7 @@
             android:textAlignment="viewStart"
             android:textColor="@color/black"
             tools:text="Hi this is a sample answer"
-            app:layout_constraintTop_toBottomOf="@id/infoLinearLayout"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:textSize="16sp"/>
         <RatingBar
@@ -74,6 +49,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/answer_text"/>
+        <LinearLayout
+            android:id="@+id/infoLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/userImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_baseline_person_24"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/nameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginStart="6dp"
+                app:layout_constraintStart_toEndOf="@id/userImage"
+                tools:text="Junior Robo" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

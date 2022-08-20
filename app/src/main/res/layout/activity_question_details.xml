@@ -7,28 +7,65 @@
     tools:context=".view.activities.QuestionDetails"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/questionMarkImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:src="@drawable/ic_baseline_help_24"
+        android:contentDescription="@string/question_mark" />
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_question"
         style="@style/TextAppearance.MdcTypographyStyles.Headline6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginTop="6dp"
         android:textSize="18sp"
         android:textColor="@color/pink_700"
         android:textStyle="bold"
         tools:text="Why do we fall ill?" />
-
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView11"
+            style="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="6dp"
+            android:text="@string/subject"
+            android:textStyle="bold"/>
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_question_tag"
         style="@style/TextAppearance.MdcTypographyStyles.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="4dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         tools:text="Biology" />
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/question_item_imageLabel"
+        style="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/image"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/answer_question_image"

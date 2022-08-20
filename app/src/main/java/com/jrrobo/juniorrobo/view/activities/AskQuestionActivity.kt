@@ -296,7 +296,7 @@ class AskQuestionActivity : AppCompatActivity() {
                         binding.buttonPostQuestion.isEnabled = false
                         Snackbar.make(
                             binding.editTextQuestion,
-                            "Successfully posted the question!",
+                            "Success !! \nYou will see the question once it is approved by our experts",
                             Snackbar.LENGTH_LONG
                         ).show()
                         clearTextFields()

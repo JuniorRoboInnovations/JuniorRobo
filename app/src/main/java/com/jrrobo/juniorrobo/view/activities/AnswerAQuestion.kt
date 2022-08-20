@@ -150,6 +150,7 @@ class AnswerAQuestion : AppCompatActivity() {
             dialogImagePreview.show()
         }
 
+
         binding.buttonPostAnswer.setOnClickListener {
 
             val answertext = binding.editTextAnswer.text.toString()
@@ -184,7 +185,14 @@ class AnswerAQuestion : AppCompatActivity() {
 
                             // upon successful POST event
                             is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Success -> {
-                                Log.e(TAG, "onCreate: ${it.answerImagePostResponse}", )
+                                if(binding.editTextAnswer.text.isNullOrEmpty() || answerImageFile.toString().isEmpty()){
+                                    binding.buttonPostAnswer.isEnabled = false
+                                    Snackbar.make(
+                                        binding.editTextAnswer,
+                                        "Couldn't post empty Answer! \n Post some image or Text",
+                                        Snackbar.LENGTH_LONG
+                                    ).show()
+                                }
                                 postAnswerItem(
                                     AnswerItemPost(
                                         answertext,
@@ -240,7 +248,7 @@ private fun postAnswerItem(answerItemPost: AnswerItemPost){
                     binding.buttonPostAnswer.isEnabled = false
                     Snackbar.make(
                         binding.editTextAnswer,
-                        "Successfully posted the answer!",
+                        "Success!! \nYou will see your answer once it is approved by our experts",
                         Snackbar.LENGTH_LONG
                     ).show()
                     clearTextFields()
@@ -264,6 +272,7 @@ private fun postAnswerItem(answerItemPost: AnswerItemPost){
         }
     }
 }
+
 private fun clearTextFields() {
     binding.editTextAnswer.text = null
 }

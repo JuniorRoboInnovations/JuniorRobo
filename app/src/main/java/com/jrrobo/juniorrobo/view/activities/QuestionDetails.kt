@@ -1,9 +1,13 @@
 package com.jrrobo.juniorrobo.view.activities
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityQuestionDetailsBinding
 import com.jrrobo.juniorrobo.network.EndPoints
@@ -57,17 +62,41 @@ class QuestionDetails : AppCompatActivity() {
             //Question Image to be updated here
             if (questionId?.image.isNullOrEmpty()) {
                 answerQuestionImage.visibility = View.GONE
+                questionItemImageLabel.visibility = View.GONE
             }
             else {
                 answerQuestionImage.visibility = View.VISIBLE
+                questionItemImageLabel.visibility = View.GONE
                 GlobalScope.launch(Dispatchers.Main) {
                     Glide.with(root)
-                        .load(EndPoints.GET_IMAGE +  "/question/" + questionId!!.image)
+                        .load(EndPoints.GET_IMAGE + "/question/" + questionId!!.image)
                         .into(binding.answerQuestionImage)
                 }
             }
+            binding.answerQuestionImage.setOnClickListener {
+                var dialogImagePreview: AlertDialog? = null
 
-            Log.e(TAG, "onCreate: ${questionId?.image.toString()}", )
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this@QuestionDetails)
+                val customLayout: View = LayoutInflater.from(this@QuestionDetails)
+                    .inflate(R.layout.questionimage_layout_dialog, null)
+
+                val imageView = customLayout.findViewById<ImageView>(R.id.questionImageView)
+                GlobalScope.launch(Dispatchers.Main) {
+                    Glide.with(binding.root)
+                        .load(EndPoints.GET_IMAGE + "/question/" + questionId!!.image)
+                        .into(imageView)
+                }
+                builder.setView(customLayout)
+
+                builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        dialogImagePreview!!.dismiss()
+                    }
+                })
+                dialogImagePreview = builder.create()
+
+                dialogImagePreview.show()
+            }
         }
 
         binding.buttonAnswerThis.setOnClickListener {
@@ -79,25 +108,25 @@ class QuestionDetails : AppCompatActivity() {
         binding.answersRv.apply {
             viewModel.answers.observe(this@QuestionDetails, Observer {
 
-                    layoutManager = LinearLayoutManager(this@QuestionDetails)
-                    adapter = AnswerItemAdapter(it)
+                layoutManager = LinearLayoutManager(this@QuestionDetails)
+                adapter = AnswerItemAdapter(it)
 
-                    if (it.isEmpty()) {
-                        binding.answersRv.visibility = View.GONE
-                        binding.noDataImage.visibility = View.VISIBLE
+                if (it.isEmpty()) {
+                    binding.answersRv.visibility = View.GONE
+                    binding.noDataImage.visibility = View.VISIBLE
 
-                        if (questionId != null) {
-                            viewModel.getAnswer(questionId.id)
-                            /**
-                             * For checking if there is no answers in backend
-                             *  viewModel.getAnswer(93)
-                             */
-                        }
+                    if (questionId != null) {
+                        viewModel.getAnswer(questionId.id)
+                        /**
+                         * For checking if there is no answers in backend
+                         *  viewModel.getAnswer(93)
+                         */
                     }
-                    else{
-                        binding.answersRv.visibility = View.VISIBLE
-                        binding.noDataImage.visibility = View.GONE
-                    }
+                }
+                else{
+                    binding.answersRv.visibility = View.VISIBLE
+                    binding.noDataImage.visibility = View.GONE
+                }
                 if (it.size >= 5) {
                     binding.buttonAnswerThis.isEnabled = false
                     Snackbar.make(
@@ -107,7 +136,7 @@ class QuestionDetails : AppCompatActivity() {
                     ).show()
                 }
 
-                })
-            }
+            })
         }
     }
+}

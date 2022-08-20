@@ -1,8 +1,13 @@
 package com.jrrobo.juniorrobo.view.adapter
 
+import android.app.AlertDialog
+import android.content.ContentValues
+import android.content.DialogInterface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -47,6 +52,33 @@ class QuestionItemRvAdapter(private val addAnswer:(QuestionItem)->Unit,private v
                     .error(R.drawable.ic_image_black)
                     .into(binding.imageViewQuestionItemImage)
             }
+
+            /*
+            binding.imageViewQuestionItemImage.setOnClickListener {
+
+                var dialogImagePreview: AlertDialog? = null
+
+                val builder: AlertDialog.Builder = AlertDialog.Builder(itemView.context)
+                val customLayout: View = LayoutInflater.from(itemView.context)
+                    .inflate(R.layout.questionimage_layout_dialog, null)
+
+                val imageView = customLayout.findViewById<ImageView>(R.id.questionImageView)
+                GlobalScope.launch(Dispatchers.Main) {
+                    Glide.with(binding.root)
+                        .load(EndPoints.GET_IMAGE + "/question/" + item.image)
+                        .into(imageView)
+                }
+                builder.setView(customLayout)
+
+                builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        dialogImagePreview!!.dismiss()
+                    }
+                })
+                dialogImagePreview = builder.create()
+
+                dialogImagePreview.show()
+            }*/
         }
 
     }
@@ -59,8 +91,6 @@ class QuestionItemRvAdapter(private val addAnswer:(QuestionItem)->Unit,private v
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
-
-
 }
 
 class DiffCallback: DiffUtil.ItemCallback<QuestionItem>(){
