@@ -31,17 +31,17 @@ class QuestionItemAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.textButtonQuestionItemAnswer.setOnClickListener {
-                val position = bindingAdapterPosition
-                Log.d(TAG, position.toString())
-                if (position != RecyclerView.NO_POSITION) {
-                    val questionItem = getItem(position)
-                    if (questionItem != null) {
-                        Log.d(TAG, questionItem.question)
-                        questionItemClickListener.onItemClick(questionItem)
-                    }
-                }
-            }
+//            binding.textButtonQuestionItemAnswer.setOnClickListener {
+//                val position = bindingAdapterPosition
+//                Log.d(TAG, position.toString())
+//                if (position != RecyclerView.NO_POSITION) {
+//                    val questionItem = getItem(position)
+//                    if (questionItem != null) {
+//                        Log.d(TAG, questionItem.question)
+//                        questionItemClickListener.onItemClick(questionItem)
+//                    }
+//                }
+//            }
         }
 
         fun bind(currentItem: QuestionItem?) {

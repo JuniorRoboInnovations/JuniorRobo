@@ -99,6 +99,9 @@
     <string name="question_mark">Question Mark</string>
     <string name="question_image">Question Image</string>
     <string name="image">Image:</string>
+    <string name="love_learning_amp_creating"><![CDATA[Love Learning & Creating!]]></string>
+    <string name="add_solution">Add Solution</string>
+    <string name="log_out">Log Out</string>
     <!--chip text strings ends here-->
 
 </resources>
