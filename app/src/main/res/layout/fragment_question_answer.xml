@@ -50,6 +50,7 @@
         android:id="@+id/rv_questions_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:listitem="@layout/question_item"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/questions_searchView"/>
 

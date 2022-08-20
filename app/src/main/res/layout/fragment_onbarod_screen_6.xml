@@ -18,14 +18,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/materialTextView2">
 
         <ImageView
-            android:layout_width="320dp"
-            android:layout_height="215dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_margin="16dp"
             android:adjustViewBounds="true"
-            android:src="@drawable/art_onboard" />
+            android:src="@drawable/medical_onboard" />
 
     </androidx.cardview.widget.CardView>
 
@@ -39,6 +40,7 @@
         android:text="@string/screen_6"
         android:textColor="@color/pink_700"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />

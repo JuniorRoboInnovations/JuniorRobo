@@ -70,17 +70,11 @@ class QuestionAnswerFragment : Fragment() {
 
         val catNameToCatIdMap: HashMap<String,Int> = HashMap()
 
-        val adapter = QuestionItemRvAdapter({
-            val intent = Intent(requireContext(), AnswerAQuestion::class.java)
-            intent.putExtra("question_item", it)
-            startActivity(intent)
-            },
-            {
+        val adapter = QuestionItemRvAdapter {
                 val intent = Intent(requireContext(), QuestionDetails::class.java)
                 intent.putExtra("question_item", it)
                 startActivity(intent)
-            }
-        )
+        }
 
 
         // making the network calls with coroutines
@@ -211,9 +205,24 @@ class QuestionAnswerFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText == ""){
+                    lifecycleScope.launch {
+                        val chipGroup = binding?.chipGroupQuestionCategoriesChips
+                        val chip = chipGroup!!.findViewById<Chip>(chipGroup.checkedChipId)
+                        val categoryId = catNameToCatIdMap[chip.text]
+                        if(chip.text == "My questions"){
+                            viewModel.getQuestionsWithoutPaging(categoryId,null,pkStudentId)
+                        }
+                        else{
+                            viewModel.getQuestionsWithoutPaging(categoryId,null,null)
+                        }
+                    }
+                }
                 return true
             }
+
         })
+
     }
 
     private fun showPopUpDialog() {
