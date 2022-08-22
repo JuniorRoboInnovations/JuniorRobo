@@ -220,6 +220,7 @@ class AskQuestionActivity : AppCompatActivity() {
                                     "Couldn't upload the question image!",
                                     Snackbar.LENGTH_LONG
                                 ).show()
+
                                 postQuestionItem(
                                     QuestionItemToAsk(
                                         binding.editTextQuestion.text.toString(),

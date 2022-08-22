@@ -195,6 +195,7 @@ class AnswerAQuestion : AppCompatActivity() {
                                         "Couldn't upload the answer image!",
                                         Snackbar.LENGTH_LONG
                                     ).show()
+
                                     postAnswerItem(
                                         AnswerItemPost(
                                             answertext,
