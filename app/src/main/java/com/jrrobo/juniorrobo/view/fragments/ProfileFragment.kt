@@ -1,6 +1,8 @@
 package com.jrrobo.juniorrobo.view.fragments
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -13,14 +15,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
 import com.google.android.material.snackbar.Snackbar
+import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.databinding.FragmentProfileBinding
 import com.jrrobo.juniorrobo.network.EndPoints
+import com.jrrobo.juniorrobo.view.activities.MainActivity
 import com.jrrobo.juniorrobo.viewmodel.FragmentProfileViewModel
 import kotlinx.coroutines.launch
 import java.io.File
@@ -218,6 +223,15 @@ class ProfileFragment : Fragment() {
                 }
 
             }
+        }
+
+
+        binding.buttonProfileLogoutButton.setOnClickListener {
+            viewModel.setOnBoardStatus(false)
+            viewModel.setOtpVerificationStatus(false)
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         return binding.root

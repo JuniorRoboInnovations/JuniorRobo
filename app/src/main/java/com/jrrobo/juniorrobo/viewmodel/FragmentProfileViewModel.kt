@@ -184,4 +184,31 @@ class FragmentProfileViewModel @Inject constructor(
             }
         }
     }
+
+
+
+
+    // get the onboarding status of the user as live data
+    fun getOnBoardStatus() = dataStorePreferencesManager.getOnBoardingStatus().asLiveData()
+
+
+    // set the onboarding status to true or false if the user has completed the onboarding or not
+    // taking the status parameter of boolean
+    fun setOnBoardStatus(onBoardStatusBoolean: Boolean) {
+        viewModelScope.launch(dispatchers.io) {
+            dataStorePreferencesManager.setOnBoardStatus(onBoardStatusBoolean)
+        }
+    }
+
+    // update the data store preference of the OTP verification status
+    fun setOtpVerificationStatus(otpVerificationStatusBoolean: Boolean) {
+        viewModelScope.launch(dispatchers.io) {
+            dataStorePreferencesManager.setOtpVerificationStatus(otpVerificationStatusBoolean)
+        }
+    }
+
+    // get the data store preference of the OTP verification status to directly navigate to the
+    // Home Screen after reopening the app
+    fun getOtpVerificationStatus() =
+        dataStorePreferencesManager.getOtpVerificationStatus().asLiveData()
 }
