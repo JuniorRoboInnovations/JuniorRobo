@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.canhub.cropper.options
@@ -25,8 +26,11 @@ import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.answer.AnswerItemPost
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
 import com.jrrobo.juniorrobo.databinding.ActivityAnswerAquestionBinding
+import com.jrrobo.juniorrobo.network.EndPoints
 import com.jrrobo.juniorrobo.viewmodel.ActivityAnswerAQuestionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -84,8 +88,28 @@ class AnswerAQuestion : AppCompatActivity() {
         }
 
         binding.apply {
+            if (questionItem?.question.isNullOrEmpty()){
+                questionMarkImage.visibility = View.GONE
+                textViewQuestionForAnswer.visibility = View.GONE
+            }
+            if (questionItem?.question_sub_text.isNullOrEmpty()){
+                materialTextView11.visibility = View.GONE
+                textViewQuestionTagForAnswer.visibility = View.GONE
+            }
             textViewQuestionForAnswer.text = questionItem?.question
             textViewQuestionTagForAnswer.text = questionItem?.question_sub_text
+
+            if (questionItem?.image.isNullOrEmpty()) {
+                binding.imageViewQuestion.visibility = View.GONE
+            }
+            else {
+                binding.imageViewQuestion.visibility = View.VISIBLE
+                GlobalScope.launch(Dispatchers.Main) {
+                    Glide.with(binding.root)
+                        .load(EndPoints.GET_IMAGE + "/question/" + questionItem?.image)
+                        .into(binding.imageViewQuestion)
+                }
+            }
         }
 
         // take picture button to launch the image picker with crop feature
@@ -150,81 +174,71 @@ class AnswerAQuestion : AppCompatActivity() {
             dialogImagePreview.show()
         }
 
+            binding.buttonPostAnswer.setOnClickListener {
 
-        binding.buttonPostAnswer.setOnClickListener {
+                val answertext = binding.editTextAnswer.text.toString()
 
-            val answertext = binding.editTextAnswer.text.toString()
+                if (answerImageFile != null) {
+                    lifecycleScope.launch {
+                        viewModel.postAnswerImage(answerImageFile!!)
 
-            if (answerImageFile != null) {
-                lifecycleScope.launch {
-                    viewModel.postAnswerImage(answerImageFile!!)
+                        //collect the hashed answer image name
+                        viewModel.postAnswerImageEventFlow.collect {
+                            when (it) {
+                                is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Loading -> {
 
-                    //collect the hashed answer image name
-                    viewModel.postAnswerImageEventFlow.collect {
-                        when (it) {
-                            is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Loading -> {
+                                }
 
-                            }
-
-                            is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Failure -> {
-                                Snackbar.make(
-                                    binding.editTextAnswer,
-                                    "Couldn't upload the answer image!",
-                                    Snackbar.LENGTH_LONG
-                                ).show()
-                                postAnswerItem(
-                                    AnswerItemPost(
-                                        answertext,
-                                        pkStudentId,
-                                        null,
-                                        questionItem!!.id,
-                                        null
-                                    )
-                                )
-                            }
-
-                            // upon successful POST event
-                            is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Success -> {
-                                if(binding.editTextAnswer.text.isNullOrEmpty() || answerImageFile.toString().isEmpty()){
-                                    binding.buttonPostAnswer.isEnabled = false
+                                is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Failure -> {
                                     Snackbar.make(
                                         binding.editTextAnswer,
-                                        "Couldn't post empty Answer! \n Post some image or Text",
+                                        "Couldn't upload the answer image!",
                                         Snackbar.LENGTH_LONG
                                     ).show()
-                                }
-                                postAnswerItem(
-                                    AnswerItemPost(
-                                        answertext,
-                                        pkStudentId,
-                                        null,
-                                        questionItem!!.id,
-                                        //Answer image field to be added
-                                        it.answerImagePostResponse
+                                    postAnswerItem(
+                                        AnswerItemPost(
+                                            answertext,
+                                            pkStudentId,
+                                            null,
+                                            questionItem!!.id,
+                                            null
+                                        )
                                     )
-                                )
-                            }
-                            else -> {
-                                Unit
+                                }
+
+                                // upon successful POST event
+                                is ActivityAnswerAQuestionViewModel.PostAnswerImageEvent.Success -> {
+
+                                    postAnswerItem(
+                                        AnswerItemPost(
+                                            answertext,
+                                            pkStudentId,
+                                            null,
+                                            questionItem!!.id,
+                                            //Answer image field to be added
+                                            it.answerImagePostResponse
+                                        )
+                                    )
+                                }
+                                else -> {
+                                    Unit
+                                }
                             }
                         }
                     }
+                } else {
+                    postAnswerItem(
+                        AnswerItemPost(
+                            answertext,
+                            pkStudentId,
+                            null,
+                            questionItem!!.id,
+                            null
+                        )
+                    )
                 }
             }
-            else{
-                postAnswerItem(
-                    AnswerItemPost(
-                        answertext,
-                        pkStudentId,
-                        null,
-                        questionItem!!.id,
-                        null
-                    )
-                )
-            }
         }
-
-    }
 
 private fun postAnswerItem(answerItemPost: AnswerItemPost){
     viewModel.postAnswer(answerItemPost)
