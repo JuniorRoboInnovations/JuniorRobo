@@ -217,17 +217,17 @@
 
         </RelativeLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_offer"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                style="@style/Widget.App.Button"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/offers"
-                android:backgroundTint="@color/pink_700"/>
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_offer"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            style="@style/Widget.App.Button"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/offers"
+            android:backgroundTint="@color/pink_700"/>
+    </LinearLayout>
 
 
 </ScrollView>

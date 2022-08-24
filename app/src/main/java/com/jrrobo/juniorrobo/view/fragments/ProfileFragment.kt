@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -27,6 +28,7 @@ import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.databinding.FragmentProfileBinding
 import com.jrrobo.juniorrobo.network.EndPoints
+import com.jrrobo.juniorrobo.view.activities.MainActivity
 import com.jrrobo.juniorrobo.viewmodel.FragmentProfileViewModel
 import com.jrrobo.juniorrobo.viewmodel.FragmentQuestionsViewModel
 import kotlinx.coroutines.launch
@@ -141,21 +143,15 @@ class ProfileFragment : Fragment() {
             builder.setNegativeButton("Logout", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     dialogExit!!.dismiss()
-
-                    //logout code - Going to login page
-                    val fragment: Fragment = this@ProfileFragment
-                    val fragmentManager: FragmentManager = activity!!.supportFragmentManager
-                    val fragmentTransaction: FragmentTransaction =
-                        fragmentManager.beginTransaction()
-                    fragmentTransaction.replace(R.id.loginFragment, fragment)
-                    fragmentTransaction.addToBackStack(null)
-                    fragmentTransaction.commit()
-
+                    viewModel.setOnBoardStatus(false)
+                    viewModel.setOtpVerificationStatus(false)
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
                 }
             })
 
             dialogExit = builder.create()
-
             dialogExit.show()
         }
 
