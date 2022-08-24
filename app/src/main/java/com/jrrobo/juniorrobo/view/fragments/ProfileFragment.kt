@@ -1,21 +1,23 @@
 package com.jrrobo.juniorrobo.view.fragments
 
 import android.Manifest
-import android.app.Activity
-import android.content.Intent
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
@@ -25,8 +27,8 @@ import com.jrrobo.juniorrobo.R
 import com.jrrobo.juniorrobo.data.profile.StudentProfileData
 import com.jrrobo.juniorrobo.databinding.FragmentProfileBinding
 import com.jrrobo.juniorrobo.network.EndPoints
-import com.jrrobo.juniorrobo.view.activities.MainActivity
 import com.jrrobo.juniorrobo.viewmodel.FragmentProfileViewModel
+import com.jrrobo.juniorrobo.viewmodel.FragmentQuestionsViewModel
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -46,6 +48,8 @@ class ProfileFragment : Fragment() {
     // FragmentProfileViewModel to hold the state of the ProfileFragment
     private val viewModel: FragmentProfileViewModel by activityViewModels()
 
+    private val questionsViewModel: FragmentQuestionsViewModel by activityViewModels()
+
     // class name as TAG for logging or debugging purpose
     private val TAG: String = javaClass.simpleName
 
@@ -58,7 +62,7 @@ class ProfileFragment : Fragment() {
 
     private var imageViewClicked: Boolean = false
 
-    private var profileData : StudentProfileData? = null
+    private var profileData: StudentProfileData? = null
 
     private val cropImageActivity = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
@@ -75,6 +79,85 @@ class ProfileFragment : Fragment() {
 
         // when the profile fragment is opened the edit texts should be disabled
         disableEditTexts()
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //Upon click of the offer button
+        binding.buttonOffer?.setOnClickListener{
+            lifecycleScope.launch {
+                questionsViewModel.getOffer()
+            }
+            questionsViewModel.offerData.observe(viewLifecycleOwner, Observer {
+                if (it != null) {
+                    val dialogBinding = layoutInflater.inflate(R.layout.pop_up_layout, null)
+                    val dialog = Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
+                    //            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialog.setContentView(dialogBinding)
+                    dialog.setCancelable(true)
+
+                    val lp = WindowManager.LayoutParams()
+                    lp.copyFrom(dialog.window!!.attributes)
+                    lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+                    lp.gravity = Gravity.CENTER
+                    lp.dimAmount = 0.7f
+
+                    dialog.window!!.attributes = lp
+                    dialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+
+                    dialog.show()
+
+                    val title1 = dialogBinding.findViewById<TextView>(R.id.popup_title1)
+                    val description1 = dialogBinding.findViewById<TextView>(R.id.popup_description1)
+
+                    title1.text = it.title
+                    description1.text = it.description
+
+                    val cancelButton = dialogBinding.findViewById<ImageView>(R.id.image_clear_popup)
+                    cancelButton.setOnClickListener {
+                        dialog.dismiss()
+                    }
+                }
+            })
+        }
+
+        //Upon click of the logout button
+        binding.profileLogoutImageButton?.setOnClickListener {
+            var dialogExit: AlertDialog? = null
+
+            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Logout")
+            builder.setMessage("Are you sure to Logout ? ")
+
+            builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    dialogExit!!.dismiss()
+                }
+            })
+            builder.setNegativeButton("Logout", object : DialogInterface.OnClickListener {
+                override fun onClick(dialog: DialogInterface?, which: Int) {
+                    dialogExit!!.dismiss()
+
+                    //logout code - Going to login page
+                    val fragment: Fragment = this@ProfileFragment
+                    val fragmentManager: FragmentManager = activity!!.supportFragmentManager
+                    val fragmentTransaction: FragmentTransaction =
+                        fragmentManager.beginTransaction()
+                    fragmentTransaction.replace(R.id.loginFragment, fragment)
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.commit()
+
+                }
+            })
+
+            dialogExit = builder.create()
+
+            dialogExit.show()
+        }
 
         // after clicking on the Edit Profile button then only enable all the edit texts to enter the data into it
         binding.buttonProfileEditButton.setOnClickListener {
@@ -102,7 +185,7 @@ class ProfileFragment : Fragment() {
                             setImageSource(includeGallery = true, includeCamera = true)
                         }
                     )
-                    if(croppedPhotoUri != null){
+                    if (croppedPhotoUri != null) {
                         binding.shapeableImageViewProfile.setImageURI(croppedPhotoUri)
                     }
                 }
@@ -123,13 +206,12 @@ class ProfileFragment : Fragment() {
             pkStudentId = it
         })
 
-        if(!imageViewClicked) {
+        if (!imageViewClicked) {
             viewModel.getStudentProfile(pkStudentId)
         }
 
-
         // call the GET request only when image view is not clicked
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             viewModel.profileGetFlow.collect {
                 when (it) {
                     is FragmentProfileViewModel.ProfileGetEvent.Loading -> {
@@ -157,6 +239,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
+
         // upon clicking the update profile button disable the edit texts and the entered data will be populated
         binding.buttonProfileUpdateButton.setOnClickListener {
 
@@ -164,7 +247,7 @@ class ProfileFragment : Fragment() {
             binding.buttonProfileUpdateButton.visibility = View.INVISIBLE
             binding.buttonProfileEditButton.visibility = View.VISIBLE
 
-            if(!imageViewClicked) {
+            if (!imageViewClicked) {
                 val profileUpdate =
                     StudentProfileData(
                         pkStudentId,
@@ -172,32 +255,32 @@ class ProfileFragment : Fragment() {
                         binding.editTextLastName.text.toString(),
                         binding.editTextEmail.text.toString(),
                         binding.editTextMobileNumber.text.toString(),
-                        profileData?.userImage?:"default.jpg",
+                        profileData?.userImage ?: "default.jpg",
                         binding.editTextCity.text.toString()
                     )
                 updateProfile(profileUpdate)
                 profileData = profileUpdate // if any field is changed but image not changed
-            }
-            else {
+            } else {
                 Log.d(TAG, "onCreateView: ${profilePictureFile.toString()}")
                 viewModel.uploadProfileImage(profilePictureFile)
                 lifecycleScope.launch {
-                    viewModel.imageUploadFlow.collect{
-                        when(it){
-                            is FragmentProfileViewModel.ImageUploadEvent.Loading ->{
+                    viewModel.imageUploadFlow.collect {
+                        when (it) {
+                            is FragmentProfileViewModel.ImageUploadEvent.Loading -> {
 
                             }
-                            is FragmentProfileViewModel.ImageUploadEvent.Success ->{
+                            is FragmentProfileViewModel.ImageUploadEvent.Success -> {
                                 var imageName = it.hashedImageName
-                                if(imageName == "error"){
+                                if (imageName == "error") {
                                     Snackbar.make(
                                         binding.buttonProfileUpdateButton,
                                         "Couldn't upload image!",
                                         Snackbar.LENGTH_SHORT
                                     ).show()
-                                    imageName="default.jpg"
+                                    imageName = "default.jpg"
                                 }
-                                val profileUpdate = StudentProfileData(pkStudentId,
+                                val profileUpdate = StudentProfileData(
+                                    pkStudentId,
                                     binding.editTextFirstName.text.toString(),
                                     binding.editTextLastName.text.toString(),
                                     binding.editTextEmail.text.toString(),
@@ -206,16 +289,17 @@ class ProfileFragment : Fragment() {
                                     binding.editTextCity.text.toString()
                                 )
                                 updateProfile(profileUpdate)
-                                profileData = profileUpdate // if any field is changed along with image
+                                profileData =
+                                    profileUpdate // if any field is changed along with image
                             }
-                            is FragmentProfileViewModel.ImageUploadEvent.Failure->{
+                            is FragmentProfileViewModel.ImageUploadEvent.Failure -> {
                                 Snackbar.make(
                                     binding.buttonProfileUpdateButton,
                                     "Couldn't upload image!",
                                     Snackbar.LENGTH_SHORT
                                 ).show()
                             }
-                            else ->{
+                            else -> {
 
                             }
                         }
@@ -224,20 +308,7 @@ class ProfileFragment : Fragment() {
 
             }
         }
-
-
-        binding.buttonProfileLogoutButton.setOnClickListener {
-            viewModel.setOnBoardStatus(false)
-            viewModel.setOtpVerificationStatus(false)
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
-        return binding.root
     }
-
-
 
     private fun updateProfile(profileUpdate: StudentProfileData) {
         // launch the update profile function

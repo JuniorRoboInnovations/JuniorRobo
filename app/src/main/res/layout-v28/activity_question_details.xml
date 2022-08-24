@@ -71,6 +71,10 @@
         android:id="@+id/answer_question_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:outlineSpotShadowColor="@color/black"
+        android:outlineAmbientShadowColor="@color/black"
+        android:outlineProvider="background"
         tools:src="@drawable/ic_launcher_background"
         android:layout_gravity="center_horizontal"/>
 
@@ -79,6 +83,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="#FFFFFF"
+        android:padding="5dp"
+        app:strokeColor="@color/black"
+        app:strokeWidth="0.5dp"
         android:layout_gravity="center"
         android:visibility="gone"
         android:src="@drawable/ic__no_data"/>
