@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginTop="6dp"
+
             android:src="@drawable/ic_baseline_help_24"
             android:contentDescription="@string/question_mark"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,6 +91,7 @@
             android:layout_margin="6dp"
             android:contentDescription="@string/question_image"
             android:visibility="gone"
+            android:padding="5dp"
             android:layout_marginBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

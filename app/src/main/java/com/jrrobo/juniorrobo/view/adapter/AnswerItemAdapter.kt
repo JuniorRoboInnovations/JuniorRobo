@@ -91,11 +91,11 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
                 }
                 builder.setView(customLayout)
 
-                builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
-                    override fun onClick(p0: DialogInterface?, p1: Int) {
-                        dialogImagePreview!!.dismiss()
-                    }
-                })
+                val cancelButton = customLayout.findViewById<ImageView>(R.id.cancelImageView)
+                cancelButton.setOnClickListener {
+                    dialogImagePreview?.dismiss()
+                }
+
                 dialogImagePreview = builder.create()
 
                 dialogImagePreview.show()

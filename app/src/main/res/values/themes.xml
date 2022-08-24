@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.JuniorRobo" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/pink_500</item>
+        <item name="colorPrimary">@color/pink_700</item>
         <item name="colorPrimaryVariant">@color/pink_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -19,9 +19,14 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="cornerImageShapeOverlay">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10%</item>
+    </style>
+
     <style name="NoActionBarTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/pink_500</item>
+        <item name="colorPrimary">@color/pink_700</item>
         <item name="colorPrimaryVariant">@color/pink_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

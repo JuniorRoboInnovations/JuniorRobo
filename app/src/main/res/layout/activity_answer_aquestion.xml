@@ -67,9 +67,7 @@
         android:layout_marginStart="6dp"
         android:layout_marginTop="6dp"
         android:text="@string/image"
-        android:textStyle="bold"
-        android:visibility="gone"
-        tools:visibility="visible" />
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView_question"
@@ -77,6 +75,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
+        android:background="#E3E2E3"
+        android:padding="5dp"
         android:layout_margin="10dp"/>
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -146,6 +146,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:padding="5dp"
         tools:src="@mipmap/ic_launcher"
         android:visibility="gone"/>
 
@@ -175,7 +176,7 @@
         style="@style/Widget.App.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:enabled="false"
+        android:text="@string/post_answer"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
