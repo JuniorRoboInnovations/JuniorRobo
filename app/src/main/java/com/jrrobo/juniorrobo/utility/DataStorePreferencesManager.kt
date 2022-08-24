@@ -30,6 +30,10 @@ private val Context.profileCreatedDataStore by preferencesDataStore("profileCrea
 // preference for the Primary key of the user after OTP verification
 private val Context.pkStudentId by preferencesDataStore("pkStudentId")
 
+
+// preference for the Primary key of the user after OTP verification
+private val Context.appLaunchedDataStore by preferencesDataStore("appLaunched")
+
 @Singleton
 class DataStorePreferencesManager @Inject constructor(
     @ApplicationContext context: Context,
@@ -41,6 +45,7 @@ class DataStorePreferencesManager @Inject constructor(
     private val contactNumberWithCountryCode = context.contactNumberWithCountryCode
     private val profileCreatedStatus = context.profileCreatedDataStore
     private val pkStudentIdData = context.pkStudentId
+    private val appLaunchedStatus = context.appLaunchedDataStore
 
     // Companion objects of preference keys
     companion object {
@@ -49,6 +54,7 @@ class DataStorePreferencesManager @Inject constructor(
         val contactNumberPreferenceKey = stringPreferencesKey("CONTACT_NO_WITH_COUNTRY_CODE")
         val profileCreatedStatusPreferenceKey = booleanPreferencesKey("PROFILE_CREATE")
         val pkStudentIdDataPreferenceKey = intPreferencesKey("PK_STUDENT_ID")
+        val appLaunchedKey = booleanPreferencesKey("APP_LAUNCHED")
     }
 
     /**
@@ -134,5 +140,20 @@ class DataStorePreferencesManager @Inject constructor(
     // getter function for the pkStudentId returning Flow
     fun getPkStudentId() = pkStudentIdData.data.map { pkStudentIdPreference ->
         pkStudentIdPreference[pkStudentIdDataPreferenceKey] ?: -1
+    }
+
+    /**
+     * App launched key
+     */
+    // setter function for the pkStudentId
+    suspend fun setAppLaunchedStatus(appLaunched : Boolean) {
+        appLaunchedStatus.edit { appLaunchedPreference ->
+            appLaunchedPreference[appLaunchedKey] = appLaunched
+        }
+    }
+
+    // getter function for the pkStudentId returning Flow
+    fun getAppLaunchedStatus() = appLaunchedStatus.data.map { appLaunchedPreference ->
+        appLaunchedPreference[appLaunchedKey] ?: true
     }
 }

@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
@@ -54,9 +56,12 @@ class QuestionAnswerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        showPopUpDialog()
-
+        viewModel.getAppLaunchedStatus().observe(viewLifecycleOwner){
+            if(it == true){
+                showPopUpDialog()
+                viewModel.setAppLaunchedStatus(false)
+            }
+        }
 
         // primary key of the student initialised to -1
         var pkStudentId: Int = -1

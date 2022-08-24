@@ -228,15 +228,25 @@ class AnswerAQuestion : AppCompatActivity() {
                         }
                     }
                 } else {
-                    postAnswerItem(
-                        AnswerItemPost(
-                            answertext,
-                            pkStudentId,
-                            null,
-                            questionItem!!.id,
-                            null
+                    if(answertext != ""){
+                        postAnswerItem(
+                            AnswerItemPost(
+                                answertext,
+                                pkStudentId,
+                                null,
+                                questionItem!!.id,
+                                null
+                            )
                         )
-                    )
+                    }
+                    else{
+                        Snackbar.make(
+                            binding.editTextAnswer,
+                            "Please add an answer first!",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+
                 }
             }
         }

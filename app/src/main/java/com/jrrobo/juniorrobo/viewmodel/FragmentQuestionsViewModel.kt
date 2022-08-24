@@ -4,10 +4,8 @@ import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import com.jrrobo.juniorrobo.data.offer.Offer
-import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategory
 import com.jrrobo.juniorrobo.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorrobo.data.questionitem.QuestionItem
-import com.jrrobo.juniorrobo.di.AppModule
 import com.jrrobo.juniorrobo.network.JuniorRoboApi
 import com.jrrobo.juniorrobo.repository.QuestionRepository
 import com.jrrobo.juniorrobo.utility.DataStorePreferencesManager
@@ -129,6 +127,17 @@ class FragmentQuestionsViewModel @Inject constructor(
 
 
     fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
+
+    // update the data store preference app launched
+    fun setAppLaunchedStatus(appLaunched: Boolean) {
+        viewModelScope.launch(dispatchers.io) {
+            dataStorePreferencesManager.setAppLaunchedStatus(appLaunched)
+        }
+    }
+
+    // get the data store preference of app launched status
+    fun getAppLaunchedStatus() =
+        dataStorePreferencesManager.getAppLaunchedStatus().asLiveData()
 
     companion object {
         private const val DEFAULT_QUESTION_CATEGORY_ID = 1

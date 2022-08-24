@@ -1,7 +1,9 @@
 package com.jrrobo.juniorrobo.view.activities
 
 import android.Manifest
+import android.app.ActivityManager
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -258,18 +260,28 @@ class AskQuestionActivity : AppCompatActivity() {
                 }
             }
             else{
-                postQuestionItem(
-                    QuestionItemToAsk(
-                        binding.editTextQuestion.text.toString(),
-                        binding.autoCompleteTextView.text.toString(),
-                        "All",
-                        pkStudentId,
-                        null,
-                        catNameToCatIdMap[binding.autoCompleteTextView.text.toString()]
-                            ?: 13,
-                        null
+                if(binding.editTextQuestion.text.toString() !=""){
+                    postQuestionItem(
+                        QuestionItemToAsk(
+                            binding.editTextQuestion.text.toString(),
+                            binding.autoCompleteTextView.text.toString(),
+                            "All",
+                            pkStudentId,
+                            null,
+                            catNameToCatIdMap[binding.autoCompleteTextView.text.toString()]
+                                ?: 13,
+                            null
+                        )
                     )
-                )
+                }
+                else{
+                    Snackbar.make(
+                        binding.editTextQuestion,
+                        "Please add a question first!",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+
             }
         }
     }
@@ -376,6 +388,11 @@ class AskQuestionActivity : AppCompatActivity() {
 //            Log.d(TAG, permissions[1])
 //        }
 //    }
+
+    private fun isAppRunning() : Boolean {
+        val services = (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).runningAppProcesses
+        return services.firstOrNull{it.processName.equals(packageName,true)} != null
+    }
 
 
 }

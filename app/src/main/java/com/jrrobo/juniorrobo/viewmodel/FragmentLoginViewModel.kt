@@ -148,7 +148,18 @@ class FragmentLoginViewModel @Inject constructor(
     }
 
     // get the data store preference of the OTP verification status to directly navigate to the
-    // Home Screen after reopening the app
     fun getOtpVerificationStatus() =
         dataStorePreferencesManager.getOtpVerificationStatus().asLiveData()
+
+    // update the data store preference app launched
+    fun setAppLaunchedStatus(appLaunched: Boolean) {
+        viewModelScope.launch(dispatchers.io) {
+            dataStorePreferencesManager.setAppLaunchedStatus(appLaunched)
+        }
+    }
+
+    // get the data store preference of app launched status
+    fun getAppLaunchedStatus() =
+        dataStorePreferencesManager.getAppLaunchedStatus().asLiveData()
+
 }

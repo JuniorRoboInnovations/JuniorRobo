@@ -41,6 +41,7 @@ class SplashFragment : Fragment() {
         // variables to get the on boarding status and otp verification status of the user
         var onBoardingStatusBoolean: Boolean = false
         var otpVerificationStatusBoolean: Boolean = false
+        var appLaunchedStatus: Boolean = false
 
         // get the on boarding status of the user from the data store preferences
         fragmentOnBoardLoginViewModel.getOnBoardStatus().observe(
@@ -48,6 +49,10 @@ class SplashFragment : Fragment() {
         ) {
             onBoardingStatusBoolean = it
         }
+
+        // variable to capture when the app is launched
+        fragmentLoginViewModel.setAppLaunchedStatus(true)
+
 
         // get the otp verification status of the user from the data store preferences
         fragmentLoginViewModel.getOtpVerificationStatus().observe(
