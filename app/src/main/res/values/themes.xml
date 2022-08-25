@@ -21,7 +21,7 @@
 
     <style name="cornerImageShapeOverlay">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">10%</item>
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="NoActionBarTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">

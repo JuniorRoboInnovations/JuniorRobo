@@ -24,6 +24,7 @@ import com.jrrobo.juniorrobo.viewmodel.ActivityAnswerAQuestionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -62,11 +63,9 @@ class QuestionDetails : AppCompatActivity() {
             //Question Image to be updated here
             if (questionId?.image.isNullOrEmpty()) {
                 answerQuestionImage.visibility = View.GONE
-                questionItemImageLabel.visibility = View.GONE
             }
             else {
                 answerQuestionImage.visibility = View.VISIBLE
-                questionItemImageLabel.visibility = View.GONE
                 GlobalScope.launch(Dispatchers.Main) {
                     Glide.with(root)
                         .load(EndPoints.GET_IMAGE + "/question/" + questionId!!.image)
@@ -112,20 +111,18 @@ class QuestionDetails : AppCompatActivity() {
                 adapter = AnswerItemAdapter(it)
 
                 if (it.isEmpty()) {
-                    binding.answersRv.visibility = View.GONE
-                    binding.noDataImage.visibility = View.VISIBLE
 
-                    if (questionId != null) {
-                        viewModel.getAnswer(questionId.id)
-                        /**
-                         * For checking if there is no answers in backend
-                         *  viewModel.getAnswer(93)
-                         */
+                    binding.noDataText.visibility = View.VISIBLE
+                        if (questionId != null) {
+                            viewModel.getAnswer(questionId.id)
+                            /**
+                             * For checking if there is no answers in backend
+                             *  viewModel.getAnswer(93)
+                             */
+                        }
                     }
-                }
                 else{
                     binding.answersRv.visibility = View.VISIBLE
-                    binding.noDataImage.visibility = View.GONE
                 }
                 if (it.size >= 5) {
                     binding.buttonAnswerThis.isEnabled = false

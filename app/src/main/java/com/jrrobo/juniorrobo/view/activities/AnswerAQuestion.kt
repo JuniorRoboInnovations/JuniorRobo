@@ -273,7 +273,7 @@ private fun postAnswerItem(answerItemPost: AnswerItemPost){
                     binding.buttonPostAnswer.isEnabled = false
                     Snackbar.make(
                         binding.editTextAnswer,
-                        "Success!! \nYou will see your answer once it is approved by our experts",
+                        "Success!! \nYou will see your answer once it is \n approved by our experts",
                         Snackbar.LENGTH_LONG
                     ).show()
                     clearTextFields()

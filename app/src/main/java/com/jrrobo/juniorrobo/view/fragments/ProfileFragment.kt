@@ -89,7 +89,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //Upon click of the offer button
-        binding.buttonOffer?.setOnClickListener{
+        binding.buttonOffer.setOnClickListener{
             lifecycleScope.launch {
                 questionsViewModel.getOffer()
             }
@@ -128,7 +128,7 @@ class ProfileFragment : Fragment() {
         }
 
         //Upon click of the logout button
-        binding.profileLogoutImageButton?.setOnClickListener {
+        binding.profileLogoutImageButton.setOnClickListener {
             var dialogExit: AlertDialog? = null
 
             val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())

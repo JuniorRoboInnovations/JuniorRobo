@@ -7,4 +7,6 @@
     <color name="yellow_700">#ec7200</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="red">#F51313</color>
+    <color name="red_500">#DFE20C0C</color>
 </resources>

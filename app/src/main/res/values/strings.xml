@@ -102,6 +102,11 @@
     <string name="add_solution">Add Solution</string>
     <string name="log_out">Log Out</string>
     <string name="offers">Offers</string>
+    <string name="noDataAvailable">No answers available! \n Be the first one to answer</string>
+    <string name="coding_course">Coding Course</string>
+    <string name="cbse_olympiads_course">cbse/olympiads Course</string>
+    <string name="music_dancing_course"><![CDATA[MUSIC & DANCING COURSE]]></string>
+    <string name="medical_literacy_course">Medical Literacy Course</string>
     <!--chip text strings ends here-->
 
 </resources>
