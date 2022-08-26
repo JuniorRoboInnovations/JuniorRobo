@@ -98,10 +98,10 @@
     <string name="question_mark">Question Mark</string>
     <string name="question_image">Question Image</string>
     <string name="image">Image:</string>
-    <string name="love_learning_amp_creating"><![CDATA[Love Learning & Creating!]]></string>
+    <string name="love_learning_amp_creating"><![CDATA[Integrating Knowledge!]]></string>
     <string name="add_solution">Add Solution</string>
     <string name="log_out">Log Out</string>
-    <string name="offers">Offers</string>
+    <string name="offers">Answer &amp; Earn</string>
     <string name="noDataAvailable">No answers available! \n Be the first one to answer</string>
     <string name="coding_course">Coding Course</string>
     <string name="cbse_olympiads_course">cbse/olympiads Course</string>

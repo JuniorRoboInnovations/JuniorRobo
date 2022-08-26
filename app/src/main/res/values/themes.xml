@@ -20,7 +20,7 @@
     </style>
 
     <style name="cornerImageShapeOverlay">
-        <item name="cornerFamily">rounded</item>
+        <item name="cornerFamily">cut</item>
         <item name="cornerSize">50%</item>
     </style>
 
