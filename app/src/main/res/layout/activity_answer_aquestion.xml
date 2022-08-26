@@ -61,11 +61,12 @@
 
     <ImageView
         android:id="@+id/imageView_question"
-        android:layout_width="match_parent"
+        style="@style/cornerImageShapeOverlay"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        android:background="#E3E2E3"
+        android:background="@drawable/round_outline"
+        tools:src="@drawable/ic_launcher_background"
         android:padding="5dp"
         android:layout_margin="10dp"/>
     <LinearLayout
@@ -136,6 +137,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/round_outline"
         android:padding="5dp"
         tools:src="@mipmap/ic_launcher"
         android:visibility="gone"/>

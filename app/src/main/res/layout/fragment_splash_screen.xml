@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:src="@drawable/junior_robo_logo"
+        android:src="@drawable/app_logo_image"
         app:layout_constraintEnd_toEndOf="@+id/textview_welcome_to"
         app:layout_constraintStart_toStartOf="@+id/textview_welcome_to"
         tools:layout_editor_absoluteY="38dp" />

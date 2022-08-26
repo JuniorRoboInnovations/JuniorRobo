@@ -70,7 +70,8 @@ class AnswerItemAdapter(val list: List<AnswerItem>): RecyclerView.Adapter<Answer
                 binding.userImage.visibility = View.VISIBLE
                 GlobalScope.launch(Dispatchers.Main) {
                     Glide.with(binding.root)
-                        .load(EndPoints.GET_IMAGE + "/answer/" +item.student_image)
+                        .load(EndPoints.GET_IMAGE + "/student/" +item.student_image)
+                        .error(R.drawable.ic_default_avatar)
                         .into(binding.userImage)
                 }
             }

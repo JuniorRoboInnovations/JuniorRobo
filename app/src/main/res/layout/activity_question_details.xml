@@ -71,8 +71,10 @@
         android:id="@+id/answer_question_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/round_outline"
+        android:padding="5dp"
         tools:src="@drawable/ic_launcher_background"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/noDataText"
@@ -80,13 +82,13 @@
         android:layout_height="wrap_content"
         android:text="@string/noDataAvailable"
         android:background="#DA000000"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="300dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:padding="6dp"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:textAlignment="center"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/answers_rv"
