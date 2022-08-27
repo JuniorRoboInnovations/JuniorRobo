@@ -225,7 +225,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/offers"
+            app:icon="@drawable/ic_baseline_local_offer_24"
+            app:iconGravity="textStart"
+            android:text="@string/answer_amp_earn"
             android:backgroundTint="@color/pink_700"/>
     </LinearLayout>
 

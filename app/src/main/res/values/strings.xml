@@ -107,6 +107,7 @@
     <string name="cbse_olympiads_course">cbse/olympiads Course</string>
     <string name="music_dancing_course"><![CDATA[MUSIC & DANCING COURSE]]></string>
     <string name="medical_literacy_course">Medical Literacy Course</string>
+    <string name="answer_amp_earn"><![CDATA[Answer & Earn]]></string>
     <!--chip text strings ends here-->
 
 </resources>
