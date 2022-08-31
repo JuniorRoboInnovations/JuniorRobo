@@ -6,12 +6,12 @@
     app:startDestination="@id/questionAnswerFragment">
     <fragment
         android:id="@+id/questionAnswerFragment"
-        android:name="com.jrrobo.juniorrobo.view.fragments.QuestionAnswerFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.QuestionAnswerFragment"
         android:label="fragment_question_answer"
         tools:layout="@layout/fragment_question_answer" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.jrrobo.juniorrobo.view.fragments.ProfileFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

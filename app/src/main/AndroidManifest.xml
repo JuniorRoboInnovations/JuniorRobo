@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jrrobo.juniorrobo">
+    package="com.jrrobo.juniorroboapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".JuniorRoboApplication"
+        android:name="com.jrrobo.juniorroboapp.JuniorRoboApplication"
         android:allowBackup="true"
         android:icon="@drawable/app_icon_minimalist"
         android:label="@string/app_name"
@@ -20,12 +20,12 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".view.activities.AnswerAQuestion"
+            android:name="com.jrrobo.juniorroboapp.view.activities.AnswerAQuestion"
             android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.jrrobo.juniorrobo.provider"
+            android:authorities="com.jrrobo.juniorroboapp.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -34,17 +34,17 @@
         </provider>
 
         <activity
-            android:name=".view.activities.QuestionDetails"
+            android:name="com.jrrobo.juniorroboapp.view.activities.QuestionDetails"
             android:exported="true" />
         <activity
-            android:name=".view.activities.AskQuestionActivity"
+            android:name="com.jrrobo.juniorroboapp.view.activities.AskQuestionActivity"
             android:exported="true" />
         <activity
-            android:name=".view.activities.FromQuestionAnswerActivity"
+            android:name="com.jrrobo.juniorroboapp.view.activities.FromQuestionAnswerActivity"
             android:exported="true"
             android:theme="@style/NoActionBarTheme" />
         <activity
-            android:name=".view.activities.MainActivity"
+            android:name="com.jrrobo.juniorroboapp.view.activities.MainActivity"
             android:exported="true"
             android:noHistory="true"
             android:theme="@style/NoActionBarTheme">

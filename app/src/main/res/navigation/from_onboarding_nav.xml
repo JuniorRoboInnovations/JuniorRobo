@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.jrrobo.juniorrobo.view.fragments.SplashFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.SplashFragment"
         android:label="splash_screen"
         tools:layout="@layout/fragment_splash_screen">
         <action
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.jrrobo.juniorrobo.view.onboarding.ViewPagerFragment"
+        android:name="com.jrrobo.juniorroboapp.view.onboarding.ViewPagerFragment"
         android:label="fragment_view_pager"
         tools:layout="@layout/fragment_view_pager">
         <action
@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.jrrobo.juniorrobo.view.fragments.LoginFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/otpVerificationFragment"
-        android:name="com.jrrobo.juniorrobo.view.fragments.OtpVerificationFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.OtpVerificationFragment"
         android:label="fragment_otp_verification"
         tools:layout="@layout/fragment_otp_verification">
         <argument
@@ -76,7 +76,7 @@
     <include app:graph="@navigation/from_question_answer_nav" />
     <activity
         android:id="@+id/fromQuestionAnswerActivity"
-        android:name="com.jrrobo.juniorrobo.view.activities.FromQuestionAnswerActivity"
+        android:name="com.jrrobo.juniorroboapp.view.activities.FromQuestionAnswerActivity"
         android:label="activity_from_question_answer"
         tools:layout="@layout/activity_from_question_answer" >
         <argument

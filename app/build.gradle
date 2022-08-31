@@ -14,7 +14,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.jrrobo.juniorrobo"
+        applicationId "com.jrrobo.juniorroboapp"
         minSdk 21
         targetSdk 32
         versionCode 1

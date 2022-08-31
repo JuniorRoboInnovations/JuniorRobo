@@ -1,0 +1,145 @@
+package com.jrrobo.juniorroboapp.viewmodel
+
+import android.util.Log
+import androidx.lifecycle.*
+import androidx.paging.cachedIn
+import com.jrrobo.juniorroboapp.data.offer.Offer
+import com.jrrobo.juniorroboapp.data.questioncategory.QuestionCategoryItem
+import com.jrrobo.juniorroboapp.data.questionitem.QuestionItem
+import com.jrrobo.juniorroboapp.network.JuniorRoboApi
+import com.jrrobo.juniorroboapp.repository.QuestionRepository
+import com.jrrobo.juniorroboapp.utility.DataStorePreferencesManager
+import com.jrrobo.juniorroboapp.utility.DispatcherProvider
+import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class FragmentQuestionsViewModel @Inject constructor(
+    private val questionRepository: QuestionRepository,
+    private val dispatchers: DispatcherProvider,
+    private val dataStorePreferencesManager: DataStorePreferencesManager,
+    private val juniorRoboApi: JuniorRoboApi
+) : ViewModel() {
+
+    private val TAG: String = javaClass.simpleName
+
+    private val currentQuestionCategoryId = MutableLiveData(DEFAULT_QUESTION_CATEGORY_ID)
+
+    val questions = currentQuestionCategoryId.switchMap { questionCategoryId ->
+        questionRepository.getAllQuestionList(questionCategoryId, 0).cachedIn(viewModelScope)
+    }
+
+    // paging data----
+    private val _questionsWithoutPaging = MutableLiveData<List<QuestionItem>>()
+    val questionsWithoutPaging : LiveData<List<QuestionItem>>
+        get() = _questionsWithoutPaging
+
+    fun getQuestionsWithoutPaging(cat_id: Int?,keyword:String?,u_id:Int?){
+        viewModelScope.launch(dispatchers.io) {
+            when (val response = questionRepository.getAllQuestionsWithoutPaging(cat_id,keyword,u_id)) {
+                is NetworkRequestResource.Success -> {
+                    try {
+                        if (response.data != null) {
+                            var parsedQuestions = response.data
+                            // TODO : need to be optimized
+                            if (cat_id != null && cat_id != 13) {
+                                parsedQuestions = parsedQuestions.filter { questionItem ->
+                                    questionItem.question_sub_text == questionCategoriesLiveData.value?.find { questionCategoryItem ->
+                                        questionCategoryItem.pkCategoryId == cat_id
+                                    }?.categoryTitle
+                                }
+                            }
+                            _questionsWithoutPaging.postValue(parsedQuestions)
+                        }
+                    }
+                    catch (e : Exception){
+                        Log.d(TAG, "getQuestions: Error->${e.message}")
+                    }
+                }
+                is NetworkRequestResource.Error -> {
+                    Log.d(TAG, "getQuestions: Error->${response.message}")
+                }
+            }
+        }
+    }
+    // paging data----
+
+    fun getQuestions(cat_id: Int) {
+        currentQuestionCategoryId.value = cat_id
+    }
+
+    private val _questionCategoriesLiveData = MutableLiveData<List<QuestionCategoryItem>>()
+
+    val questionCategoriesLiveData: LiveData<List<QuestionCategoryItem>>
+        get() = _questionCategoriesLiveData
+
+    fun getQuestionCategories() {
+        viewModelScope.launch(dispatchers.io) {
+            Log.d(TAG, "getQuestionCategories: making api call from FragmentQuestionsViewModel")
+
+            when (val response = questionRepository.getQuestionCategories()) {
+                is NetworkRequestResource.Success -> {
+                    try {
+                        if (response.data != null) {
+                            Log.d(TAG, response.data.toString())
+                            _questionCategoriesLiveData.postValue(response.data)
+                        }
+                    }
+                    catch (e : Exception){
+                        Log.d(TAG, "getQuestionCategories: Error->${e.message}")
+                    }
+                }
+                is NetworkRequestResource.Error -> {
+                    Log.d(TAG, "getQuestionCategories: Error->${response.message}")
+                }
+            }
+        }
+    }
+
+    private val _offerData = MutableLiveData<Offer>()
+    val offerData : LiveData<Offer>
+        get() = _offerData
+
+    fun getOffer(){
+        viewModelScope.launch(dispatchers.io) {
+            Log.d(TAG, "getQuestionCategories: making api call from FragmentQuestionsViewModel")
+
+            when (val response = questionRepository.getOffer()) {
+                is NetworkRequestResource.Success -> {
+                    try {
+                        if (response.data != null) {
+                            Log.d(TAG, response.data.toString())
+                            _offerData.postValue(response.data)
+                        }
+                    }
+                    catch (e : Exception){
+                        Log.d(TAG, "getQuestionCategories: Error->${e.message}")
+                    }
+                }
+                is NetworkRequestResource.Error -> {
+                    Log.d(TAG, "getQuestionCategories: Error->${response.message}")
+                }
+            }
+        }
+    }
+
+
+    fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
+
+    // update the data store preference app launched
+    fun setAppLaunchedStatus(appLaunched: Boolean) {
+        viewModelScope.launch(dispatchers.io) {
+            dataStorePreferencesManager.setAppLaunchedStatus(appLaunched)
+        }
+    }
+
+    // get the data store preference of app launched status
+    fun getAppLaunchedStatus() =
+        dataStorePreferencesManager.getAppLaunchedStatus().asLiveData()
+
+    companion object {
+        private const val DEFAULT_QUESTION_CATEGORY_ID = 1
+    }
+}
