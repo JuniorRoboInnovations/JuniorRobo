@@ -14,4 +14,38 @@
         android:name="com.jrrobo.juniorroboapp.view.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/liveClassesFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.LiveClassesFragment"
+        android:label="LiveClassesFragment" >
+        <action
+            android:id="@+id/action_liveClassesFragment_to_courseListFragment"
+            app:destination="@id/courseListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseListFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.CourseListFragment"
+        android:label="fragment_course_list"
+        tools:layout="@layout/fragment_course_list" >
+        <action
+            android:id="@+id/action_courseListFragment_to_courseGradeFragment"
+            app:destination="@id/courseGradeFragment" />
+        <action
+            android:id="@+id/action_courseListFragment_to_liveClassesFragment"
+            app:destination="@id/liveClassesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseGradeFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.CourseGradeFragment"
+        android:label="fragment_course_grade"
+        tools:layout="@layout/fragment_course_grade" >
+        <action
+            android:id="@+id/action_courseGradeFragment_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseDetailFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.CourseDetailFragment"
+        android:label="fragment_course_detail"
+        tools:layout="@layout/fragment_course_detail" />
 </navigation>

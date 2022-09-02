@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="10dp"
+    app:contentPadding="8dp"
+    tools:context=".view.fragments.CourseListFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:elevation="8dp"
+            android:src="@color/pink_700"
+            android:layout_margin="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/logoImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="6dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/popularCourseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink_700"
+            android:layout_marginTop="10dp"
+            style="@style/TextAppearance.MdcTypographyStyles.Headline3"
+            app:layout_constraintTop_toBottomOf="@+id/logoImage"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Popular Courses"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_course_categories_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/popularCourseTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/course_list_item"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

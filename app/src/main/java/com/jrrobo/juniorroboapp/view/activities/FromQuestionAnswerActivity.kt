@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.databinding.ActivityFromQuestionAnswerBinding
 import com.jrrobo.juniorroboapp.view.fragments.LiveClassesFragment
@@ -25,6 +27,13 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
         binding = ActivityFromQuestionAnswerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //setting upt he nav-controller
+        val bottomNavigationView = binding.mainBottomNavigation
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.from_question_answer_navigation_container) as NavHostFragment
+        val navController = navHostFragment.navController
+        NavigationUI.setupWithNavController(bottomNavigationView,navController)
+
+        /*
         // handle the bottom navigation item click listener
         binding.mainBottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
@@ -68,6 +77,9 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
             }
             true
         }
+         */
+
+
     }
 
     override fun onBackPressed() {

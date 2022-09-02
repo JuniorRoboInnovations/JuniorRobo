@@ -36,6 +36,9 @@ class EndPoints {
 
         const val APP_OFFER :String ="appOffer"
 
+        // Endpoint to get app course
+        const val APP_COURSE: String = "appCourse"
+
     }
 
 }

@@ -3,6 +3,7 @@ package com.jrrobo.juniorroboapp.network
 import com.jrrobo.juniorroboapp.data.answer.AnswerItem
 import com.jrrobo.juniorroboapp.data.answer.AnswerItemPost
 import com.jrrobo.juniorroboapp.data.answer.AnswerItemPostResponse
+import com.jrrobo.juniorroboapp.data.course.CourseListItem
 import com.jrrobo.juniorroboapp.data.offer.Offer
 import com.jrrobo.juniorroboapp.data.profile.StudentProfileData
 import com.jrrobo.juniorroboapp.data.questioncategory.QuestionCategoryItem
@@ -109,5 +110,9 @@ interface JuniorRoboApi {
 
     @GET(EndPoints.APP_OFFER)
     suspend fun getOffer(): Response<Offer>
+
+    // GET request to fetch all course categories
+    @GET(EndPoints.APP_COURSE)
+    suspend fun getCourseCategories() : Response<List<CourseListItem>>
 
 }

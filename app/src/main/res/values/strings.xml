@@ -108,6 +108,8 @@
     <string name="music_dancing_course"><![CDATA[MUSIC & DANCING COURSE]]></string>
     <string name="medical_literacy_course">Medical Literacy Course</string>
     <string name="answer_amp_earn"><![CDATA[Answer & Earn]]></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--chip text strings ends here-->
 
 </resources>
