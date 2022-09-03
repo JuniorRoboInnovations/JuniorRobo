@@ -82,27 +82,27 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
-        var dialogExit: AlertDialog? = null
-
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Confirm Exit ?")
-        builder.setMessage("Are you sure to exit ? ")
-
-        builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
-            override fun onClick(p0: DialogInterface?, p1: Int) {
-                dialogExit!!.dismiss()
-            }
-        })
-        builder.setNegativeButton("Exit", object : DialogInterface.OnClickListener {
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                dialogExit!!.dismiss()
-                finish()
-            }
-        })
-
-        dialogExit = builder.create()
-
-        dialogExit.show()
-    }
+//    override fun onBackPressed() {
+//        var dialogExit: AlertDialog? = null
+//
+//        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+//        builder.setTitle("Confirm Exit ?")
+//        builder.setMessage("Are you sure to exit ? ")
+//
+//        builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
+//            override fun onClick(p0: DialogInterface?, p1: Int) {
+//                dialogExit!!.dismiss()
+//            }
+//        })
+//        builder.setNegativeButton("Exit", object : DialogInterface.OnClickListener {
+//            override fun onClick(dialog: DialogInterface?, which: Int) {
+//                dialogExit!!.dismiss()
+//                finish()
+//            }
+//        })
+//
+//        dialogExit = builder.create()
+//
+//        dialogExit.show()
+//    }
 }

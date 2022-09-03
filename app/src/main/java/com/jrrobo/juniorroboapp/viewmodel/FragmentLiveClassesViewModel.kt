@@ -3,6 +3,7 @@ package com.jrrobo.juniorroboapp.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
 import com.jrrobo.juniorroboapp.repository.LiveClassesRepository
 import com.jrrobo.juniorroboapp.utility.DataStorePreferencesManager
@@ -23,7 +24,7 @@ class FragmentLiveClassesViewModel @Inject constructor(
     private val TAG: String = javaClass.simpleName
 
     /**
-     * Profile get event
+     * Course get event
      * Request type: GET
      */
     sealed class CourseListGetEvent {
@@ -59,6 +60,41 @@ class FragmentLiveClassesViewModel @Inject constructor(
                             CourseListGetEvent.Failure(e.message.toString())
                     }
                     Log.d(TAG, courseCategories.toString())
+                }
+            }
+        }
+    }
+
+    sealed class CourseGradeListGetEvent {
+        class Success(val courseGradeList: List<CourseGradeListItem>) : CourseGradeListGetEvent()
+        class Failure(val errorText: String) : CourseGradeListGetEvent()
+        object Loading : CourseGradeListGetEvent()
+        object Empty : CourseGradeListGetEvent()
+    }
+
+    private val _courseGradeListGetFlow = MutableStateFlow<CourseGradeListGetEvent>(CourseGradeListGetEvent.Empty)
+    val courseGradeListGetFlow: MutableStateFlow<CourseGradeListGetEvent> = _courseGradeListGetFlow
+
+
+    fun getCourseGrades(courseId : Int){
+        // launch coroutine to request for course category list
+        viewModelScope.launch(dispatchers.io) {
+
+            // set the profile get event to loading state
+            _courseGradeListGetFlow.value = CourseGradeListGetEvent.Loading
+
+            when (val courseGradeList = repository.getCourseGrades(courseId)) {
+                is NetworkRequestResource.Error -> {
+                    _courseGradeListGetFlow.value = CourseGradeListGetEvent.Failure(courseGradeList.message.toString())
+                }
+
+                is NetworkRequestResource.Success -> {
+                    try {
+                        _courseGradeListGetFlow.value = CourseGradeListGetEvent.Success(courseGradeList.data!!)
+                    }
+                    catch (e: Exception){
+                        _courseGradeListGetFlow.value = CourseGradeListGetEvent.Failure(e.message.toString())
+                    }
                 }
             }
         }

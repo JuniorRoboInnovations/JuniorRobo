@@ -1,6 +1,7 @@
 package com.jrrobo.juniorroboapp.view.fragments
 
 import android.os.Bundle
+import android.view.ContextMenu
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +42,7 @@ class CourseListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = CourseListItemAdapter {
-            findNavController().navigate(CourseListFragmentDirections.actionCourseListFragmentToCourseGradeFragment())
+            findNavController().navigate(CourseListFragmentDirections.actionCourseListFragmentToCourseGradeFragment(it))
         }
 
         binding.logoImage.setOnClickListener {
@@ -53,7 +54,7 @@ class CourseListFragment : Fragment() {
             this.adapter = adapter
         }
         viewModel.getCourseCategories()
-        // call the GET request only when image view is not clicked
+
         lifecycleScope.launch {
             viewModel.courseListGetFlow.collect {
                 when (it) {
@@ -65,9 +66,7 @@ class CourseListFragment : Fragment() {
 
                     }
 
-                    // upon successful GET event populate the profile data
                     is FragmentLiveClassesViewModel.CourseListGetEvent.Success -> {
-                        // assign the data to all the edit texts
                         (binding.rvCourseCategoriesList.adapter as CourseListItemAdapter).submitList(it.courseList)
                     }
                     else -> {

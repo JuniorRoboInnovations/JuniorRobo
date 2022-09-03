@@ -5,29 +5,39 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jrrobo.juniorroboapp.R
+import com.jrrobo.juniorroboapp.data.course.CourseListItem
+import com.jrrobo.juniorroboapp.databinding.FragmentCourseGradeBinding
+import com.jrrobo.juniorroboapp.databinding.FragmentCourseListBinding
+import com.jrrobo.juniorroboapp.view.adapter.CourseGradeListItemAdapter
+import com.jrrobo.juniorroboapp.view.adapter.CourseListItemAdapter
+import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CourseGradeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CourseGradeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private val TAG: String = javaClass.simpleName
+
+    // view binding object
+    private var _binding: FragmentCourseGradeBinding? = null
+
+    // non null view binding object to avoid null checks using backing property
+    private val binding: FragmentCourseGradeBinding
+        get() = _binding!!
+
+    // view model for this fragment
+    private val viewModel: FragmentLiveClassesViewModel by activityViewModels()
+
+    private lateinit var courseListItem: CourseListItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        // getting the courseListItem sent from CourseListFragment
+        courseListItem = CourseGradeFragmentArgs.fromBundle(requireArguments()).courseListItem
     }
 
     override fun onCreateView(
@@ -35,26 +45,43 @@ class CourseGradeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_course_grade, container, false)
+        _binding = FragmentCourseGradeBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CourseGradeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CourseGradeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // setting up the title of course grade page
+        binding.fragmentCourseGradeCourseTitle.text = courseListItem.title
+
+        with(binding.rvCourseGradeList){
+            this.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            this.adapter = CourseGradeListItemAdapter {
+                findNavController().navigate(CourseGradeFragmentDirections.actionCourseGradeFragmentToCourseDetailFragment(it))
+            }
+        }
+        viewModel.getCourseGrades(courseListItem.id)
+
+        lifecycleScope.launch {
+            viewModel.courseGradeListGetFlow.collect {
+                when (it) {
+                    is FragmentLiveClassesViewModel.CourseGradeListGetEvent.Loading -> {
+
+                    }
+
+                    is FragmentLiveClassesViewModel.CourseGradeListGetEvent.Failure -> {
+
+                    }
+
+                    is FragmentLiveClassesViewModel.CourseGradeListGetEvent.Success -> {
+                        // assign the data to all the edit texts
+                        (binding.rvCourseGradeList.adapter as CourseGradeListItemAdapter).submitList(it.courseGradeList)
+                    }
+                    else -> {
+                        Unit
+                    }
                 }
             }
+        }
     }
 }

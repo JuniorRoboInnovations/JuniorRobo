@@ -39,6 +39,9 @@ class EndPoints {
         // Endpoint to get app course
         const val APP_COURSE: String = "appCourse"
 
+        // Endpoint to get app grade
+        const val APP_GRADE: String = "appGrade"
+
     }
 
 }

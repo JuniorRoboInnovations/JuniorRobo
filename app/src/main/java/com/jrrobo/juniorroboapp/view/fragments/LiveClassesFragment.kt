@@ -48,7 +48,7 @@ class LiveClassesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnNext.setOnClickListener {
+        binding.fragmentLiveClassesStartLearningBtn.setOnClickListener {
             findNavController().navigate(R.id.action_liveClassesFragment_to_courseListFragment)
         }
     }
