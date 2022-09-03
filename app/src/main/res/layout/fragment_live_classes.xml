@@ -14,7 +14,7 @@
             android:id="@+id/bg_image"
             android:layout_width="413dp"
             android:layout_height="416dp"
-            android:src="@drawable/ic_default_avatar"
+            android:src="@drawable/abstract_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
