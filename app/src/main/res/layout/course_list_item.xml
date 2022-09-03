@@ -22,7 +22,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:shapeAppearanceOverlay="@style/cornerImageShapeOverlay"
-            android:src="@color/pink_700"/>
+            android:src="@drawable/abstract_bg"/>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/course_title"
             style="@style/TextAppearance.MdcTypographyStyles.Body1"

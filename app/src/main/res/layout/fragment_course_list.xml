@@ -24,9 +24,10 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/logoImage"
             android:layout_width="50dp"
+            android:elevation="8dp"
             android:layout_height="50dp"
             android:layout_margin="6dp"
-            android:src="@drawable/ic_baseline_arrow_back_24"
+            android:src="@drawable/app_logo_image"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"/>
@@ -39,7 +40,7 @@
             style="@style/TextAppearance.MdcTypographyStyles.Headline3"
             app:layout_constraintTop_toBottomOf="@+id/logoImage"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="Popular Courses"/>
+            android:text="@string/popular_ncourses"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_course_categories_list"

@@ -108,8 +108,25 @@
     <string name="music_dancing_course"><![CDATA[MUSIC & DANCING COURSE]]></string>
     <string name="medical_literacy_course">Medical Literacy Course</string>
     <string name="answer_amp_earn"><![CDATA[Answer & Earn]]></string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="popular_ncourses">Popular Courses</string>
+    <string name="the_best_platform_for_online_learning">The Best Platform For Online Learning</string>
+    <string name="start_learning">Start Learning</string>
+    <string name="about">About</string>
+    <string name="subjects_covered">Subjects Covered:</string>
+    <string name="online_live_class">Online \nLive Class</string>
+    <string name="monthly_ptm">Monthly \nPTM</string>
+    <string name="lifetime_recording">Lifetime \nRecording</string>
+    <string name="classroom_ntest">Classroom\nTest</string>
+    <string name="enrol_now_4">Enrol Now ₹4000/Month</string>
+    <string name="this_course_includes">This Course Includes</string>
+    <string name="course_highlights">Course Highlights</string>
+    <string name="monthly_nfee">Monthly \nFee</string>
+    <string name="book_demo">Book Demo</string>
+    <string name="student_name">Student Name</string>
+    <string name="father_s_name">Father\'s Name</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="others">Others</string>
+    <string name="course">Course</string>
     <!--chip text strings ends here-->
 
 </resources>
