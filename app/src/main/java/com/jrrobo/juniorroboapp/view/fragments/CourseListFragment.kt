@@ -23,8 +23,8 @@ class CourseListFragment : Fragment() {
     private var _binding: FragmentCourseListBinding? = null
 
     // non null view binding object to avoid null checks using backing property
-    private val binding: FragmentCourseListBinding
-        get() = _binding!!
+    private val binding: FragmentCourseListBinding?
+        get() = _binding
 
     // view model for this fragment
     private val viewModel: FragmentLiveClassesViewModel by activityViewModels()
@@ -32,10 +32,10 @@ class CourseListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentCourseListBinding.inflate(inflater,container,false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,13 +45,9 @@ class CourseListFragment : Fragment() {
             findNavController().navigate(CourseListFragmentDirections.actionCourseListFragmentToCourseGradeFragment(it))
         }
 
-        binding.logoImage.setOnClickListener {
-            findNavController().navigate(CourseListFragmentDirections.actionCourseListFragmentToLiveClassesFragment())
-        }
-
-        with(binding.rvCourseCategoriesList){
-            this.layoutManager = LinearLayoutManager(requireContext())
-            this.adapter = adapter
+        with(binding?.rvCourseCategoriesList){
+            this?.layoutManager = LinearLayoutManager(requireContext())
+            this?.adapter = adapter
         }
         viewModel.getCourseCategories()
 
@@ -67,7 +63,7 @@ class CourseListFragment : Fragment() {
                     }
 
                     is FragmentLiveClassesViewModel.CourseListGetEvent.Success -> {
-                        (binding.rvCourseCategoriesList.adapter as CourseListItemAdapter).submitList(it.courseList)
+                        (binding?.rvCourseCategoriesList?.adapter as CourseListItemAdapter).submitList(it.courseList)
                     }
                     else -> {
                         Unit

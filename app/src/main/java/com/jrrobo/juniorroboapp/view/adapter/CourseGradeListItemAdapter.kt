@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.databinding.CourseGradeListItemBinding
+import com.jrrobo.juniorroboapp.network.EndPoints
 
 class CourseGradeListItemAdapter(private val listener: (CourseGradeListItem)->Unit) : ListAdapter<CourseGradeListItem, CourseGradeListItemAdapter.ViewHolder>(CourseGradeDiffCallback()){
     inner class ViewHolder(private val binding: CourseGradeListItemBinding) : RecyclerView.ViewHolder(binding.root){
@@ -20,6 +21,9 @@ class CourseGradeListItemAdapter(private val listener: (CourseGradeListItem)->Un
         fun bind(courseGradeListItem: CourseGradeListItem){
             binding.apply {
                 courseGradeListItemTitle.text = courseGradeListItem.title
+                Glide.with(this.root)
+                    .load(EndPoints.GET_IMAGE + "/course/" + courseGradeListItem.image)
+                    .into(this.courseGradeListItemImage)
             }
         }
     }

@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/circularImageShapeOverlay" />
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/subcourse_title"
+            android:id="@+id/course_detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="App Development"
@@ -45,14 +45,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/subcourse_image"
+            android:id="@+id/course_detail_image"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:layout_margin="10dp"
             tools:src="@drawable/coding_onboard"
+            app:shapeAppearanceOverlay="@style/cornerImageShapeOverlay2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subcourse_title"/>
+            app:layout_constraintTop_toBottomOf="@id/course_detail_title"/>
         <LinearLayout
             android:id="@+id/subcourse_subjects_layout"
             android:layout_width="match_parent"
@@ -60,7 +61,7 @@
             android:orientation="horizontal"
             android:layout_margin="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subcourse_image">
+            app:layout_constraintTop_toBottomOf="@id/course_detail_image">
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,7 +69,7 @@
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
                 android:textColor="@color/black"/>
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/subjects_text"
+                android:id="@+id/subjects_covered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
@@ -264,10 +265,11 @@
         </androidx.cardview.widget.CardView>
 
             <kr.co.prnd.readmore.ReadMoreTextView
-                android:id="@+id/subcourse_about_text"
+                android:id="@+id/course_detail_about_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:minHeight="48dp"
                 android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -277,16 +279,16 @@
                 app:readMoreText=" ...Read more"
                 tools:text="Heeloooo" />
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/subcourse_curriculum_image"
+            android:id="@+id/course_detail_curriculum"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:layout_marginTop="20dp"
             tools:src="@color/blue"
-            app:layout_constraintTop_toBottomOf="@id/subcourse_about_text"
+            app:layout_constraintTop_toBottomOf="@id/course_detail_about_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/subcourse_enrol_button"
+            android:id="@+id/course_detail_enrol_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enrol_now_4"
@@ -294,7 +296,7 @@
             android:textSize="15sp"
             android:textColor="@color/white"
             style="@style/TextAppearance.MdcTypographyStyles.Button"
-            app:layout_constraintTop_toBottomOf="@id/subcourse_curriculum_image"
+            app:layout_constraintTop_toBottomOf="@id/course_detail_curriculum"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

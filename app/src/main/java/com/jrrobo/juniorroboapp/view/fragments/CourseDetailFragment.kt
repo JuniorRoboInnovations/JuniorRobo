@@ -1,41 +1,45 @@
 package com.jrrobo.juniorroboapp.view.fragments
 
+import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.jrrobo.juniorroboapp.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CourseDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-    private val list = listOf(
-        "Project/Activity Based Learning",
-        "1:5 Batch Size",
-        "Daily Reminder for Class",
-        "Lowest Course Fee",
-        "Monthly Subscription",
-    )
+import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
+import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
+import com.jrrobo.juniorroboapp.databinding.FragmentCourseDetailBinding
+import com.jrrobo.juniorroboapp.network.EndPoints
+import com.jrrobo.juniorroboapp.view.adapter.CourseDetailItemAdapter
+import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
+import kotlinx.coroutines.launch
 
 class CourseDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private val TAG: String = javaClass.simpleName
+
+    // view binding object
+    private var _binding: FragmentCourseDetailBinding? = null
+
+    // non null view binding object to avoid null checks using backing property
+    private val binding: FragmentCourseDetailBinding
+        get() = _binding!!
+
+    // view model for this fragment
+    private val viewModel: FragmentLiveClassesViewModel by activityViewModels()
+
+    private lateinit var courseGradeListItem: CourseGradeListItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        courseGradeListItem = CourseDetailFragmentArgs.fromBundle(requireArguments()).courseGradeListItem
     }
 
     override fun onCreateView(
@@ -43,26 +47,119 @@ class CourseDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_course_detail, container, false)
+        _binding = FragmentCourseDetailBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CourseDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CourseDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.backImageButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.fabBookDemoButton.setOnClickListener {
+            showDemoDialog()
+        }
+
+        binding.subcourseRecyclerView.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = CourseDetailItemAdapter(listOf(
+                "Project/Activity Based Learning",
+                "1:5 Batch Size",
+                "Daily Reminder for Class",
+                "Lowest Course Fee",
+                "Monthly Subscription",
+            ))
+        }
+
+        viewModel.getCourseGradeDetails(courseGradeListItem.id)
+        Log.d(TAG, "onViewCreated: calling getCourseDetails")
+        lifecycleScope.launch {
+            viewModel.courseGradeDetailsGetFlow.collect {
+                when (it) {
+                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Loading -> {
+
+                    }
+
+                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Failure -> {
+
+                    }
+
+                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Success -> {
+                        // update the views
+                        populateViews(it.courseGradeDetail)
+                    }
+                    else -> {
+                        Unit
+                    }
                 }
             }
+        }
+
+
+
+    }
+
+    private fun showDemoDialog() {
+        val dialogBinding = layoutInflater.inflate(R.layout.book_demo_layout,null)
+        val dialog = Dialog(requireContext(),android.R.style.Theme_Translucent_NoTitleBar)
+
+        dialog.setContentView(dialogBinding)
+        dialog.setCancelable(true)
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.gravity = Gravity.CENTER
+        lp.dimAmount = 0.7f
+
+        dialog.window!!.attributes = lp
+        dialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+
+        dialog.show()
+
+        val  cancelButton = dialogBinding.findViewById<ImageView>(R.id.image_clear_demo)
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    private fun populateViews(courseGradeDetail: CourseGradeDetail) {
+        binding.subjectsCovered.text = courseGradeDetail.subject_covered
+        binding.courseDetailAboutText.text = courseGradeDetail.description
+        binding.courseDetailEnrolButton.text = "Enroll Now INR" + courseGradeDetail.fee
+        binding.courseDetailTitle.text = courseGradeDetail.title
+        Glide.with(binding.root)
+            .load(EndPoints.GET_IMAGE + "/course/" + courseGradeDetail.image)
+            .into(binding.courseDetailImage)
+
+        Glide.with(binding.root)
+            .load(EndPoints.GET_IMAGE + "/course/" + courseGradeDetail.curriculum)
+            .into(binding.courseDetailCurriculum)
+
+        binding.courseDetailCurriculum.setOnClickListener {
+            var dialogImagePreview: AlertDialog? = null
+
+            val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+            val customLayout: View = LayoutInflater.from(requireContext())
+                .inflate(R.layout.cirriculum_image_dialog, null)
+            val imageView = customLayout.findViewById<ImageView>(R.id.curriculumImageView)
+            Glide.with(binding.root)
+                .load(EndPoints.GET_IMAGE + "/course/" + courseGradeDetail.curriculum)
+                .into(imageView)
+            builder.setView(customLayout)
+
+            val cancelButton = customLayout.findViewById<ImageView>(R.id.cancelImageView)
+            cancelButton.setOnClickListener {
+                dialogImagePreview?.dismiss()
+            }
+
+            dialogImagePreview = builder.create()
+
+            dialogImagePreview.show()
+        }
     }
 }

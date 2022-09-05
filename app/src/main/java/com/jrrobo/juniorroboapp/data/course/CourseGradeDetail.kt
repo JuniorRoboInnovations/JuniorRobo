@@ -1,6 +1,6 @@
 package com.jrrobo.juniorroboapp.data.course
 
-data class CourseDetail(
+data class CourseGradeDetail(
     val id:Int,
     val title:String,
     val description: String,

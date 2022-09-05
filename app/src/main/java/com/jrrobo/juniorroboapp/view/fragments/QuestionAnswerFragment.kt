@@ -211,9 +211,9 @@ class QuestionAnswerFragment : Fragment() {
                 if(newText == ""){
                     lifecycleScope.launch {
                         val chipGroup = binding?.chipGroupQuestionCategoriesChips
-                        val chip = chipGroup!!.findViewById<Chip>(chipGroup.checkedChipId)
-                        val categoryId = catNameToCatIdMap[chip.text]
-                        if(chip.text == "My questions"){
+                        val chip = chipGroup?.findViewById<Chip>(chipGroup.checkedChipId)
+                        val categoryId = catNameToCatIdMap[chip?.text]
+                        if(chip?.text == "My questions"){
                             viewModel.getQuestionsWithoutPaging(categoryId,null,pkStudentId)
                         }
                         else{

@@ -30,9 +30,6 @@
         <action
             android:id="@+id/action_courseListFragment_to_courseGradeFragment"
             app:destination="@id/courseGradeFragment" />
-        <action
-            android:id="@+id/action_courseListFragment_to_liveClassesFragment"
-            app:destination="@id/liveClassesFragment" />
     </fragment>
     <fragment
         android:id="@+id/courseGradeFragment"

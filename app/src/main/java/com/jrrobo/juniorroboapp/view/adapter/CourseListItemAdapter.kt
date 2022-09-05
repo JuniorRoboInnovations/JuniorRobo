@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
 import com.jrrobo.juniorroboapp.databinding.CourseListItemBinding
+import com.jrrobo.juniorroboapp.network.EndPoints
 
 class CourseListItemAdapter(private val listener: (CourseListItem)->Unit) : ListAdapter<CourseListItem, CourseListItemAdapter.ViewHolder>(CourseCategoryDiffCallback()){
     inner class ViewHolder(private val binding: CourseListItemBinding) : RecyclerView.ViewHolder(binding.root){
@@ -19,6 +21,9 @@ class CourseListItemAdapter(private val listener: (CourseListItem)->Unit) : List
         fun bind(courseCategoryItem: CourseListItem){
             binding.apply {
                 courseTitle.text = courseCategoryItem.title
+                Glide.with(binding.root)
+                    .load(EndPoints.GET_IMAGE + "/course/" + courseCategoryItem.image)
+                    .into(binding.previewImage)
             }
         }
     }

@@ -3,6 +3,7 @@ package com.jrrobo.juniorroboapp.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
 import com.jrrobo.juniorroboapp.repository.LiveClassesRepository
@@ -77,10 +78,10 @@ class FragmentLiveClassesViewModel @Inject constructor(
 
 
     fun getCourseGrades(courseId : Int){
-        // launch coroutine to request for course category list
+        // launch coroutine to request for course grade list
         viewModelScope.launch(dispatchers.io) {
 
-            // set the profile get event to loading state
+            // set the course grade get event to loading state
             _courseGradeListGetFlow.value = CourseGradeListGetEvent.Loading
 
             when (val courseGradeList = repository.getCourseGrades(courseId)) {
@@ -94,6 +95,41 @@ class FragmentLiveClassesViewModel @Inject constructor(
                     }
                     catch (e: Exception){
                         _courseGradeListGetFlow.value = CourseGradeListGetEvent.Failure(e.message.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    sealed class CourseGradeDetailsGetEvent {
+        class Success(val courseGradeDetail: CourseGradeDetail) : CourseGradeDetailsGetEvent()
+        class Failure(val errorText: String) : CourseGradeDetailsGetEvent()
+        object Loading : CourseGradeDetailsGetEvent()
+        object Empty : CourseGradeDetailsGetEvent()
+    }
+
+    private val _courseGradeDetailsGetFlow = MutableStateFlow<CourseGradeDetailsGetEvent>(CourseGradeDetailsGetEvent.Empty)
+    val courseGradeDetailsGetFlow: MutableStateFlow<CourseGradeDetailsGetEvent> = _courseGradeDetailsGetFlow
+
+
+    fun getCourseGradeDetails(id : Int){
+        // launch coroutine to request for course details
+        viewModelScope.launch(dispatchers.io) {
+
+            // set the profile get event to loading state
+            _courseGradeDetailsGetFlow.value = CourseGradeDetailsGetEvent.Loading
+
+            when (val courseGradeDetail = repository.getCourseGradeDetails(id)) {
+                is NetworkRequestResource.Error -> {
+                    _courseGradeDetailsGetFlow.value = CourseGradeDetailsGetEvent.Failure(courseGradeDetail.message.toString())
+                }
+
+                is NetworkRequestResource.Success -> {
+                    try {
+                        _courseGradeDetailsGetFlow.value = CourseGradeDetailsGetEvent.Success(courseGradeDetail.data!!)
+                    }
+                    catch (e: Exception){
+                        _courseGradeDetailsGetFlow.value = CourseGradeDetailsGetEvent.Failure(e.message.toString())
                     }
                 }
             }

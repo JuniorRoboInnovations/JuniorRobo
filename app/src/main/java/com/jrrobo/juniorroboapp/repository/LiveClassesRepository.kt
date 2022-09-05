@@ -1,6 +1,7 @@
 package com.jrrobo.juniorroboapp.repository
 
 import android.util.Log
+import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
 import com.jrrobo.juniorroboapp.network.JuniorRoboApi
@@ -46,6 +47,23 @@ class LiveClassesRepository @Inject constructor(
         } catch (e: Exception) {
             Log.d(TAG, "getCourseGrades: ${e.message}")
             NetworkRequestResource.Error(e.message ?: "Unable to get course grades")
+        }
+    }
+
+    override suspend fun getCourseGradeDetails(id: Int): NetworkRequestResource<CourseGradeDetail> {
+        return try {
+            val response = juniorRoboApi.getCourseGradeDetails(id)
+
+            val result = response.body()
+
+            if (response.isSuccessful && result != null) {
+                NetworkRequestResource.Success(result)
+            } else {
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "getCourseGradeDetails: ${e.message}")
+            NetworkRequestResource.Error(e.message ?: "Unable to get course details")
         }
     }
 }
