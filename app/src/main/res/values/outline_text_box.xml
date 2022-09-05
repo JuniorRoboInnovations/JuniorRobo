@@ -28,6 +28,10 @@
     </style>
     <style name="Widget.App.Outlined.ExposedDropDownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="android:textColorHint">@color/pink_700</item>
+        <item name="colorAccent">@color/pink_700</item>
+        <item name="colorControlNormal">@color/pink_700</item>
+        <item name="colorControlActivated">@color/pink_700</item>
     </style>
     <!-- Outlined ExposedDropdownMenu Edit Text Customization ends here -->
 

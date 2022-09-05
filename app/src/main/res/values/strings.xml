@@ -127,6 +127,14 @@
     <string name="contact_number">Contact Number</string>
     <string name="others">Others</string>
     <string name="course">Course</string>
+    <string name="services_update"><![CDATA[Get Educational & Services update from \nJunior Robo]]></string>
+    <string name="contact_information">Contact Information</string>
+    <string name="phone_number">+91-9310125170</string>
+    <string name="contact_mail">care@jrrobo.com</string>
+    <string name="or">OR</string>
+    <string name="sign_in_with_google">sign in with google</string>
+    <string name="sign_in_with_facebook">sign in with facebook</string>
+    <string name="parent_s_name">Parent\'s Name</string>
     <!--chip text strings ends here-->
 
 </resources>

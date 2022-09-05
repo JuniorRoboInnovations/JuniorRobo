@@ -8,146 +8,254 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="10dp"
     app:contentPadding="10dp">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/demo_bg"
-    android:padding="5dp">
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image_clear_demo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_close_white"
-        android:background="@color/pink_700"
-        app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/book_demo_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TextAppearance.MdcTypographyStyles.Headline3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/book_demo"
-        android:textStyle="bold"
-        android:textColor="@color/pink_700"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/book_demo_student_name"
-        style="@style/Widget.App.TextInputLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/student_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/book_demo_text"
-        app:startIconDrawable="@drawable/ic_baseline_person_24">
+        android:layout_height="match_parent"
+        android:background="@drawable/demo_bg"
+        android:padding="5dp">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_clear_demo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close_white"
+            android:background="@color/pink_700"
+            app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edit_text_student_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:outlineSpotShadowColor="@color/pink_700"
-        android:shadowColor="@color/pink_700"
-        android:inputType="text"
-        tools:targetApi="p" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/book_demo_father_name"
-        style="@style/Widget.App.TextInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/father_s_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/book_demo_student_name"
-        app:startIconDrawable="@drawable/ic_baseline_person_24">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/book_demo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.MdcTypographyStyles.Headline3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="35sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/book_demo"
+            android:textStyle="bold"
+            android:textColor="@color/pink_700"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_father_name"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_demo_student_name"
+            style="@style/Widget.App.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:outlineSpotShadowColor="@color/pink_700"
-            android:shadowColor="@color/pink_700"
-            android:inputType="text"
-            tools:targetApi="p" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/book_demo_contact"
-        style="@style/Widget.App.TextInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/contact_number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/book_demo_father_name"
-        app:startIconDrawable="@drawable/ic_phone_black">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/student_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/book_demo_text"
+            app:startIconDrawable="@drawable/ic_baseline_person_24">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_contact"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_student_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MdcTypographyStyles.Body1"
+                android:outlineSpotShadowColor="@color/pink_700"
+                android:shadowColor="@color/pink_700"
+                android:inputType="text"
+                tools:targetApi="p" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_demo_father_name"
+            style="@style/Widget.App.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:outlineSpotShadowColor="@color/pink_700"
-            android:shadowColor="@color/pink_700"
-            android:inputType="number"
-            tools:targetApi="p" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/book_demo_email"
-        style="@style/Widget.App.TextInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/book_demo_contact"
-        app:startIconDrawable="@drawable/ic_mail_black">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/parent_s_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/book_demo_student_name"
+            app:startIconDrawable="@drawable/ic_baseline_person_24">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_email"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_father_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MdcTypographyStyles.Body1"
+                android:outlineSpotShadowColor="@color/pink_700"
+                android:shadowColor="@color/pink_700"
+                android:inputType="text"
+                tools:targetApi="p" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/demo_phone_number_layout"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/phone_number_layout"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/book_demo_father_name">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/demo_country_code_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                app:ccpDialog_fastScroller_bubbleTextAppearance="@style/TextAppearance.MdcTypographyStyles.Body1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/demo_phone_number"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/open_sans_regular"
+                android:inputType="number"
+                android:hint="@string/phone_number_hint"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/demo_country_code_picker"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_demo_email"
+            style="@style/Widget.App.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:outlineSpotShadowColor="@color/pink_700"
-            android:shadowColor="@color/pink_700"
-            android:inputType="textEmailAddress"
-            tools:targetApi="p" />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/book_demo_course"
-        style="@style/Widget.App.Outlined.ExposedDropDownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="10dp"
-        android:hint="@string/course"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/book_demo_email">
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:inputType="none"
-        android:text="@string/others" />
-    </com.google.android.material.textfield.TextInputLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/demo_phone_number_layout"
+            app:startIconDrawable="@drawable/ic_mail_black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.MdcTypographyStyles.Body1"
+                android:outlineSpotShadowColor="@color/pink_700"
+                android:shadowColor="@color/pink_700"
+                android:inputType="textEmailAddress"
+                tools:targetApi="p" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/book_demo_course"
+            style="@style/Widget.App.Outlined.ExposedDropDownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/course"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/book_demo_email">
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="none"
+                style="@style/TextAppearance.MdcTypographyStyles.Body1"
+                android:text="@string/others" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkbox_terms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="16dp"
+            android:checked="true"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/book_demo_course"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/services_update_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            style="@style/TextAppearance.MdcTypographyStyles.Body1"
+            android:textColor="@color/pink_700"
+            android:maxLines="2"
+            android:text="@string/services_update"
+            app:layout_constraintBottom_toBottomOf="@+id/checkbox_terms"
+            app:layout_constraintStart_toEndOf="@+id/checkbox_terms"
+            app:layout_constraintTop_toTopOf="@+id/checkbox_terms" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/book_demo_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/services_update_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/book_demo"
+            android:layout_margin="16dp"
+            android:padding="10dp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/book_demo_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:contentPadding="10dp"
+            android:layout_margin="16dp"
+            app:cardElevation="10dp"
+            app:cardCornerRadius="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/contact_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="@string/contact_information"
+                    android:textStyle="bold"
+                    style="@style/TextAppearance.MdcTypographyStyles.Headline5"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/phone_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/contact_info_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="16dp"
+                    android:drawableStart="@drawable/ic_phone_black"
+                    style="@style/TextAppearance.MdcTypographyStyles.Body1"
+                    android:drawablePadding="10dp"
+                    android:padding="10dp"
+                    android:text="@string/phone_number"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/phone_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="16dp"
+                    style="@style/TextAppearance.MdcTypographyStyles.Body1"
+                    android:drawableStart="@drawable/ic_mail_black"
+                    android:drawablePadding="15dp"
+                    android:padding="10dp"
+                    android:text="@string/contact_mail"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
