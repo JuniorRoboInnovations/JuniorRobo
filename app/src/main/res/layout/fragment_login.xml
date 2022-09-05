@@ -6,12 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.LoginFragment">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/app_logo_image"
+        android:elevation="10dp"
+        android:layout_margin="10dp"
+        app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -129,4 +133,85 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_terms" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/or_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/button_request_otp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp">
+
+        <View
+            android:id="@+id/or_view1"
+            android:layout_width="135dp"
+            android:layout_height="2dp"
+            android:background="@color/light_grey"
+            android:layout_marginStart="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/or"
+            android:textAllCaps="true"
+            android:textColor="@color/light_grey"
+            style="@style/TextAppearance.MdcTypographyStyles.Headline5"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toEndOf="@id/or_view1"
+            app:layout_constraintEnd_toStartOf="@id/or_view2"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <View
+            android:id="@+id/or_view2"
+            android:layout_width="135dp"
+            android:layout_height="2dp"
+            android:background="@color/light_grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="30dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sign_in_google"
+        style="@style/TextAppearance.MdcTypographyStyles.Button2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/white"
+        android:text="@string/sign_in_with_google"
+        app:icon="@drawable/google_logo"
+        app:iconPadding="10dp"
+        app:iconGravity="start"
+        app:iconTintMode="multiply"
+        android:elevation="10dp"
+        android:textColor="@color/pink_700"
+        android:textAllCaps="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintTop_toBottomOf="@id/or_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sign_in_facebook"
+        style="@style/TextAppearance.MdcTypographyStyles.Button2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:elevation="10dp"
+        android:backgroundTint="@color/white"
+        android:layout_marginStart="32dp"
+        app:iconPadding="10dp"
+        app:icon="@drawable/facebook_logo"
+        app:iconTintMode="multiply"
+        android:layout_marginTop="16dp"
+        android:textAllCaps="true"
+        android:textColor="@color/pink_700"
+        android:layout_marginEnd="32dp"
+        android:text="@string/sign_in_with_facebook"
+        app:layout_constraintTop_toBottomOf="@id/sign_in_google"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

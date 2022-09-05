@@ -17,4 +17,5 @@
     <color name="light_green">#FFB0EAB2</color>
     <color name="red_500">#DFE20C0C</color>
     <color name="grey_default">#E3E2E3</color>
+    <color name="light_grey">#ddd</color>
 </resources>

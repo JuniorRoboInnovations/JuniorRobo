@@ -19,7 +19,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -124,6 +124,9 @@ dependencies {
 
     //Read More extension
     implementation 'kr.co.prnd:readmore-textview:1.0.0'
-    
+
+    //Google Auth
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
+
 
 }
