@@ -1,13 +1,19 @@
 package com.jrrobo.juniorroboapp.view.fragments
 
+import android.app.Dialog
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textview.MaterialTextView
+import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.databinding.FragmentLoginBinding
 import com.jrrobo.juniorroboapp.viewmodel.FragmentLoginViewModel
 
@@ -51,14 +57,48 @@ class LoginFragment : Fragment() {
             viewModel.requestOtp(countryCode + contactNumber)
 
             // navigate to the OtpVerificationFragment by passing the country code and contact number
-            val navigationAction =
-                LoginFragmentDirections.actionLoginFragmentToOtpVerificationFragment(
-                    "$countryCode $contactNumber"
-                )
-            findNavController().navigate(navigationAction)
+            if (contactNumber.isEmpty()) {
+                Toast.makeText(context, "Please Enter your Phone Number", Toast.LENGTH_SHORT).show()
+            } else {
+                val navigationAction =
+                    LoginFragmentDirections.actionLoginFragmentToOtpVerificationFragment(
+                        "$countryCode $contactNumber"
+                    )
+                findNavController().navigate(navigationAction)
+            }
+        }
+
+        binding.signInEmail.setOnClickListener {
+            Log.e(TAG, "onCreateView: ${R.layout.email_sign_in_layout}", )
+            showSignInDialog()
         }
 
         return binding.root
+    }
+
+    private fun showSignInDialog() {
+        val dialogBinding = layoutInflater.inflate(R.layout.email_sign_in_layout,null)
+        val dialog = Dialog(requireContext(),android.R.style.Theme_Translucent_NoTitleBar)
+
+        dialog.setContentView(dialogBinding)
+        dialog.setCancelable(true)
+
+        val lp = WindowManager.LayoutParams()
+        lp.copyFrom(dialog.window!!.attributes)
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.gravity = Gravity.CENTER
+        lp.dimAmount = 0.7f
+
+        dialog.window!!.attributes = lp
+        dialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+
+        dialog.show()
+
+        val  cancelButton = dialogBinding.findViewById<ImageView>(R.id.image_clear_demo)
+        cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
     }
 
     // set the view binding object to null upon destroying the view

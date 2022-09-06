@@ -135,6 +135,11 @@
     <string name="sign_in_with_google">sign in with google</string>
     <string name="sign_in_with_facebook">sign in with facebook</string>
     <string name="parent_s_name">Parent\'s Name</string>
+    <string name="sign_in_with_email">Sign in with email</string>
+    <string name="password">Password</string>
+    <string name="submit">Submit</string>
+    <string name="new_user">New User? Create An Account</string>
+    <string name="register">Register</string>
     <!--chip text strings ends here-->
 
 </resources>

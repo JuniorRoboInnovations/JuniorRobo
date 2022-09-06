@@ -18,9 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JuniorRobo"
         android:usesCleartextTraffic="true">
-
         <activity
-            android:name="com.jrrobo.juniorroboapp.view.activities.AnswerAQuestion"
+            android:name=".view.activities.AnswerAQuestion"
             android:exported="false" />
 
         <provider
@@ -34,17 +33,17 @@
         </provider>
 
         <activity
-            android:name="com.jrrobo.juniorroboapp.view.activities.QuestionDetails"
+            android:name=".view.activities.QuestionDetails"
             android:exported="true" />
         <activity
-            android:name="com.jrrobo.juniorroboapp.view.activities.AskQuestionActivity"
+            android:name=".view.activities.AskQuestionActivity"
             android:exported="true" />
         <activity
-            android:name="com.jrrobo.juniorroboapp.view.activities.FromQuestionAnswerActivity"
+            android:name=".view.activities.FromQuestionAnswerActivity"
             android:exported="true"
             android:theme="@style/NoActionBarTheme" />
         <activity
-            android:name="com.jrrobo.juniorroboapp.view.activities.MainActivity"
+            android:name=".view.activities.MainActivity"
             android:exported="true"
             android:noHistory="true"
             android:theme="@style/NoActionBarTheme">
