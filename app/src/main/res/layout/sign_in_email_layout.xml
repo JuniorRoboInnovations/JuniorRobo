@@ -9,7 +9,7 @@
     app:cardElevation="10dp">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_clear_sign_in"
@@ -49,7 +49,7 @@
             app:startIconDrawable="@drawable/ic_mail_black">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_email"
+                android:id="@+id/sign_in_edit_text_email"
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

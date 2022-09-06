@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.*
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -69,7 +70,6 @@ class LoginFragment : Fragment() {
         }
 
         binding.signInEmail.setOnClickListener {
-            Log.e(TAG, "onCreateView: ${R.layout.email_sign_in_layout}", )
             showSignInDialog()
         }
 
@@ -77,7 +77,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun showSignInDialog() {
-        val dialogBinding = layoutInflater.inflate(R.layout.email_sign_in_layout,null)
+        val dialogBinding = layoutInflater.inflate(R.layout.sign_in_email_layout,null)
         val dialog = Dialog(requireContext(),android.R.style.Theme_Translucent_NoTitleBar)
 
         dialog.setContentView(dialogBinding)
@@ -95,9 +95,38 @@ class LoginFragment : Fragment() {
 
         dialog.show()
 
-        val  cancelButton = dialogBinding.findViewById<ImageView>(R.id.image_clear_demo)
+        val  cancelButton = dialogBinding.findViewById<ImageView>(R.id.image_clear_sign_in)
         cancelButton.setOnClickListener {
             dialog.dismiss()
+        }
+
+        val loginButton = dialogBinding.findViewById<MaterialButton>(R.id.sign_in_login_button)
+        val passwordEditText = dialogBinding.findViewById<EditText>(R.id.edit_text_password)
+        val emailEditText = dialogBinding.findViewById<EditText>(R.id.sign_in_edit_text_email)
+        val phoneNumberText = dialogBinding.findViewById<TextInputLayout>(R.id.sign_in_number)
+        val registerButton = dialogBinding.findViewById<MaterialButton>(R.id.sign_in_register_button)
+        val newUserText = dialogBinding.findViewById<MaterialTextView>(R.id.new_user_text)
+
+        newUserText.setOnClickListener {
+            registerButton.visibility = View.VISIBLE
+            phoneNumberText.visibility = View.VISIBLE
+            newUserText.visibility = View.GONE
+        }
+
+        registerButton.setOnClickListener {
+            if (emailEditText.text.isNullOrEmpty() || passwordEditText.text.isNullOrEmpty()){
+                Toast.makeText(context, "Please enter a valid Email ID and Password", Toast.LENGTH_SHORT).show()
+            } else{
+
+            }
+        }
+
+        loginButton.setOnClickListener {
+            if (emailEditText.text.isNullOrEmpty() || passwordEditText.text.isNullOrEmpty()){
+                Toast.makeText(context, "Please enter a valid Email ID and Password", Toast.LENGTH_SHORT).show()
+            } else{
+
+            }
         }
     }
 
