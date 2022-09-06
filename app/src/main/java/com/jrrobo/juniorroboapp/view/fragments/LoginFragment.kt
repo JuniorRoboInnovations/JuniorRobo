@@ -111,6 +111,7 @@ class LoginFragment : Fragment() {
             registerButton.visibility = View.VISIBLE
             phoneNumberText.visibility = View.VISIBLE
             newUserText.visibility = View.GONE
+            loginButton.visibility = View.GONE
         }
 
         registerButton.setOnClickListener {
