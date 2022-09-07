@@ -51,11 +51,15 @@ class LoginFragment : Fragment() {
             viewModel.requestOtp(countryCode + contactNumber)
 
             // navigate to the OtpVerificationFragment by passing the country code and contact number
-            val navigationAction =
-                LoginFragmentDirections.actionLoginFragmentToOtpVerificationFragment(
-                    "$countryCode $contactNumber"
-                )
-            findNavController().navigate(navigationAction)
+           if (contactNumber.isEmpty()) {
+                Toast.makeText(context, "Please Enter your Phone Number", Toast.LENGTH_SHORT).show()
+            } else {
+                val navigationAction =
+                    LoginFragmentDirections.actionLoginFragmentToOtpVerificationFragment(
+                        "$countryCode $contactNumber"
+                    )
+                findNavController().navigate(navigationAction)
+           }
         }
 
         return binding.root
