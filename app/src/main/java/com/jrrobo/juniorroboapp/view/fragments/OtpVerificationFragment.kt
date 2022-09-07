@@ -106,7 +106,6 @@ class OtpVerificationFragment : Fragment() {
                         // go to home page
                         val navigationDirections =
                             OtpVerificationFragmentDirections.actionOtpVerificationFragmentToFromQuestionAnswerActivity(
-                                contactNumber
                             )
                         findNavController().navigate(
                             navigationDirections

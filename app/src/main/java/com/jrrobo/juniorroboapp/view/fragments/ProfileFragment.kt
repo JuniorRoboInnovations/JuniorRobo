@@ -233,7 +233,6 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
         // upon clicking the update profile button disable the edit texts and the entered data will be populated
         binding.buttonProfileUpdateButton.setOnClickListener {
 

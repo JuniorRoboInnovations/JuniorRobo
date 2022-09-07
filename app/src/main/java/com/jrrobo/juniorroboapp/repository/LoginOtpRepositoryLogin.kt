@@ -1,5 +1,8 @@
 package com.jrrobo.juniorroboapp.repository
 
+import android.util.Log
+import com.jrrobo.juniorroboapp.data.emailLogin.EmailRegisterData
+import com.jrrobo.juniorroboapp.data.emailLogin.EmailRegisterResponse
 import com.jrrobo.juniorroboapp.network.JuniorRoboApi
 import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
 import javax.inject.Inject
@@ -77,4 +80,72 @@ class LoginOtpRepositoryLogin @Inject constructor(
             NetworkRequestResource.Error(e.message ?: "An Error occurred")
         }
     }
+
+    //function for getting email login response in login fragment
+    override suspend fun emailLogin(
+        email: String,
+        password: String
+    ): NetworkRequestResource<String> {
+        return try {
+
+            // get the response from the API
+            val response = juniorRoboApi.emailLogin(email,password)
+
+            // get the Scalar converter's body of the response provided by the API
+            val result = response.body()
+
+            // check whether the response was successful and is it null
+            if (response.isSuccessful && result != null) {
+
+                Log.e(TAG, "emailLogin: ${result}", )
+                if(result == "Warning"){
+                    NetworkRequestResource.Error(response.message())
+                } else {
+                    NetworkRequestResource.Success(result)
+                }
+
+                // wrap the response around the NetworkRequestResource sealed class for ease of error handling
+                // with the Success object
+
+            } else {
+
+                // wrap the response around the NetworkRequestResource sealed class for ease of error handling
+                // with the Error object
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+
+            // wrap the response around the NetworkRequestResource sealed class for ease of error handling
+            // with the Error object
+            NetworkRequestResource.Error(e.message ?: "An Error occurred")
+        }
+    }
+
+    //function for registering a new user
+    override suspend fun emailRegister(emailRegisterData: EmailRegisterData): NetworkRequestResource<EmailRegisterResponse> {
+        return try {
+
+
+            val response = juniorRoboApi.emailRegister(emailRegisterData)
+
+            val result = response.body()
+
+            if (response.isSuccessful && result != null) {
+
+                // wrap the response around the NetworkRequestResource sealed class for ease of error handling
+                // with the Success object
+                NetworkRequestResource.Success(result)
+            } else {
+
+                // wrap the response around the NetworkRequestResource sealed class for ease of error handling
+                // with the Error object
+                NetworkRequestResource.Error(response.message())
+            }
+        }catch (e: Exception){
+
+            NetworkRequestResource.Error(e.message ?: "Unable to register a new user")
+        }
+    }
+
+
 }

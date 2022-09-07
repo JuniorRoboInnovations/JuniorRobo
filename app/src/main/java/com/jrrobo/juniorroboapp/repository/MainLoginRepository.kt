@@ -1,5 +1,7 @@
 package com.jrrobo.juniorroboapp.repository
 
+import com.jrrobo.juniorroboapp.data.emailLogin.EmailRegisterData
+import com.jrrobo.juniorroboapp.data.emailLogin.EmailRegisterResponse
 import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
 
 /**
@@ -17,4 +19,12 @@ interface MainLoginRepository {
         userOtp: String
     ): NetworkRequestResource<String>
 
+    suspend fun emailLogin(
+        email: String,
+        password: String
+    ): NetworkRequestResource<String>
+
+    suspend fun emailRegister(
+       emailRegisterData: EmailRegisterData
+    ): NetworkRequestResource<EmailRegisterResponse>
 }

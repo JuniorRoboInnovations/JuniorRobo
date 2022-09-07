@@ -59,6 +59,9 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_fromQuestionAnswerActivity"
+            app:destination="@id/fromQuestionAnswerActivity" />
     </fragment>
 
     <fragment
@@ -79,9 +82,7 @@
         android:name="com.jrrobo.juniorroboapp.view.activities.FromQuestionAnswerActivity"
         android:label="activity_from_question_answer"
         tools:layout="@layout/activity_from_question_answer" >
-        <argument
-            android:name="contact_number"
-            app:argType="string" />
+
     </activity>
 
 </navigation>
