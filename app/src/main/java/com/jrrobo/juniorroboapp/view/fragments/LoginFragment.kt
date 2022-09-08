@@ -155,6 +155,7 @@ class LoginFragment : Fragment() {
 
                                     Log.e(TAG, "showSignInDialog: ${it.emailRegisterPostResponse}", )
 
+                                    Toast.makeText(dialog.context, "Successfully Registered", Toast.LENGTH_SHORT).show()
                                     dialog.dismiss()
                                     val navigationDirections =
                                         LoginFragmentDirections.actionLoginFragmentToFromQuestionAnswerActivity()
@@ -189,11 +190,6 @@ class LoginFragment : Fragment() {
                                     is FragmentLoginViewModel.EmailEvent.Failure -> {
 
                                         Log.e(TAG, "onCreateView: ${it.errorText}", )
-                                        /* Snackbar.make(
-                                             loginButton,
-                                             it.errorText,
-                                             Snackbar.LENGTH_LONG
-                                         ).show()*/
 
                                         Toast.makeText(dialog.context, it.errorText, Toast.LENGTH_SHORT).show()
                                     }
