@@ -22,7 +22,13 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
 
         fun bind(item: QuestionItem){
             binding.apply {
-                textViewQuestionItemQuestion.text = item.question
+                if(item.question == ""){
+                    textViewQuestionItemQuestion.text = "Can you please answer this?"
+                }
+                else{
+                    textViewQuestionItemQuestion.text = item.question
+                }
+
                 textViewQuestionItemDescription.text = item.question_sub_text
 //                textViewQuestionItemStudentName.text = item.id.toString()
             }
