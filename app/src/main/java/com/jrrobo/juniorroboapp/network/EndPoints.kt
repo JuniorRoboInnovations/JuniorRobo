@@ -19,6 +19,11 @@ class EndPoints {
         // Endpoint for posting the question asked by the user to backend
         const val APP_QUESTION: String = "appQuestion"
 
+        //Endpoint for requesting and getting response of Email Login
+        const val APP_EMAIL_LOGIN: String = "appEmailLogin"
+
+        const val APP_REGISTER_EMAIL: String = "StudentAdmin"
+
         // Endpoint for getting all the categories of the question
         const val APP_CATEGORY: String = "appCategory"
 

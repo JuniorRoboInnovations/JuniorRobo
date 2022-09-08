@@ -233,7 +233,6 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
         // upon clicking the update profile button disable the edit texts and the entered data will be populated
         binding.buttonProfileUpdateButton.setOnClickListener {
 
@@ -340,6 +339,7 @@ class ProfileFragment : Fragment() {
 
     // function which populates the profile edit texts
     private fun populateProfileForm(studentProfileData: StudentProfileData) {
+
         binding.editTextFirstName.setText(studentProfileData.firstName)
         binding.editTextLastName.setText(studentProfileData.lastName)
         binding.editTextMobileNumber.setText(studentProfileData.mobile)
@@ -351,6 +351,7 @@ class ProfileFragment : Fragment() {
         lifecycleScope.launch {
             Glide.with(binding.root)
                 .load(EndPoints.GET_IMAGE + "/student/" + studentProfileData.userImage)
+                .error(R.drawable.app_logo_image)
                 .into(binding.shapeableImageViewProfile)
         }
     }

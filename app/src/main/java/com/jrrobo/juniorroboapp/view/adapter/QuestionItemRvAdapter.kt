@@ -33,12 +33,11 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
 //                textViewQuestionItemStudentName.text = item.id.toString()
             }
             binding.imageViewQuestionItemImage.setImageDrawable(null)
-            binding.textViewQuestionItemImageLabel.visibility = View.GONE
             binding.imageViewQuestionItemImage.visibility = View.GONE
 
             if(item.image !=null) {
-                binding.textViewQuestionItemImageLabel.visibility = View.VISIBLE
                 binding.imageViewQuestionItemImage.visibility = View.VISIBLE
+
 
                 Glide.with(binding.root)
                     .load(EndPoints.GET_IMAGE + "/question/" + item.image)

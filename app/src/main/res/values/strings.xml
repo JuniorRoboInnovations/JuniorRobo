@@ -140,6 +140,7 @@
     <string name="submit">Submit</string>
     <string name="new_user">New User? Create An Account</string>
     <string name="register">Register</string>
+    <string name="forgot_password">Forgot Password?</string>
     <!--chip text strings ends here-->
 
 </resources>

@@ -6,6 +6,8 @@ import com.jrrobo.juniorroboapp.data.answer.AnswerItemPostResponse
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
+import com.jrrobo.juniorroboapp.data.emailLogin.EmailRegisterData
+import com.jrrobo.juniorroboapp.data.emailLogin.EmailRegisterResponse
 import com.jrrobo.juniorroboapp.data.offer.Offer
 import com.jrrobo.juniorroboapp.data.profile.StudentProfileData
 import com.jrrobo.juniorroboapp.data.questioncategory.QuestionCategoryItem
@@ -19,13 +21,11 @@ import retrofit2.http.*
 
 interface JuniorRoboApi {
 
-
     // GET request for the OTP, taking entered number as query parameter
     @GET(EndPoints.APP_SMS)
     suspend fun requestOtp(
         @Query("number") contactNumber: String,
     ): Response<String>
-
 
     // GET request for verifying the entered OTP of number, taking number and the entered otp as query parameter
     @GET(EndPoints.APP_LOGIN)
@@ -34,6 +34,18 @@ interface JuniorRoboApi {
         @Query("otp") otp: String,
     ): Response<String>
 
+    //GET request for login with email
+    @GET(EndPoints.APP_EMAIL_LOGIN)
+    suspend fun emailLogin(
+        @Query("email") email: String,
+        @Query("password") password: String
+    ): Response<String>
+
+    //
+    @POST(EndPoints.APP_REGISTER_EMAIL)
+    suspend fun emailRegister(
+        @Body emailRegisterData: EmailRegisterData
+    ): Response<EmailRegisterResponse>
 
     // POST request for updating the profile of the student
     @POST(EndPoints.APP_STUDENT)

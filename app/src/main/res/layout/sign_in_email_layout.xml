@@ -83,6 +83,20 @@
                 android:inputType="textPassword"
                 tools:targetApi="p" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/sign_in_forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            style="@style/TextAppearance.MdcTypographyStyles.Body1"
+            app:layout_constraintTop_toBottomOf="@id/sign_in_password"
+            app:layout_constraintStart_toStartOf="@id/sign_in_password"
+            android:layout_marginTop="16dp"
+            android:visibility="visible"
+            android:textColor="@color/pink_700"
+            android:clickable="true"
+            android:focusable="true"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/sign_in_number"
             style="@style/Widget.App.TextInputLayout"
@@ -95,7 +109,7 @@
             android:hint="@string/mobile_number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sign_in_password"
+            app:layout_constraintTop_toBottomOf="@id/sign_in_forgot_password"
             app:startIconDrawable="@drawable/ic_phone_black">
 
             <com.google.android.material.textfield.TextInputEditText

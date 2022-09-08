@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.jrrobo.juniorroboapp.data.emailLogin.EmailRegisterData
+import com.jrrobo.juniorroboapp.data.emailLogin.EmailRegisterResponse
 import com.jrrobo.juniorroboapp.parser.OtpRequestParser
 import com.jrrobo.juniorroboapp.repository.LoginOtpRepositoryLogin
 import com.jrrobo.juniorroboapp.utility.DataStorePreferencesManager
@@ -140,6 +142,96 @@ class FragmentLoginViewModel @Inject constructor(
         }
     }
 
+    sealed class EmailEvent {
+        class Success(val resultText: String) : EmailEvent()
+        class Failure(val errorText: String) : EmailEvent()
+        object Loading : EmailEvent()
+        object Empty : EmailEvent()
+    }
+
+    private val _emailResponseFlow = MutableStateFlow<EmailEvent>(EmailEvent.Empty)
+
+    val emailResponseFlow: MutableStateFlow<EmailEvent> = _emailResponseFlow
+
+    fun responseEmail(
+        email: String,
+        password: String
+    ){
+        Log.e(TAG, "responseEmail: ", )
+        viewModelScope.launch(dispatchers.io) {
+            _emailResponseFlow.value = EmailEvent.Loading
+
+
+            when (val emailResponse = repository.emailLogin(email, password)) {
+
+                is NetworkRequestResource.Error -> {
+                    _emailResponseFlow.value =
+                        EmailEvent.Failure(emailResponse.message!!)
+                }
+
+                is NetworkRequestResource.Success -> {
+                    try {
+                        val successResponse =
+                            OtpRequestParser.otpResponse(emailResponse.data.toString())
+
+                        Log.e(TAG, "responseEmail: ${successResponse.status}", )
+                        if (successResponse.status == "Success") {
+                            _emailResponseFlow.value = EmailEvent.Success(successResponse.message)
+
+                            dataStorePreferencesManager.setPkStudentId(successResponse.pkStudentId)
+
+                            Log.d(TAG, successResponse.pkStudentId.toString())
+                        } else {
+                            _emailResponseFlow.value = EmailEvent.Failure(successResponse.message)
+                        }
+                    }
+                    catch (e :Exception){
+                        _emailResponseFlow.value = EmailEvent.Failure(e.message.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    sealed class EmailRegisterEvent{
+        class Success(val emailRegisterPostResponse: EmailRegisterResponse) : EmailRegisterEvent()
+        class Failure(val errorText: String) : EmailRegisterEvent()
+        object Loading : EmailRegisterEvent()
+        object Empty : EmailRegisterEvent()
+    }
+
+    private val _emailRegisterEventFlow = MutableStateFlow<EmailRegisterEvent>(
+        EmailRegisterEvent.Empty)
+
+    val emailRegisterEventFlow: MutableStateFlow<EmailRegisterEvent>
+        get() = _emailRegisterEventFlow
+
+    fun registerEmail(emailRegister: EmailRegisterData){
+
+        viewModelScope.launch(dispatchers.io) {
+            _emailRegisterEventFlow.value = EmailRegisterEvent.Loading
+
+            when(val response = repository.emailRegister(emailRegister)){
+                is NetworkRequestResource.Error -> {
+                    _emailRegisterEventFlow.value =
+                        EmailRegisterEvent.Failure(response.message!!)
+                }
+
+                is NetworkRequestResource.Success -> {
+
+                    try {
+                        val parsedData = response.data
+                        if (parsedData != null) {
+                            _emailRegisterEventFlow.value = EmailRegisterEvent.Success(parsedData)
+                        }
+                    } catch (e: Exception) {
+                        _emailRegisterEventFlow.value =
+                            EmailRegisterEvent.Failure(e.message.toString())
+                    }
+                }
+            }
+        }
+    }
     // update the data store preference of the OTP verification status
     fun setOtpVerificationStatus(otpVerificationStatusBoolean: Boolean) {
         viewModelScope.launch(dispatchers.io) {
