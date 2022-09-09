@@ -12,15 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profileImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:elevation="8dp"
-            android:src="@color/pink_700"
-            android:layout_margin="6dp"
+            android:id="@+id/course_list_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/pink_700"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"/>
+            app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
+            />
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/logoImage"
             android:layout_width="50dp"
@@ -29,7 +34,7 @@
             android:layout_margin="6dp"
             android:src="@drawable/app_logo_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"/>
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/popularCourseTitle"

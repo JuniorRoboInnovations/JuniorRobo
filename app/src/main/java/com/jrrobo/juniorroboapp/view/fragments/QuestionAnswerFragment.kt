@@ -40,6 +40,8 @@ class QuestionAnswerFragment : Fragment() {
     // view model for this fragment
     private val viewModel: FragmentQuestionsViewModel by activityViewModels()
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -266,7 +268,6 @@ class QuestionAnswerFragment : Fragment() {
         })
     }
 
-
     // set the view binding object to null upon destroying the view
     override fun onDestroyView() {
         super.onDestroyView()
@@ -276,5 +277,11 @@ class QuestionAnswerFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         _binding = null
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            QuestionAnswerFragment()
     }
 }

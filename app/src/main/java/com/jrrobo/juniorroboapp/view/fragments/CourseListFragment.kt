@@ -41,6 +41,10 @@ class CourseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding?.courseListBackBtn?.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
         val adapter = CourseListItemAdapter {
             findNavController().navigate(CourseListFragmentDirections.actionCourseListFragmentToCourseGradeFragment(it))
         }
@@ -49,6 +53,7 @@ class CourseListFragment : Fragment() {
             this?.layoutManager = LinearLayoutManager(requireContext())
             this?.adapter = adapter
         }
+
         viewModel.getCourseCategories()
 
         lifecycleScope.launch {
@@ -63,7 +68,10 @@ class CourseListFragment : Fragment() {
                     }
 
                     is FragmentLiveClassesViewModel.CourseListGetEvent.Success -> {
-                        (binding?.rvCourseCategoriesList?.adapter as CourseListItemAdapter).submitList(it.courseList)
+                        if(binding?.rvCourseCategoriesList?.adapter!=null){
+                            (binding?.rvCourseCategoriesList?.adapter as CourseListItemAdapter).submitList(it.courseList)
+                        }
+
                     }
                     else -> {
                         Unit

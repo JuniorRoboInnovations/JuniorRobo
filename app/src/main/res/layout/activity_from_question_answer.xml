@@ -20,6 +20,7 @@
         android:id="@+id/main_bottom_navigation_shadow"
         android:layout_width="match_parent"
         android:layout_height="4dp"
+        android:visibility="gone"
         android:background="@drawable/bottom_navigation_shadow" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,6 +28,7 @@
         style="@style/Widget.App.BottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:menu="@menu/main_bottom_navigation_menu" />
 
 </LinearLayout>

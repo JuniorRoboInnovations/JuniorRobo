@@ -345,8 +345,13 @@ class ProfileFragment : Fragment() {
         binding.editTextMobileNumber.setText(studentProfileData.mobile)
         binding.editTextEmail.setText(studentProfileData.email)
         binding.editTextCity.setText(studentProfileData.city)
-        binding.textViewUserName.text = "${studentProfileData.firstName} ${studentProfileData.lastName}"
-        Log.d(TAG, "populateProfileForm: called")
+        if(studentProfileData.firstName.isNullOrEmpty() && studentProfileData.lastName.isNullOrEmpty()){
+            binding.textViewUserName.text = "Junior Robo"
+        }
+        else{
+            binding.textViewUserName.text = "${studentProfileData.firstName} ${studentProfileData.lastName}"
+        }
+
         // load the image from Server
         lifecycleScope.launch {
             Glide.with(binding.root)

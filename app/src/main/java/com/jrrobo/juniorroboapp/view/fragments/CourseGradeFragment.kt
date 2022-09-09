@@ -88,6 +88,10 @@ class CourseGradeFragment : Fragment() {
                         Glide.with(binding.root)
                             .load(EndPoints.GET_IMAGE + "/course/" + courseListItem.image)
                             .into(binding.courseImage)
+
+                        // loading the description
+                        binding.courseGradeAboutText.text = courseListItem.description
+
                     }
                     else -> {
                         Unit

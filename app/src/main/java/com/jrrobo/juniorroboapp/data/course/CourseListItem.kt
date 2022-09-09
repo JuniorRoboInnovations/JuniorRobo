@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class CourseListItem(
     val id: Int,
     val title: String,
-    val image: String?
+    val image: String?,
+    val description: String?
 ):Parcelable

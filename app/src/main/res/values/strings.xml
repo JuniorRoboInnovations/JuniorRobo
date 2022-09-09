@@ -141,6 +141,8 @@
     <string name="new_user">New User? Create An Account</string>
     <string name="register">Register</string>
     <string name="forgot_password">Forgot Password?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--chip text strings ends here-->
 
 </resources>

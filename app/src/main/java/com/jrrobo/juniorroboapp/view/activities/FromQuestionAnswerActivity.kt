@@ -3,7 +3,10 @@ package com.jrrobo.juniorroboapp.view.activities
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.jrrobo.juniorroboapp.R
@@ -32,6 +35,18 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.from_question_answer_navigation_container) as NavHostFragment
         val navController = navHostFragment.navController
         NavigationUI.setupWithNavController(bottomNavigationView,navController)
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            if(destination.id == R.id.questionAnswerFragment || destination.id == R.id.liveClassesFragment
+                || destination.id == R.id.profileFragment){
+                binding.mainBottomNavigation.visibility = View.VISIBLE
+                binding.mainBottomNavigationShadow.visibility = View.VISIBLE
+            }
+            else{
+                binding.mainBottomNavigation.visibility = View.GONE
+                binding.mainBottomNavigationShadow.visibility = View.GONE
+            }
+        }
 
         /*
         // handle the bottom navigation item click listener
@@ -82,27 +97,37 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
 
     }
 
-//    override fun onBackPressed() {
-//        var dialogExit: AlertDialog? = null
-//
-//        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-//        builder.setTitle("Confirm Exit ?")
-//        builder.setMessage("Are you sure to exit ? ")
-//
-//        builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
-//            override fun onClick(p0: DialogInterface?, p1: Int) {
-//                dialogExit!!.dismiss()
-//            }
-//        })
-//        builder.setNegativeButton("Exit", object : DialogInterface.OnClickListener {
-//            override fun onClick(dialog: DialogInterface?, which: Int) {
-//                dialogExit!!.dismiss()
-//                finish()
-//            }
-//        })
-//
-//        dialogExit = builder.create()
-//
-//        dialogExit.show()
-//    }
+    override fun onBackPressed() {
+//        val fragments = supportFragmentManager.fragments
+//        if (fragments.size >= 1 && fragments[0] is QuestionAnswerFragment)
+//        }
+//        else{
+//            super.onBackPressed()
+//        }
+        super.onBackPressed()
+    }
+
+    private fun showExitDialog() {
+        var dialogExit: AlertDialog? = null
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle("Confirm Exit ?")
+        builder.setMessage("Are you sure to exit ? ")
+
+        builder.setPositiveButton("Cancel", object : DialogInterface.OnClickListener {
+            override fun onClick(p0: DialogInterface?, p1: Int) {
+                dialogExit!!.dismiss()
+            }
+        })
+        builder.setNegativeButton("Exit", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface?, which: Int) {
+                dialogExit!!.dismiss()
+                finish()
+            }
+        })
+
+        dialogExit = builder.create()
+
+        dialogExit.show()
+    }
 }

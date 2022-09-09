@@ -169,53 +169,53 @@ class LoginFragment : Fragment() {
                     }
                 }
             }
-                loginButton.setOnClickListener {
-                    if (emailEditText.text.isNullOrEmpty() || passwordEditText.text.isNullOrEmpty()){
-                        Toast.makeText(context, "Please enter a valid Email ID and Password", Toast.LENGTH_SHORT).show()
-                    } else{
+            loginButton.setOnClickListener {
+                if (emailEditText.text.isNullOrEmpty() || passwordEditText.text.isNullOrEmpty()){
+                    Toast.makeText(context, "Please enter a valid Email ID and Password", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    val email:String = emailEditText.text.toString()
+                    val pass: String = passwordEditText.text.toString()
 
-                        val email:String = emailEditText.text.toString()
-                        val pass: String = passwordEditText.text.toString()
+                    viewModel.responseEmail(email,pass)
 
-                        viewModel.responseEmail(email,pass)
+                    lifecycleScope.launch {
 
-                        lifecycleScope.launch {
+                        viewModel.emailResponseFlow.collect {
+                            when(it){
+                                is FragmentLoginViewModel.EmailEvent.Loading -> {
 
-                            viewModel.emailResponseFlow.collect {
-                                when(it){
-                                    is FragmentLoginViewModel.EmailEvent.Loading -> {
+                                }
 
-                                    }
+                                is FragmentLoginViewModel.EmailEvent.Failure -> {
 
-                                    is FragmentLoginViewModel.EmailEvent.Failure -> {
+                                    Log.e(TAG, "onCreateView: ${it.errorText}", )
 
-                                        Log.e(TAG, "onCreateView: ${it.errorText}", )
+                                    Toast.makeText(dialog.context, it.errorText, Toast.LENGTH_SHORT).show()
+                                }
 
-                                        Toast.makeText(dialog.context, it.errorText, Toast.LENGTH_SHORT).show()
-                                    }
+                                is FragmentLoginViewModel.EmailEvent.Success -> {
+                                    Log.e(TAG, "showSignInDialog: ${it.resultText}", )
 
-                                    is FragmentLoginViewModel.EmailEvent.Success -> {
-                                        Log.e(TAG, "showSignInDialog: ${it.resultText}", )
-
-                                        dialog.dismiss()
-                                        val navigationDirections =
-                                            LoginFragmentDirections.actionLoginFragmentToFromQuestionAnswerActivity()
-                                        findNavController().navigate(navigationDirections)
-                                    }
-                                    else -> {
-                                        Unit
-                                    }
+                                    dialog.dismiss()
+                                    val navigationDirections =
+                                        LoginFragmentDirections.actionLoginFragmentToFromQuestionAnswerActivity()
+                                    findNavController().navigate(navigationDirections)
+                                    viewModel.setOtpVerificationStatus(true)
+                                }
+                                else -> {
+                                    Unit
                                 }
                             }
                         }
-
                     }
-                }
 
+                }
             }
 
-            return binding.root
         }
+        return binding.root
+    }
 
 
 
