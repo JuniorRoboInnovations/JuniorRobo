@@ -40,6 +40,7 @@ class QuestionDetails : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.title = "Solution"
+        supportActionBar?.setIcon(R.drawable.app_logo_image)
 
         val questionId = intent.extras?.getParcelable<QuestionItem>("question_item")
 
@@ -54,7 +55,12 @@ class QuestionDetails : AppCompatActivity() {
         }
 
         binding.apply {
-            textViewQuestion.text = questionId?.question
+            if (questionId?.question.isNullOrEmpty()){
+                textViewQuestion.text = "Can you please answer this?"
+            } else {
+                textViewQuestion.text = questionId?.question
+            }
+
             textViewQuestionTag.text = questionId?.question_sub_text
 
             //Question Image to be updated here
@@ -108,7 +114,8 @@ class QuestionDetails : AppCompatActivity() {
                 adapter = AnswerItemAdapter(it)
 
                 if (it.isEmpty()) {
-
+                    binding.answer.visibility = View.GONE
+                    binding.answerLine.visibility = View.GONE
                     binding.noDataText.visibility = View.VISIBLE
                         if (questionId != null) {
                             viewModel.getAnswer(questionId.id)

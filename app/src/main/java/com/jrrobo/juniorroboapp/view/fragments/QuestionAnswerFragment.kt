@@ -40,8 +40,6 @@ class QuestionAnswerFragment : Fragment() {
     // view model for this fragment
     private val viewModel: FragmentQuestionsViewModel by activityViewModels()
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,7 +49,6 @@ class QuestionAnswerFragment : Fragment() {
 
         return binding?.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -47,6 +47,7 @@
             android:layout_marginTop="10dp"
             android:padding="5dp"
             android:background="@drawable/round_outline"
+            app:shapeAppearanceOverlay="@style/cornerImageShapeOverlay4"
             android:src="@drawable/ic_launcher_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

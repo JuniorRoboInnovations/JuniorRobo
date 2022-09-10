@@ -50,8 +50,8 @@
     <string name="cancel">Cancel</string>
     <string name="change">Change</string>
     <string name="answer_this">ADD ANSWER</string>
-    <string name="add_answer">Add Answer</string>
-    <string name="post_answer">POST ANSWER</string>
+    <string name="add_answer">Add Solution</string>
+    <string name="post_answer">POST Solution</string>
     <string name="see_solution">See Solution</string>
     <!--Button strings ends here-->
 
@@ -69,7 +69,7 @@
     <string name="tactical_learning">A Tactical Learning\nplatform</string>
     <string name="creative_lessons_best_price">Best and Creative lessons at\nLowest price Guaranteed</string>
     <string name="unique_platform">Junior Robo is a Unique Platform for the kids to help them boost\ntheir IQ and EQ with the help of Coding.</string>
-    <string name="trustpilot_review">Trustpilot Review</string>
+    <string name="trustpilot_review">Trustpilot Score</string>
     <!--Screen 2-->
     <string name="screen_2">Give your child wings to innovate</string>
     <!--Screen 3-->
@@ -141,8 +141,8 @@
     <string name="new_user">New User? Create An Account</string>
     <string name="register">Register</string>
     <string name="forgot_password">Forgot Password?</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="doubts">Doubts</string>
+    <string name="answers">Solution</string>
     <!--chip text strings ends here-->
 
 </resources>

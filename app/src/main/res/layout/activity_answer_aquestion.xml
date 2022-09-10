@@ -10,13 +10,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="6dp">
         <ImageView
             android:id="@+id/questionMarkImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginTop="6dp"
+            android:padding="5dp"
             android:src="@drawable/ic_baseline_help_24"
             android:contentDescription="@string/question_mark" />
     <com.google.android.material.textview.MaterialTextView
@@ -24,8 +25,8 @@
         style="@style/TextAppearance.MdcTypographyStyles.Headline6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
         android:layout_marginEnd="6dp"
         android:textColor="@color/pink_700"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,36 +38,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView11"
-            style="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="6dp">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="6dp"
-            android:text="@string/subject"
-            android:textStyle="bold"/>
+            android:background="@color/pink_700"
+            android:padding="5dp"
+            app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
+            android:src="@drawable/ic_baseline_menu_book_24"
+            android:contentDescription="@string/subject"/>
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_question_tag_for_answer"
         style="@style/TextAppearance.MdcTypographyStyles.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_question_for_answer"
         tools:text="Biology" />
     </LinearLayout>
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView_question"
-        style="@style/cornerImageShapeOverlay"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_gravity="center"
         android:background="@drawable/round_outline"
         tools:src="@drawable/ic_launcher_background"
+        app:shapeAppearanceOverlay="@style/cornerImageShapeOverlay4"
         android:padding="5dp"
         android:layout_margin="10dp"/>
     <LinearLayout

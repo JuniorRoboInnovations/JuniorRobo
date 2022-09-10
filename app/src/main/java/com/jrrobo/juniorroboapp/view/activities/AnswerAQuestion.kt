@@ -5,11 +5,13 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -73,6 +75,7 @@ class AnswerAQuestion : AppCompatActivity() {
         binding = ActivityAnswerAquestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = "Solution"
         val questionItem = intent.extras?.getParcelable<QuestionItem>("question_item")
 
         if (questionItem != null) {
@@ -88,12 +91,11 @@ class AnswerAQuestion : AppCompatActivity() {
         }
 
         binding.apply {
-            if (questionItem?.question.isNullOrEmpty()){
+            if (questionItem?.question.isNullOrEmpty()) {
                 questionMarkImage.visibility = View.GONE
                 textViewQuestionForAnswer.visibility = View.GONE
             }
-            if (questionItem?.question_sub_text.isNullOrEmpty()){
-                materialTextView11.visibility = View.GONE
+            if (questionItem?.question_sub_text.isNullOrEmpty()) {
                 textViewQuestionTagForAnswer.visibility = View.GONE
             }
             textViewQuestionForAnswer.text = questionItem?.question
@@ -101,14 +103,38 @@ class AnswerAQuestion : AppCompatActivity() {
 
             if (questionItem?.image.isNullOrEmpty()) {
                 binding.imageViewQuestion.visibility = View.GONE
-            }
-            else {
+            } else {
                 binding.imageViewQuestion.visibility = View.VISIBLE
                 GlobalScope.launch(Dispatchers.Main) {
                     Glide.with(binding.root)
                         .load(EndPoints.GET_IMAGE + "/question/" + questionItem?.image)
                         .into(binding.imageViewQuestion)
                 }
+            }
+
+            binding.imageViewQuestion.setOnClickListener {
+                var dialogQuestionImagePreview: AlertDialog? = null
+
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this@AnswerAQuestion)
+                val customLayout: View = LayoutInflater.from(this@AnswerAQuestion)
+                    .inflate(R.layout.questionimage_layout_dialog, null)
+
+                val imageView = customLayout.findViewById<ImageView>(R.id.questionImageView)
+                GlobalScope.launch(Dispatchers.Main) {
+                    Glide.with(binding.root)
+                        .load(EndPoints.GET_IMAGE + "/question/" + questionItem?.image)
+                        .into(imageView)
+                }
+                builder.setView(customLayout)
+
+                val cancelButton = customLayout.findViewById<ImageView>(R.id.cancelImageView)
+                cancelButton.setOnClickListener {
+                    dialogQuestionImagePreview?.dismiss()
+                }
+
+                dialogQuestionImagePreview = builder.create()
+
+                dialogQuestionImagePreview.show()
             }
         }
 

@@ -3,7 +3,7 @@
     <item
         android:id="@+id/questionAnswerFragment"
         android:icon="@drawable/ic_question_answer"
-        android:title="@string/questions_answers" />
+        android:title="@string/doubts" />
     <item
         android:id="@+id/liveClassesFragment"
         android:icon="@drawable/ic_school"

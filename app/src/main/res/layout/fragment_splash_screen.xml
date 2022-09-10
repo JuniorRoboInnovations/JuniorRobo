@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".view.fragments.SplashFragment">
 
+    <include layout="@layout/circular_app_logo"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -6,10 +6,11 @@
     android:layout_gravity="center"
     android:padding="8dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/questionImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:shapeAppearanceOverlay="@style/cornerImageShapeOverlay4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

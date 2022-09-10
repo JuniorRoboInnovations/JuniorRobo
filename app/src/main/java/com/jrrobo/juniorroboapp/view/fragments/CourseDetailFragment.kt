@@ -1,12 +1,13 @@
 package com.jrrobo.juniorroboapp.view.fragments
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.jrrobo.juniorroboapp.network.EndPoints
 import com.jrrobo.juniorroboapp.view.adapter.CourseDetailItemAdapter
 import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
 import kotlinx.coroutines.launch
+
 
 class CourseDetailFragment : Fragment() {
 
@@ -62,6 +64,7 @@ class CourseDetailFragment : Fragment() {
             showDemoDialog()
         }
 
+
         binding.subcourseRecyclerView.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -97,9 +100,6 @@ class CourseDetailFragment : Fragment() {
                 }
             }
         }
-
-
-
     }
 
     private fun showDemoDialog() {
@@ -130,7 +130,7 @@ class CourseDetailFragment : Fragment() {
     private fun populateViews(courseGradeDetail: CourseGradeDetail) {
         binding.subjectsCovered.text = courseGradeDetail.subject_covered
         binding.courseDetailAboutText.text = courseGradeDetail.description
-        binding.courseDetailEnrolButton.text = "Enroll Now INR" + courseGradeDetail.fee
+        binding.courseDetailEnrolButton.text = "Enroll Now ₹" + courseGradeDetail.fee
         binding.courseDetailTitle.text = courseGradeDetail.title
         Glide.with(binding.root)
             .load(EndPoints.GET_IMAGE + "/course/" + courseGradeDetail.image)
