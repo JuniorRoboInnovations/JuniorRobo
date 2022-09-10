@@ -160,6 +160,7 @@ class LoginFragment : Fragment() {
                                     val navigationDirections =
                                         LoginFragmentDirections.actionLoginFragmentToFromQuestionAnswerActivity()
                                     findNavController().navigate(navigationDirections)
+                                    viewModel.setOtpVerificationStatus(true)
                                 }
                                 else -> {
                                     Unit
