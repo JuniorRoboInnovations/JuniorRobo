@@ -51,13 +51,5 @@
         <argument
             android:name="courseGradeListItem"
             app:argType="com.jrrobo.juniorroboapp.data.course.CourseGradeListItem" />
-        <action
-            android:id="@+id/action_courseDetailFragment_to_fragmentCourseDetailsSecondPage2"
-            app:destination="@id/fragmentCourseDetailsSecondPage" />
     </fragment>
-    <fragment
-        android:id="@+id/fragmentCourseDetailsSecondPage"
-        android:name="com.jrrobo.juniorroboapp.view.fragments.FragmentCourseDetailsSecondPage"
-        android:label="fragment_course_details_second_page2"
-        tools:layout="@layout/fragment_course_details_second_page2" />
 </navigation>
