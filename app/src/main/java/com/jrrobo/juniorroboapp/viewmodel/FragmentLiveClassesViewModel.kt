@@ -2,7 +2,9 @@ package com.jrrobo.juniorroboapp.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
@@ -135,6 +137,58 @@ class FragmentLiveClassesViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Booking post event
+     * Request type: POST
+     */
+    sealed class BookingItemPostEvent {
+        class Success(val pk_id: Int) : BookingItemPostEvent()
+        class Failure(val errorText: String) : BookingItemPostEvent()
+        object Loading : BookingItemPostEvent()
+        object Empty : BookingItemPostEvent()
+    }
+
+    private val _bookingPostFlow = MutableStateFlow<BookingItemPostEvent>(BookingItemPostEvent.Empty)
+    val bookingPostFlow: MutableStateFlow<BookingItemPostEvent> = _bookingPostFlow
+
+    fun postBookingItem(
+        bookingItem: BookingItem
+    ) {
+        // using the repository object injected launch the profile update event for POST request
+        viewModelScope.launch(dispatchers.io) {
+
+            // keep the event in the loading state
+            _bookingPostFlow.value = BookingItemPostEvent.Loading
+
+            // check the state of the NetworkResource data of the response after POST request
+            when (val updateProfileResponse = repository.postBookingItem(bookingItem)) {
+
+                // when the NetworkResource is Error then set the Profile update request event to
+                // Error state with the error message
+                is NetworkRequestResource.Error -> {
+                    _bookingPostFlow.value =
+                        BookingItemPostEvent.Failure(updateProfileResponse.message!!)
+                }
+
+                // when the NetworkResource is Success set the BookingItemPost event to
+                // Success state with the data got by the network resource
+                is NetworkRequestResource.Success -> {
+                    try {
+                        _bookingPostFlow.value =
+                            BookingItemPostEvent.Success(updateProfileResponse.data!!)
+                    }
+                    catch (e : Exception){
+                        _bookingPostFlow.value =
+                            BookingItemPostEvent.Failure(e.message.toString())
+                    }
+                    Log.d(TAG, updateProfileResponse.data.toString())
+                }
+            }
+        }
+    }
+
+    fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
 
 
 }

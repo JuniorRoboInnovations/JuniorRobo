@@ -1,5 +1,6 @@
 package com.jrrobo.juniorroboapp.repository
 
+import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
@@ -15,5 +16,8 @@ interface MainLiveClassesRepository {
     suspend fun getCourseGrades(courseId: Int): NetworkRequestResource<List<CourseGradeListItem>>
 
     suspend fun getCourseGradeDetails(id: Int): NetworkRequestResource<CourseGradeDetail>
+
+    suspend fun postBookingItem(bookingItem: BookingItem) : NetworkRequestResource<Int>
+
 
 }

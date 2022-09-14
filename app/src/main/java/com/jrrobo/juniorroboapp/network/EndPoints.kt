@@ -47,6 +47,9 @@ class EndPoints {
         // Endpoint to get app grade
         const val APP_GRADE: String = "appGrade"
 
+        // Endpoint to post app booking
+        const val APP_BOOKING: String = "appBooking"
+
     }
 
 }

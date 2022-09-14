@@ -1,6 +1,7 @@
 package com.jrrobo.juniorroboapp.repository
 
 import android.util.Log
+import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
@@ -64,6 +65,23 @@ class LiveClassesRepository @Inject constructor(
         } catch (e: Exception) {
             Log.d(TAG, "getCourseGradeDetails: ${e.message}")
             NetworkRequestResource.Error(e.message ?: "Unable to get course details")
+        }
+    }
+
+    override suspend fun postBookingItem(bookingItem: BookingItem): NetworkRequestResource<Int> {
+        return try {
+            val response = juniorRoboApi.postBookingItem(bookingItem)
+
+            val result = response.body()
+
+            if (response.isSuccessful && result != null) {
+                NetworkRequestResource.Success(result)
+            } else {
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "postBookingItem: ${e.message}")
+            NetworkRequestResource.Error(e.message ?: "Unable to post booking item")
         }
     }
 }

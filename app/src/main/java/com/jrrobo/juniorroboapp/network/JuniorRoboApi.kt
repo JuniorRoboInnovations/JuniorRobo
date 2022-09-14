@@ -3,6 +3,7 @@ package com.jrrobo.juniorroboapp.network
 import com.jrrobo.juniorroboapp.data.answer.AnswerItem
 import com.jrrobo.juniorroboapp.data.answer.AnswerItemPost
 import com.jrrobo.juniorroboapp.data.answer.AnswerItemPostResponse
+import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
@@ -141,6 +142,10 @@ interface JuniorRoboApi {
         @Path("id") id: Int
     ): Response<CourseGradeDetail>
 
+    @POST(EndPoints.APP_BOOKING)
+    suspend fun postBookingItem(
+        @Body bookingItem: BookingItem
+    ): Response<Int>
 
 
 }

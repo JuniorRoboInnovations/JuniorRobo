@@ -1,7 +1,7 @@
 package com.jrrobo.juniorroboapp.view.fragments
 
 import android.app.Dialog
-import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -9,11 +9,14 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.jrrobo.juniorroboapp.R
+import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.databinding.FragmentCourseDetailBinding
@@ -77,6 +80,10 @@ class CourseDetailFragment : Fragment() {
             ))
         }
 
+        binding.courseDetailEnrolButton.setOnClickListener {
+            postBookingItem()
+        }
+
         viewModel.getCourseGradeDetails(courseGradeListItem.id)
         Log.d(TAG, "onViewCreated: calling getCourseDetails")
         lifecycleScope.launch {
@@ -100,6 +107,67 @@ class CourseDetailFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun postBookingItem() {
+        var pkStudentId: Int = -1
+        // request the primary key
+        viewModel.getPkStudentIdPreference().observe(requireActivity(), Observer {
+            // assign the primary key from the data store preference
+            pkStudentId = it
+        })
+
+        viewModel.postBookingItem(
+            BookingItem(
+                0,
+                "0",
+                "0",
+                courseGradeListItem.id,
+                pkStudentId,
+                0,
+                null,
+                "Pending"
+            )
+        )
+
+        lifecycleScope.launch {
+            viewModel.bookingPostFlow.collect {
+                when (it) {
+                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Loading -> {
+                        binding.courseDetailRootContainer.isClickable = false
+                        binding.courseDetailProgressBar.visibility = View.VISIBLE
+                    }
+
+                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Failure -> {
+                        binding.courseDetailRootContainer.isClickable = true
+                        binding.courseDetailProgressBar.visibility = View.GONE
+                    }
+
+                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Success -> {
+                        binding.courseDetailRootContainer.isClickable = true
+                        binding.courseDetailProgressBar.visibility = View.GONE
+                        Snackbar.make(binding.root,"Posted Booking Item Successfully!",Snackbar.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        Unit
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private fun setViewFlags() {
+        binding.courseDetailRootContainer.setBackgroundColor(Color.parseColor("#ffffff"))
+        binding.courseDetailRootContainer.background.alpha = 7
+        val windowManager = requireActivity().window.attributes
+        windowManager.dimAmount = 0.7f
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+    }
+
+    private fun clearViewFlags() {
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     }
 
     private fun showDemoDialog() {
