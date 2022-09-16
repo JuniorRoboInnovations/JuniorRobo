@@ -2,18 +2,21 @@ package com.jrrobo.juniorroboapp.view.fragments
 
 import android.app.Dialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.data.questioncategory.QuestionCategoryItem
@@ -50,6 +53,7 @@ class QuestionAnswerFragment : Fragment() {
         return binding?.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAppLaunchedStatus().observe(viewLifecycleOwner){
@@ -124,6 +128,22 @@ class QuestionAnswerFragment : Fragment() {
                     binding?.chipGroupQuestionCategoriesChips?.check(allQuestionChipId)
                 }
 
+            }
+        })
+
+        binding?.rvQuestionsList?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0){
+                    if (binding!!.fabAskQuestion.isShown){
+                        binding!!.fabAskQuestion.shrink()
+                    }
+                } else if (dy < 0){
+                    if(binding!!.fabAskQuestion.isShown){
+                        binding!!.fabAskQuestion.extend()
+                    }
+                }
             }
         })
 
@@ -248,6 +268,7 @@ class QuestionAnswerFragment : Fragment() {
 
                 dialog.window!!.attributes = lp
                 dialog.window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+                dialog.setCanceledOnTouchOutside(true)
 
                 dialog.show()
 

@@ -19,6 +19,9 @@
         android:theme="@style/Theme.JuniorRobo"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activities.CourseDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activities.AnswerAQuestion"
             android:exported="false" />
 

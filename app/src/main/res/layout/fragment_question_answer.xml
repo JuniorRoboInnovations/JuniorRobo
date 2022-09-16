@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/search_view_style"
         app:iconifiedByDefault="false"
-        app:queryHint="Search Here"
+        app:queryHint="Search Your Doubts Here"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"

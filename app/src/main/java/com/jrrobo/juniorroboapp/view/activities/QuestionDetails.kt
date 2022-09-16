@@ -40,7 +40,6 @@ class QuestionDetails : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.title = "Solution"
-        supportActionBar?.setIcon(R.drawable.app_logo_image)
 
         val questionId = intent.extras?.getParcelable<QuestionItem>("question_item")
 
@@ -126,6 +125,9 @@ class QuestionDetails : AppCompatActivity() {
                         }
                     }
                 else{
+                    binding.answerLine.visibility = View.VISIBLE
+                    binding.answer.visibility = View.VISIBLE
+                    binding.noDataText.visibility = View.GONE
                     binding.answersRv.visibility = View.VISIBLE
                 }
                 if (it.size >= 5) {
