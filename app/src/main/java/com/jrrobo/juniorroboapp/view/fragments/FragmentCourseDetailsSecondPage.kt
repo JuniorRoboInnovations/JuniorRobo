@@ -52,11 +52,6 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
     private var selectedSubjects: BooleanArray = BooleanArray(subjectArray.size)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

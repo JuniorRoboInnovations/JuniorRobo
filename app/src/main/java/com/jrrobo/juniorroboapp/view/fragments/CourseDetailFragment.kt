@@ -44,10 +44,6 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
     // view model for this fragment
     private val viewModel: FragmentLiveClassesViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
