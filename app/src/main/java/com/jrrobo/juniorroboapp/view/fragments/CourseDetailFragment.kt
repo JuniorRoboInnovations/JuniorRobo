@@ -6,25 +6,19 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import android.widget.ScrollView
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.tabs.TabLayoutMediator
 import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.databinding.FragmentCourseDetailBinding
 import com.jrrobo.juniorroboapp.network.EndPoints
-import com.jrrobo.juniorroboapp.utility.ScreenSliderAdapter
 import com.jrrobo.juniorroboapp.view.adapter.CourseDetailItemAdapter
 import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
 import kotlinx.coroutines.launch
@@ -62,13 +56,13 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
 
         }
-        binding.scrollViewCourseDetail.setOnScrollChangeListener(View.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY > oldScrollY){
+        binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY > oldScrollY) {
                 binding.fabBookDemoButton.shrink()
-            }else if (scrollY < oldScrollY){
+            } else if (scrollY < oldScrollY) {
                 binding.fabBookDemoButton.extend()
             }
-        })
+        }
 
         binding.fabBookDemoButton.setOnClickListener {
             showDemoDialog()

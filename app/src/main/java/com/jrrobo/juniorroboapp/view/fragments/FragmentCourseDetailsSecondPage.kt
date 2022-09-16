@@ -6,29 +6,23 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
 import android.widget.ImageView
-import android.widget.SpinnerAdapter
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.tabs.TabLayoutMediator
 import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
-import com.jrrobo.juniorroboapp.databinding.FragmentCourseDetailBinding
+import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.databinding.FragmentCourseDetailsSecondPage2Binding
 import com.jrrobo.juniorroboapp.network.EndPoints
-import com.jrrobo.juniorroboapp.utility.ScreenSliderAdapter
 import com.jrrobo.juniorroboapp.view.adapter.CourseDetailItemAdapter
 import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
 import kotlinx.coroutines.launch
-import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem as CourseGradeListItem
 
 class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGradeListItem) : Fragment() {
     private val TAG: String = javaClass.simpleName
@@ -55,7 +49,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentCourseDetailsSecondPage2Binding.inflate(inflater, container, false)
         return binding.root
@@ -69,13 +63,13 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
         }
 
-        binding.scrollViewCourseDetail.setOnScrollChangeListener(View.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY > oldScrollY){
+        binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY > oldScrollY) {
                 binding.fabBookDemoButton.extend()
-            }else if (scrollY < oldScrollY){
+            } else if (scrollY < oldScrollY) {
                 binding.fabBookDemoButton.shrink()
             }
-        })
+        }
 
         binding.subjectsCard.setOnClickListener {
             showSubjectsDialog()
