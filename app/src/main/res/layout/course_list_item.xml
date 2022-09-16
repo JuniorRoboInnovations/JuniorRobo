@@ -20,7 +20,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/previewImage"
             android:layout_width="80dp"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             app:shapeAppearanceOverlay="@style/cornerImageShapeOverlay"
             android:src="@drawable/abstract_bg"/>
         <com.google.android.material.textview.MaterialTextView

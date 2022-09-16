@@ -36,20 +36,8 @@
         android:name="com.jrrobo.juniorroboapp.view.fragments.CourseGradeFragment"
         android:label="fragment_course_grade"
         tools:layout="@layout/fragment_course_grade" >
-        <action
-            android:id="@+id/action_courseGradeFragment_to_courseDetailFragment"
-            app:destination="@id/courseDetailFragment" />
         <argument
             android:name="courseListItem"
             app:argType="com.jrrobo.juniorroboapp.data.course.CourseListItem" />
-    </fragment>
-    <fragment
-        android:id="@+id/courseDetailFragment"
-        android:name="com.jrrobo.juniorroboapp.view.fragments.CourseDetailFragment"
-        android:label="fragment_course_detail"
-        tools:layout="@layout/fragment_course_detail" >
-        <argument
-            android:name="courseGradeListItem"
-            app:argType="com.jrrobo.juniorroboapp.data.course.CourseGradeListItem" />
     </fragment>
 </navigation>

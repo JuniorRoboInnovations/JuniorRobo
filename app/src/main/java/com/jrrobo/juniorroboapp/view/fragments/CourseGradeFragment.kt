@@ -1,5 +1,6 @@
 package com.jrrobo.juniorroboapp.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import com.jrrobo.juniorroboapp.data.course.CourseListItem
 import com.jrrobo.juniorroboapp.databinding.FragmentCourseGradeBinding
 import com.jrrobo.juniorroboapp.databinding.FragmentCourseListBinding
 import com.jrrobo.juniorroboapp.network.EndPoints
+import com.jrrobo.juniorroboapp.view.activities.CourseDetailActivity
+import com.jrrobo.juniorroboapp.view.activities.QuestionDetails
 import com.jrrobo.juniorroboapp.view.adapter.CourseGradeListItemAdapter
 import com.jrrobo.juniorroboapp.view.adapter.CourseListItemAdapter
 import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
@@ -64,7 +67,9 @@ class CourseGradeFragment : Fragment() {
         with(binding.rvCourseGradeList){
             this.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
             this.adapter = CourseGradeListItemAdapter {
-                findNavController().navigate(CourseGradeFragmentDirections.actionCourseGradeFragmentToCourseDetailFragment(it))
+                val intent = Intent(requireContext(), CourseDetailActivity::class.java)
+                intent.putExtra("courseGradeListItem", it)
+                startActivity(intent)
             }
         }
         viewModel.getCourseGrades(courseListItem.id)
