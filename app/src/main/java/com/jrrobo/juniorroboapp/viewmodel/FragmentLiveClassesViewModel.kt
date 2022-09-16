@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
+import com.jrrobo.juniorroboapp.data.booking.BookingDemoItemPostResponse
 import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
@@ -183,6 +185,57 @@ class FragmentLiveClassesViewModel @Inject constructor(
                             BookingItemPostEvent.Failure(e.message.toString())
                     }
                     Log.d(TAG, updateProfileResponse.data.toString())
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Booking demo post event
+     * Request type: POST
+     */
+    sealed class BookingDemoItemPostEvent {
+        class Success(val postBookingDemoItemPostResponse: BookingDemoItemPostResponse) : BookingDemoItemPostEvent()
+        class Failure(val errorText: String) : BookingDemoItemPostEvent()
+        object Loading : BookingDemoItemPostEvent()
+        object Empty : BookingDemoItemPostEvent()
+    }
+
+    private val _bookingDemoItemPostFlow = MutableStateFlow<BookingDemoItemPostEvent>(BookingDemoItemPostEvent.Empty)
+    val bookingDemoItemPostFlow: MutableStateFlow<BookingDemoItemPostEvent> = _bookingDemoItemPostFlow
+
+    fun postBookingDemoItem(
+        bookingDemoItem: BookingDemoItem
+    ) {
+        // using the repository object injected launch the profile update event for POST request
+        viewModelScope.launch(dispatchers.io) {
+
+            // keep the event in the loading state
+            _bookingDemoItemPostFlow.value = BookingDemoItemPostEvent.Loading
+
+            // check the state of the NetworkResource data of the response after POST request
+            when (val response = repository.postBookingDemoItem(bookingDemoItem)) {
+
+                // when the NetworkResource is Error then set the Profile update request event to
+                // Error state with the error message
+                is NetworkRequestResource.Error -> {
+                    _bookingDemoItemPostFlow.value =
+                        BookingDemoItemPostEvent.Failure(response.message!!)
+                }
+
+                // when the NetworkResource is Success set the BookingItemPost event to
+                // Success state with the data got by the network resource
+                is NetworkRequestResource.Success -> {
+                    try {
+                        _bookingDemoItemPostFlow.value =
+                            BookingDemoItemPostEvent.Success(response.data!!)
+                    }
+                    catch (e : Exception){
+                        _bookingDemoItemPostFlow.value =
+                            BookingDemoItemPostEvent.Failure(e.message.toString())
+                    }
+                    Log.d(TAG, response.data.toString())
                 }
             }
         }

@@ -5,7 +5,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,7 +18,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.hbb20.CountryCodePicker
 import com.jrrobo.juniorroboapp.R
+import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
 import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
@@ -141,6 +146,7 @@ class CourseDetailFragment : Fragment() {
                     is FragmentLiveClassesViewModel.BookingItemPostEvent.Failure -> {
                         binding.courseDetailRootContainer.isClickable = true
                         binding.courseDetailProgressBar.visibility = View.GONE
+                        Snackbar.make(binding.root,it.errorText,Snackbar.LENGTH_SHORT).show()
                     }
 
                     is FragmentLiveClassesViewModel.BookingItemPostEvent.Success -> {
@@ -179,8 +185,8 @@ class CourseDetailFragment : Fragment() {
 
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT
         lp.gravity = Gravity.CENTER
         lp.dimAmount = 0.7f
 
@@ -189,9 +195,69 @@ class CourseDetailFragment : Fragment() {
 
         dialog.show()
 
-        val  cancelButton = dialogBinding.findViewById<ImageView>(R.id.image_clear_demo)
-        cancelButton.setOnClickListener {
+        dialogBinding.findViewById<EditText>(R.id.edit_text_course_name).setText(courseGradeListItem.title)
+
+        dialogBinding.findViewById<ImageView>(R.id.image_clear_demo).setOnClickListener {
             dialog.dismiss()
+        }
+
+        dialogBinding.findViewById<Button>(R.id.book_demo_button).setOnClickListener {
+
+            postBookingDemoItem(dialog,
+                BookingDemoItem(
+                    dialogBinding.findViewById<EditText>(R.id.edit_text_student_name).text.toString(),
+                    dialogBinding.findViewById<EditText>(R.id.edit_text_father_name).text.toString(),
+                    dialogBinding.findViewById<EditText>(R.id.edit_text_email).text.toString(),
+                    dialogBinding.findViewById<CountryCodePicker>(R.id.demo_country_code_picker).selectedCountryCode.trim()
+                            + dialogBinding.findViewById<EditText>(R.id.demo_phone_number).text.toString(),
+                    null,
+                    dialogBinding.findViewById<EditText>(R.id.edit_text_course_name).text.toString(),
+                    null
+                )
+            )
+        }
+    }
+
+    private fun postBookingDemoItem(
+        dialog: Dialog,
+        bookingDemoItem: BookingDemoItem
+    ) {
+        if(bookingDemoItem.studentname.isNullOrEmpty()
+            || bookingDemoItem.fathername.isNullOrEmpty()
+            || bookingDemoItem.email.isNullOrEmpty()
+            || bookingDemoItem.mobile.isNullOrEmpty()
+        ){
+            Toast.makeText(requireContext(),"Please fill the details to book demo!",Toast.LENGTH_SHORT).show()
+        }
+        else{
+            Log.d(TAG, "postBookingDemoItem: $bookingDemoItem")
+            viewModel.postBookingDemoItem(bookingDemoItem)
+            lifecycleScope.launch {
+                viewModel.bookingDemoItemPostFlow.collect {
+                    when (it) {
+                        is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Loading -> {
+                            binding.courseDetailRootContainer.isClickable = false
+                            binding.courseDetailProgressBar.visibility = View.VISIBLE
+                        }
+
+                        is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Failure -> {
+                            Log.d(TAG, "postBookingDemoItem: ${it.errorText}")
+                            binding.courseDetailRootContainer.isClickable = true
+                            binding.courseDetailProgressBar.visibility = View.GONE
+                        }
+
+                        is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Success -> {
+                            binding.courseDetailRootContainer.isClickable = true
+                            binding.courseDetailProgressBar.visibility = View.GONE
+                            Snackbar.make(binding.root,"Booking demo for this course successful!",Snackbar.LENGTH_LONG).show()
+                            dialog.dismiss()
+                        }
+                        else -> {
+                            Unit
+                        }
+                    }
+                }
+            }
         }
     }
 

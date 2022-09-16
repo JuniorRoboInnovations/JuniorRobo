@@ -146,8 +146,8 @@
                 tools:targetApi="p" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.App.TextInputLayout"
             android:id="@+id/book_demo_course"
-            style="@style/Widget.App.Outlined.ExposedDropDownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -157,15 +157,19 @@
             android:hint="@string/course"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/book_demo_email">
-            <AutoCompleteTextView
-                android:id="@+id/autoCompleteTextView"
+            app:layout_constraintTop_toBottomOf="@id/book_demo_email"
+            app:startIconDrawable="@drawable/ic_question_answer"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_course_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="none"
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
-                android:text="@string/others" />
+                android:outlineSpotShadowColor="@color/pink_700"
+                android:shadowColor="@color/pink_700"
+                android:inputType="text"
+                tools:targetApi="p"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.checkbox.MaterialCheckBox

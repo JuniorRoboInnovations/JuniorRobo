@@ -50,6 +50,9 @@ class EndPoints {
         // Endpoint to post app booking
         const val APP_BOOKING: String = "appBooking"
 
+        //Endpoint to book demo of a course
+        const val STUDENT_QUERY: String = "studentQuery"
+
     }
 
 }

@@ -1,6 +1,8 @@
 package com.jrrobo.juniorroboapp.repository
 
 import android.util.Log
+import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
+import com.jrrobo.juniorroboapp.data.booking.BookingDemoItemPostResponse
 import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
@@ -82,6 +84,24 @@ class LiveClassesRepository @Inject constructor(
         } catch (e: Exception) {
             Log.d(TAG, "postBookingItem: ${e.message}")
             NetworkRequestResource.Error(e.message ?: "Unable to post booking item")
+        }
+    }
+
+    override suspend fun postBookingDemoItem(bookingDemoItem: BookingDemoItem): NetworkRequestResource<BookingDemoItemPostResponse> {
+        return try {
+            val response = juniorRoboApi.postBookingDemo(bookingDemoItem)
+
+            val result = response.body()
+            Log.d(TAG, "postBookingDemoItem: ${response.body()}")
+            if (response.isSuccessful && result != null) {
+                Log.d(TAG, "postBookingDemoItem: ${result.toString()}")
+                NetworkRequestResource.Success(result)
+            } else {
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            Log.d(TAG, "postBookingItem: ${e.message}")
+            NetworkRequestResource.Error(e.message ?: "Unable to post booking demo")
         }
     }
 }
