@@ -17,6 +17,7 @@ import com.jrrobo.juniorroboapp.data.questioncategory.QuestionCategoryItem
 import com.jrrobo.juniorroboapp.data.questionitem.QuestionItem
 import com.jrrobo.juniorroboapp.data.questionitem.QuestionItemPostResponse
 import com.jrrobo.juniorroboapp.data.questionitem.QuestionItemToAsk
+import com.jrrobo.juniorroboapp.data.voucher.Voucher
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -153,5 +154,11 @@ interface JuniorRoboApi {
     suspend fun postBookingDemo(
         @Body bookingDemoItem: BookingDemoItem
     ): Response<BookingDemoItemPostResponse>
+
+    @GET(EndPoints.APP_VOUCHER)
+    suspend fun getDiscountAmount(
+        @Query("code") code: String
+    ): Response<Voucher>
+
 
 }

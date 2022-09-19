@@ -17,4 +17,6 @@ class ScreenSliderAdapter(fa : FragmentActivity, val courseGradeListItem: Course
             else -> FragmentCourseDetailsSecondPage(courseGradeListItem)
         }
     }
+
+
 }

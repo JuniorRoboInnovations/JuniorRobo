@@ -66,7 +66,6 @@
         android:background="@drawable/round_outline"
         app:shapeAppearanceOverlay="@style/cornerImageShapeOverlay4"
         android:padding="5dp"
-        tools:src="@drawable/ic_launcher_background"
         android:layout_gravity="center"/>
 
     <com.google.android.material.textview.MaterialTextView

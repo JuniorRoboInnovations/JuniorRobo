@@ -51,5 +51,17 @@
         <argument
             android:name="courseGradeListItem"
             app:argType="com.jrrobo.juniorroboapp.data.course.CourseGradeListItem" />
+        <action
+            android:id="@+id/action_courseDetailViewPagerFragment_to_discountFragment"
+            app:destination="@id/discountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/discountFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.DiscountFragment"
+        android:label="fragment_discount"
+        tools:layout="@layout/fragment_discount" >
+        <argument
+            android:name="coursePrice"
+            app:argType="integer" />
     </fragment>
 </navigation>

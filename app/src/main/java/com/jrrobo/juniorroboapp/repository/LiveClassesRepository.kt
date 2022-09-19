@@ -7,6 +7,7 @@ import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
+import com.jrrobo.juniorroboapp.data.voucher.Voucher
 import com.jrrobo.juniorroboapp.network.JuniorRoboApi
 import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
 import javax.inject.Inject
@@ -102,6 +103,21 @@ class LiveClassesRepository @Inject constructor(
         } catch (e: Exception) {
             Log.d(TAG, "postBookingItem: ${e.message}")
             NetworkRequestResource.Error(e.message ?: "Unable to post booking demo")
+        }
+    }
+
+    override suspend fun getDiscount(coupon: String): NetworkRequestResource<Voucher> {
+        return try {
+            val response = juniorRoboApi.getDiscountAmount(coupon)
+
+            val result = response.body()
+            if (response.isSuccessful && result != null) {
+                NetworkRequestResource.Success(result)
+            } else {
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            NetworkRequestResource.Error(e.message ?: "Unable to get discount")
         }
     }
 }

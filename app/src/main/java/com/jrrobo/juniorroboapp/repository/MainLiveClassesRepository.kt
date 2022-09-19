@@ -6,6 +6,7 @@ import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
+import com.jrrobo.juniorroboapp.data.voucher.Voucher
 import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
 
 /**
@@ -23,5 +24,6 @@ interface MainLiveClassesRepository {
 
     suspend fun postBookingDemoItem(bookingDemoItem: BookingDemoItem) : NetworkRequestResource<BookingDemoItemPostResponse>
 
+    suspend fun getDiscount(coupon : String) : NetworkRequestResource<Voucher>
 
 }

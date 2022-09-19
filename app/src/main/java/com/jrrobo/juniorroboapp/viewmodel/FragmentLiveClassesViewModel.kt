@@ -10,6 +10,7 @@ import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
+import com.jrrobo.juniorroboapp.data.voucher.Voucher
 import com.jrrobo.juniorroboapp.repository.LiveClassesRepository
 import com.jrrobo.juniorroboapp.utility.DataStorePreferencesManager
 import com.jrrobo.juniorroboapp.utility.DispatcherProvider
@@ -240,6 +241,58 @@ class FragmentLiveClassesViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Discount GET event
+     * Request type: GET
+     */
+    sealed class DiscountGetEvent {
+        class Success(val voucher: Voucher) : DiscountGetEvent()
+        class Failure(val errorText: String) : DiscountGetEvent()
+        object Loading : DiscountGetEvent()
+        object Empty : DiscountGetEvent()
+    }
+
+    private val _discountGetFlow = MutableStateFlow<DiscountGetEvent>(DiscountGetEvent.Empty)
+    val discountGetFlow: MutableStateFlow<DiscountGetEvent> = _discountGetFlow
+
+    fun getDiscount(
+        couponCode: String
+    ) {
+        // using the repository object injected launch the profile update event for POST request
+        viewModelScope.launch(dispatchers.io) {
+
+            // keep the event in the loading state
+            _discountGetFlow.value = DiscountGetEvent.Loading
+
+            // check the state of the NetworkResource data of the response after POST request
+            when (val response = repository.getDiscount(couponCode)) {
+
+                // when the NetworkResource is Error then set the Profile update request event to
+                // Error state with the error message
+                is NetworkRequestResource.Error -> {
+                    _discountGetFlow.value =
+                        DiscountGetEvent.Failure(response.message!!)
+                }
+
+                // when the NetworkResource is Success set the BookingItemPost event to
+                // Success state with the data got by the network resource
+                is NetworkRequestResource.Success -> {
+                    try {
+                        _discountGetFlow.value =
+                            DiscountGetEvent.Success(response.data!!)
+                    }
+                    catch (e : Exception){
+                        _discountGetFlow.value =
+                            DiscountGetEvent.Failure(e.message.toString())
+                    }
+                    Log.d(TAG, response.data.toString())
+                }
+            }
+        }
+    }
+
+
 
     fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
 
