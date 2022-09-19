@@ -1,6 +1,5 @@
 package com.jrrobo.juniorroboapp.view.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,15 +10,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
 import com.jrrobo.juniorroboapp.databinding.FragmentCourseGradeBinding
-import com.jrrobo.juniorroboapp.databinding.FragmentCourseListBinding
 import com.jrrobo.juniorroboapp.network.EndPoints
-import com.jrrobo.juniorroboapp.view.activities.CourseDetailActivity
-import com.jrrobo.juniorroboapp.view.activities.QuestionDetails
 import com.jrrobo.juniorroboapp.view.adapter.CourseGradeListItemAdapter
-import com.jrrobo.juniorroboapp.view.adapter.CourseListItemAdapter
 import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
 import kotlinx.coroutines.launch
 
@@ -67,9 +61,7 @@ class CourseGradeFragment : Fragment() {
         with(binding.rvCourseGradeList){
             this.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
             this.adapter = CourseGradeListItemAdapter {
-                val intent = Intent(requireContext(), CourseDetailActivity::class.java)
-                intent.putExtra("courseGradeListItem", it)
-                startActivity(intent)
+               findNavController().navigate(CourseGradeFragmentDirections.actionCourseGradeFragmentToCourseDetailViewPagerFragment(it))
             }
         }
         viewModel.getCourseGrades(courseListItem.id)

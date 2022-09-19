@@ -39,13 +39,14 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
     private var subjectList = arrayListOf<Int>()
 
     private val subjectArray = arrayOf("Biology",
-    "Physics",
-    "Chemistry",
-    "Maths",
-    "Computers")
+        "Physics",
+        "Chemistry",
+        "Maths",
+        "Computers")
 
     private var selectedSubjects: BooleanArray = BooleanArray(subjectArray.size)
-
+    private var listSize = 0
+    private var singleFee = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,10 +59,6 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        requireActivity().onBackPressedDispatcher.addCallback(this){
-
-        }
 
         binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY > oldScrollY) {
@@ -128,7 +125,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
         builder.setCancelable(false)
 
         builder.setMultiChoiceItems(subjectArray, selectedSubjects, DialogInterface.OnMultiChoiceClickListener{
-            dialog, which, isChecked ->
+                dialog, which, isChecked ->
             if (isChecked){
                 subjectList.add(which)
             }else{
@@ -146,7 +143,12 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                     if (i != subjectList.size - 1){
                         stringBuilder.append(", ")
                     }
+                    listSize = subjectList.size
 
+                    val price = listSize * singleFee
+                    Log.e(TAG, "populateViews: $price , $listSize, $singleFee")
+                    binding.amountText.text = "Your Total Amount is: $price"
+                    binding.courseDetailEnrolButton.text = "Enroll Now ₹$price"
                     binding.subjectsText.text = stringBuilder.toString()
                 }
             }
@@ -195,8 +197,10 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
     }
 
     private fun populateViews(courseGradeDetail: CourseGradeDetail) {
+        singleFee = courseGradeDetail.single_fee
         binding.courseDetailAboutText.text = courseGradeDetail.description
-        binding.courseDetailEnrolButton.text = "Enroll Now ₹" + courseGradeDetail.fee
+
+
         Glide.with(binding.root)
             .load(EndPoints.GET_IMAGE + "/course/" + courseGradeDetail.image)
             .into(binding.courseDetailImage)
@@ -226,23 +230,5 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
             dialogImagePreview.show()
         }
-
-        val subjectList : ArrayList<String> = ArrayList()
-        val list = courseGradeDetail.subject_covered
-
-        for(j in 0..10){
-            subjectList.add(list)
-        }
-
-//        val dropDownListAdapter = ArrayAdapter(binding.subcourseSubjectInput.context,
-//            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,subjectList)
-
-//        binding.subjectsText.setAdapter(dropDownListAdapter)
-//
-//        val position = binding.subjectsText.listSelection.plus(1)
-//        val subjects = subjectList[position]
-//
-//        binding.subcourseSubjectsSelectedText.append("" + subjects)
-
     }
 }

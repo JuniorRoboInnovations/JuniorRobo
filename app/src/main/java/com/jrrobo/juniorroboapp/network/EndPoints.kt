@@ -46,13 +46,6 @@ class EndPoints {
 
         // Endpoint to get app grade
         const val APP_GRADE: String = "appGrade"
-
-        // Endpoint to post app booking
-        const val APP_BOOKING: String = "appBooking"
-
-        //Endpoint to book demo of a course
-        const val STUDENT_QUERY: String = "studentQuery"
-
     }
 
 }

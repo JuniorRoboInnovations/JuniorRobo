@@ -1,27 +1,19 @@
 package com.jrrobo.juniorroboapp.view.fragments
 
 import android.app.Dialog
-import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
-import com.hbb20.CountryCodePicker
 import com.jrrobo.juniorroboapp.R
-import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
-import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.databinding.FragmentCourseDetailBinding
@@ -31,7 +23,7 @@ import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
 import kotlinx.coroutines.launch
 
 
-class CourseDetailFragment : Fragment() {
+class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem) : Fragment() {
 
     private val TAG: String = javaClass.simpleName
 
@@ -45,33 +37,32 @@ class CourseDetailFragment : Fragment() {
     // view model for this fragment
     private val viewModel: FragmentLiveClassesViewModel by activityViewModels()
 
-    private lateinit var courseGradeListItem: CourseGradeListItem
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        courseGradeListItem = CourseDetailFragmentArgs.fromBundle(requireArguments()).courseGradeListItem
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
         // Inflate the layout for this fragment
         _binding = FragmentCourseDetailBinding.inflate(inflater,container,false)
         return binding.root
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backImageButton.setOnClickListener {
-            findNavController().popBackStack()
+        binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                binding.fabBookDemoButton.shrink()
+            } else if (scrollY < oldScrollY) {
+                binding.fabBookDemoButton.extend()
+            }
         }
 
         binding.fabBookDemoButton.setOnClickListener {
             showDemoDialog()
         }
-
 
         binding.subcourseRecyclerView.apply {
             layoutManager =
@@ -83,10 +74,6 @@ class CourseDetailFragment : Fragment() {
                 "Lowest Course Fee",
                 "Monthly Subscription",
             ))
-        }
-
-        binding.courseDetailEnrolButton.setOnClickListener {
-            postBookingItem()
         }
 
         viewModel.getCourseGradeDetails(courseGradeListItem.id)
@@ -114,68 +101,6 @@ class CourseDetailFragment : Fragment() {
         }
     }
 
-    private fun postBookingItem() {
-        var pkStudentId: Int = -1
-        // request the primary key
-        viewModel.getPkStudentIdPreference().observe(requireActivity(), Observer {
-            // assign the primary key from the data store preference
-            pkStudentId = it
-        })
-
-        viewModel.postBookingItem(
-            BookingItem(
-                0,
-                "0",
-                "0",
-                courseGradeListItem.id,
-                pkStudentId,
-                0,
-                null,
-                "Pending"
-            )
-        )
-
-        lifecycleScope.launch {
-            viewModel.bookingPostFlow.collect {
-                when (it) {
-                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Loading -> {
-                        binding.courseDetailRootContainer.isClickable = false
-                        binding.courseDetailProgressBar.visibility = View.VISIBLE
-                    }
-
-                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Failure -> {
-                        binding.courseDetailRootContainer.isClickable = true
-                        binding.courseDetailProgressBar.visibility = View.GONE
-                        Snackbar.make(binding.root,it.errorText,Snackbar.LENGTH_SHORT).show()
-                    }
-
-                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Success -> {
-                        binding.courseDetailRootContainer.isClickable = true
-                        binding.courseDetailProgressBar.visibility = View.GONE
-                        Snackbar.make(binding.root,"Posted Booking Item Successfully!",Snackbar.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        Unit
-                    }
-                }
-            }
-        }
-
-
-    }
-
-    private fun setViewFlags() {
-        binding.courseDetailRootContainer.setBackgroundColor(Color.parseColor("#ffffff"))
-        binding.courseDetailRootContainer.background.alpha = 7
-        val windowManager = requireActivity().window.attributes
-        windowManager.dimAmount = 0.7f
-        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-    }
-
-    private fun clearViewFlags() {
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-    }
-
     private fun showDemoDialog() {
         val dialogBinding = layoutInflater.inflate(R.layout.book_demo_layout,null)
         val dialog = Dialog(requireContext(),android.R.style.Theme_Translucent_NoTitleBar)
@@ -185,8 +110,8 @@ class CourseDetailFragment : Fragment() {
 
         val lp = WindowManager.LayoutParams()
         lp.copyFrom(dialog.window!!.attributes)
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
         lp.gravity = Gravity.CENTER
         lp.dimAmount = 0.7f
 
@@ -195,69 +120,9 @@ class CourseDetailFragment : Fragment() {
 
         dialog.show()
 
-        dialogBinding.findViewById<EditText>(R.id.edit_text_course_name).setText(courseGradeListItem.title)
-
-        dialogBinding.findViewById<ImageView>(R.id.image_clear_demo).setOnClickListener {
+        val  cancelButton = dialogBinding.findViewById<ImageView>(R.id.image_clear_demo)
+        cancelButton.setOnClickListener {
             dialog.dismiss()
-        }
-
-        dialogBinding.findViewById<Button>(R.id.book_demo_button).setOnClickListener {
-
-            postBookingDemoItem(dialog,
-                BookingDemoItem(
-                    dialogBinding.findViewById<EditText>(R.id.edit_text_student_name).text.toString(),
-                    dialogBinding.findViewById<EditText>(R.id.edit_text_father_name).text.toString(),
-                    dialogBinding.findViewById<EditText>(R.id.edit_text_email).text.toString(),
-                    dialogBinding.findViewById<CountryCodePicker>(R.id.demo_country_code_picker).selectedCountryCode.trim()
-                            + dialogBinding.findViewById<EditText>(R.id.demo_phone_number).text.toString(),
-                    null,
-                    dialogBinding.findViewById<EditText>(R.id.edit_text_course_name).text.toString(),
-                    null
-                )
-            )
-        }
-    }
-
-    private fun postBookingDemoItem(
-        dialog: Dialog,
-        bookingDemoItem: BookingDemoItem
-    ) {
-        if(bookingDemoItem.studentname.isNullOrEmpty()
-            || bookingDemoItem.fathername.isNullOrEmpty()
-            || bookingDemoItem.email.isNullOrEmpty()
-            || bookingDemoItem.mobile.isNullOrEmpty()
-        ){
-            Toast.makeText(requireContext(),"Please fill the details to book demo!",Toast.LENGTH_SHORT).show()
-        }
-        else{
-            Log.d(TAG, "postBookingDemoItem: $bookingDemoItem")
-            viewModel.postBookingDemoItem(bookingDemoItem)
-            lifecycleScope.launch {
-                viewModel.bookingDemoItemPostFlow.collect {
-                    when (it) {
-                        is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Loading -> {
-                            binding.courseDetailRootContainer.isClickable = false
-                            binding.courseDetailProgressBar.visibility = View.VISIBLE
-                        }
-
-                        is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Failure -> {
-                            Log.d(TAG, "postBookingDemoItem: ${it.errorText}")
-                            binding.courseDetailRootContainer.isClickable = true
-                            binding.courseDetailProgressBar.visibility = View.GONE
-                        }
-
-                        is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Success -> {
-                            binding.courseDetailRootContainer.isClickable = true
-                            binding.courseDetailProgressBar.visibility = View.GONE
-                            Snackbar.make(binding.root,"Booking demo for this course successful!",Snackbar.LENGTH_LONG).show()
-                            dialog.dismiss()
-                        }
-                        else -> {
-                            Unit
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -265,7 +130,6 @@ class CourseDetailFragment : Fragment() {
         binding.subjectsCovered.text = courseGradeDetail.subject_covered
         binding.courseDetailAboutText.text = courseGradeDetail.description
         binding.courseDetailEnrolButton.text = "Enroll Now ₹" + courseGradeDetail.fee
-        binding.courseDetailTitle.text = courseGradeDetail.title
         Glide.with(binding.root)
             .load(EndPoints.GET_IMAGE + "/course/" + courseGradeDetail.image)
             .into(binding.courseDetailImage)
@@ -296,4 +160,6 @@ class CourseDetailFragment : Fragment() {
             dialogImagePreview.show()
         }
     }
+
+
 }
