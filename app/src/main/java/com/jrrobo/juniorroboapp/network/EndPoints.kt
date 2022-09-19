@@ -46,7 +46,6 @@ class EndPoints {
 
         // Endpoint to get app grade
         const val APP_GRADE: String = "appGrade"
-
     }
 
 }

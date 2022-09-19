@@ -39,5 +39,17 @@
         <argument
             android:name="courseListItem"
             app:argType="com.jrrobo.juniorroboapp.data.course.CourseListItem" />
+        <action
+            android:id="@+id/action_courseGradeFragment_to_courseDetailViewPagerFragment"
+            app:destination="@id/courseDetailViewPagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseDetailViewPagerFragment"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.CourseDetailViewPagerFragment"
+        android:label="fragment_course_detail_view_pager"
+        tools:layout="@layout/fragment_course_detail_view_pager" >
+        <argument
+            android:name="courseGradeListItem"
+            app:argType="com.jrrobo.juniorroboapp.data.course.CourseGradeListItem" />
     </fragment>
 </navigation>

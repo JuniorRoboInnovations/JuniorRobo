@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -53,9 +52,6 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-
-        }
         binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY > oldScrollY) {
                 binding.fabBookDemoButton.shrink()
@@ -80,7 +76,7 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
             ))
         }
 
-            viewModel.getCourseGradeDetails(courseGradeListItem.id)
+        viewModel.getCourseGradeDetails(courseGradeListItem.id)
         Log.d(TAG, "onViewCreated: calling getCourseDetails")
         lifecycleScope.launch {
             viewModel.courseGradeDetailsGetFlow.collect {
