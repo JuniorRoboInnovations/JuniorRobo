@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.data.questionitem.QuestionItem
 import com.jrrobo.juniorroboapp.databinding.QuestionItemBinding
 import com.jrrobo.juniorroboapp.network.EndPoints
+import com.jrrobo.juniorroboapp.utility.Utilities
 
 class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAdapter<QuestionItem, QuestionItemRvAdapter.ViewHolder>(DiffCallback()) {
     inner class ViewHolder(private val binding: QuestionItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -35,10 +38,12 @@ class QuestionItemRvAdapter(private val listener:(QuestionItem)->Unit) : ListAda
 
             if(item.image !=null) {
                 binding.imageViewQuestionItemImage.visibility = View.VISIBLE
-                Glide.with(binding.root)
+                Glide.with(binding.root.context)
                     .load(EndPoints.GET_IMAGE + "/question/" + item.image)
                     .error(R.drawable.ic_image_black)
+                    .apply(RequestOptions().override(1000, 1000))
                     .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(binding.imageViewQuestionItemImage)
             }
             else{
