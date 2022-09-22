@@ -44,19 +44,19 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
     private val viewModel: FragmentLiveClassesViewModel by activityViewModels()
 
-    private var subjectList = arrayListOf<Int>()
+//    private var subjectList = arrayListOf<Int>()
 
     // courseGradeDetail object to get the course details
     private lateinit var courseGradeDetail : CourseGradeDetail
 
-    private val subjectArray = arrayOf("Biology",
-        "Physics",
-        "Chemistry",
-        "Maths",
-        "Computers")
-
-    private var selectedSubjects: BooleanArray = BooleanArray(subjectArray.size)
-    private var singleFee = 0
+//    private val subjectArray = arrayOf("Biology",
+//        "Physics",
+//        "Chemistry",
+//        "Maths",
+//        "Computers")
+//
+//    private var selectedSubjects: BooleanArray = BooleanArray(subjectArray.size)
+//    private var singleFee = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,8 +87,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
             if (text.toString().isNotEmpty()) {
                 noh = text.toString().toInt()
             }
-            val price = noh * singleFee
-            Log.e(TAG, "populateViews: $price , $noh, $singleFee")
+            val price = noh * courseGradeDetail.single_fee
 
             binding.amountText.text = "Your Total Amount is: $price"
             binding.courseDetailEnrolButton.text = "Enroll Now ₹$price"
@@ -145,6 +144,14 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
     }
 
     private fun showSubjectsDialog() {
+
+        val subjectList = arrayListOf<Int>()
+
+        // courseGradeDetail object to get the course details
+
+        val subjectArray = courseGradeDetail.subject_covered.split(',').toTypedArray()
+
+        val selectedSubjects = BooleanArray(subjectArray.size)
 
         val builder = AlertDialog.Builder(requireContext())
 
@@ -279,7 +286,6 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
     }
 
     private fun populateViews(courseGradeDetail: CourseGradeDetail) {
-        singleFee = courseGradeDetail.single_fee
         binding.courseDetailAboutText.text = courseGradeDetail.description
 
 
