@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -55,7 +56,6 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
         "Computers")
 
     private var selectedSubjects: BooleanArray = BooleanArray(subjectArray.size)
-    private var listSize = 0
     private var singleFee = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,6 +80,18 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
             } else if (scrollY < oldScrollY) {
                 binding.fabBookDemoButton.shrink()
             }
+        }
+
+        binding.subcourseHoursText.doOnTextChanged { text, start, before, count ->
+            var noh = 0
+            if (text.toString().isNotEmpty()) {
+                noh = text.toString().toInt()
+            }
+            val price = noh * singleFee
+            Log.e(TAG, "populateViews: $price , $noh, $singleFee")
+
+            binding.amountText.text = "Your Total Amount is: $price"
+            binding.courseDetailEnrolButton.text = "Enroll Now ₹$price"
         }
 
         binding.subjectsCard.setOnClickListener {
@@ -158,12 +170,8 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                     if (i != subjectList.size - 1){
                         stringBuilder.append(", ")
                     }
-                    listSize = subjectList.size
 
-                    val price = listSize * singleFee
-                    Log.e(TAG, "populateViews: $price , $listSize, $singleFee")
-                    binding.amountText.text = "Your Total Amount is: $price"
-                    binding.courseDetailEnrolButton.text = "Enroll Now ₹$price"
+
                     binding.subjectsText.text = stringBuilder.toString()
                 }
             }

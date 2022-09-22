@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -29,6 +30,7 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFromQuestionAnswerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 
         //setting upt he nav-controller
         val bottomNavigationView = binding.mainBottomNavigation
