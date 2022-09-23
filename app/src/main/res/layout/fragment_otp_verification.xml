@@ -6,12 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".view.fragments.OtpVerificationFragment">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/app_logo_image"
+        android:elevation="10dp"
+        android:layout_marginTop="10dp"
+        app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -33,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="?android:attr/colorPrimary"
         android:text="@string/otp_sent_to_mobile"
         app:layout_constraintStart_toStartOf="@+id/materialTextView6"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />
@@ -44,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/materialTextView7"
         app:layout_constraintStart_toEndOf="@+id/materialTextView7"
         app:layout_constraintTop_toTopOf="@+id/materialTextView7"
@@ -102,7 +108,8 @@
             android:inputType="number"
             android:maxLength="1"
             android:textSize="30sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="TextContrastCheck" />
 
         <EditText
             android:id="@+id/otp_edit_box4"
@@ -125,6 +132,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:textColor="?attr/colorPrimary"
         android:text="@string/otp_resend"
         app:layout_constraintEnd_toEndOf="@+id/root_otp_layout"
         app:layout_constraintStart_toStartOf="@+id/root_otp_layout"
@@ -145,7 +153,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_verify_otp"
         style="@style/Widget.App.Button"
-        app:backgroundTint="@color/pink_700"
+        app:backgroundTint="?android:attr/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

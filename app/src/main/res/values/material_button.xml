@@ -21,6 +21,7 @@
 
     <style name="ThemeOverlay.App.Button.TextButton" parent="">
         <item name="colorPrimary">@color/pink_500</item>
+
     </style>
 
     <style name="ThemeOverlay.App.Button" parent="">

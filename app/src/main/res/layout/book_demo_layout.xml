@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_close_white"
-            android:background="@color/pink_700"
+            android:background="@color/pink_500"
             app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -33,7 +33,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/book_demo"
             android:textStyle="bold"
-            android:textColor="@color/pink_700"/>
+            android:textColor="@color/pink_500"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/book_demo_student_name"
@@ -42,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            app:startIconTint="@color/pink_500"
             android:layout_marginEnd="16dp"
             android:hint="@string/student_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,8 +55,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
-                android:outlineSpotShadowColor="@color/pink_700"
-                android:shadowColor="@color/pink_700"
+                android:textColor="@color/pink_500"
+                android:outlineSpotShadowColor="@color/pink_500"
+                android:shadowColor="@color/pink_500"
                 android:inputType="text"
                 tools:targetApi="p" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,6 +70,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/parent_s_name"
+            app:startIconTint="@color/pink_500"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/book_demo_student_name"
@@ -78,8 +81,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
-                android:outlineSpotShadowColor="@color/pink_700"
-                android:shadowColor="@color/pink_700"
+                android:outlineSpotShadowColor="@color/pink_500"
+                android:shadowColor="@color/pink_500"
+                android:textColor="@color/pink_500"
                 android:inputType="text"
                 tools:targetApi="p" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -101,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                app:ccpDialog_fastScroller_bubbleTextAppearance="@style/TextAppearance.MdcTypographyStyles.Body1"
+                app:ccpDialog_textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -114,7 +118,9 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/open_sans_regular"
                 android:inputType="number"
+                android:textColorHint="@color/pink_500"
                 android:hint="@string/phone_number_hint"
+                android:textColor="@color/pink_500"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/demo_country_code_picker"
@@ -130,6 +136,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/email"
+            app:startIconTint="@color/pink_500"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/demo_phone_number_layout"
@@ -142,6 +149,7 @@
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
                 android:outlineSpotShadowColor="@color/pink_700"
                 android:shadowColor="@color/pink_700"
+                android:textColor="@color/pink_500"
                 android:inputType="textEmailAddress"
                 tools:targetApi="p" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -155,6 +163,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="10dp"
             android:hint="@string/course"
+            app:startIconTint="@color/pink_500"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/book_demo_email"
@@ -165,9 +174,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
-                android:outlineSpotShadowColor="@color/pink_700"
-                android:shadowColor="@color/pink_700"
+                android:outlineSpotShadowColor="@color/pink_500"
+                android:shadowColor="@color/pink_500"
                 android:inputType="text"
+                android:textColor="@color/pink_500"
                 tools:targetApi="p"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -192,7 +202,7 @@
             android:layout_marginStart="8dp"
             android:gravity="center"
             style="@style/TextAppearance.MdcTypographyStyles.Body1"
-            android:textColor="@color/pink_700"
+            android:textColor="@color/pink_500"
             android:maxLines="2"
             android:text="@string/services_update"
             app:layout_constraintBottom_toBottomOf="@+id/checkbox_terms"
@@ -207,6 +217,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/book_demo"
+            android:textColor="@color/white"
             android:layout_margin="16dp"
             android:padding="10dp"/>
 

@@ -42,7 +42,7 @@
             android:id="@+id/imageView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/pink_700"
+            android:background="@color/pink_500"
             android:padding="5dp"
             app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
             android:src="@drawable/ic_baseline_menu_book_24"

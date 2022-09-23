@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:text="@string/music_dancing_course"
         android:textSize="25sp"
-        android:textColor="@color/white"
+        android:textColor="@color/white_500"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@id/ribbonImage"
         app:layout_constraintEnd_toEndOf="@id/ribbonImage"

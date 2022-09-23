@@ -93,11 +93,11 @@ class LiveClassesRepository @Inject constructor(
             val response = juniorRoboApi.postBookingDemo(bookingDemoItem)
 
             val result = response.body()
-            Log.d(TAG, "postBookingDemoItem: ${response.body()}")
             if (response.isSuccessful && result != null) {
                 Log.d(TAG, "postBookingDemoItem: ${result.toString()}")
                 NetworkRequestResource.Success(result)
             } else {
+                Log.d(TAG, "postBookingDemoItem: ${response.message()}")
                 NetworkRequestResource.Error(response.message())
             }
         } catch (e: Exception) {

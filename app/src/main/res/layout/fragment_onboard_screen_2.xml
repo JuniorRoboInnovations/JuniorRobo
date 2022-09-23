@@ -20,7 +20,7 @@
         android:text="@string/coding_course"
         android:textAllCaps="true"
         android:textSize="35sp"
-        android:textColor="@color/white"
+        android:textColor="@color/white_500"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@id/ribbonImage"
         app:layout_constraintEnd_toEndOf="@id/ribbonImage"

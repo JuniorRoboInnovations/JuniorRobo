@@ -107,7 +107,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
             adapter = CourseDetailItemAdapter(
                 listOf(
                     "Project/Activity Based Learning",
-                    "1:5 Batch Size",
+                    "1:1 Batch Size",
                     "Daily Reminder for Class",
                     "Lowest Course Fee",
                     "Monthly Subscription",
@@ -182,7 +182,6 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                     binding.subjectsText.text = stringBuilder.toString()
                 }
             }
-
         }).setNegativeButton("Cancel", object : DialogInterface.OnClickListener{
             override fun onClick(dialog: DialogInterface?, which: Int) {
                 dialog?.dismiss()
@@ -193,7 +192,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                 for (i in selectedSubjects.indices){
                     selectedSubjects[i] = false
                     subjectList.clear()
-                    binding.subjectsText.text = ""
+                    binding.subjectsText.text = "Select Subjects"
                 }
             }
         })
@@ -266,13 +265,13 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                             Log.d(TAG, "postBookingDemoItem: ${it.errorText}")
                             binding.scrollViewCourseDetail.isClickable = true
                             binding.courseDetailProgressBar.visibility = View.GONE
+                            Toast.makeText(requireContext(),"Some error occurred! Please try again later",Toast.LENGTH_SHORT).show()
                         }
 
                         is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Success -> {
                             binding.scrollViewCourseDetail.isClickable = true
                             binding.courseDetailProgressBar.visibility = View.GONE
-                            Snackbar.make(binding.root,"Booking demo for this course successful!",
-                                Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Booking demo for this course successful!",Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                         }
                         else -> {

@@ -45,7 +45,7 @@
             android:id="@+id/imageView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/pink_700"
+            android:background="@color/pink_500"
             android:padding="5dp"
             app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
             android:src="@drawable/ic_baseline_menu_book_24"
@@ -86,7 +86,7 @@
             style="@style/Widget.App.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/black"
+            android:backgroundTint="@color/black"
             android:text="@string/take_picture"
             android:textColor="@color/yellow_600"
             app:icon="@drawable/ic_camera"
@@ -150,6 +150,7 @@
         style="@style/Widget.App.TextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:textColorHint="@color/pink_700"
         app:boxStrokeColor="@color/pink_700"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
@@ -162,13 +163,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top"
-            android:hint="@string/type_your_answer_here" />
+            android:hint="@string/type_your_answer_here"
+            android:textColorHint="@color/pink_700"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_post_answer"
-        style="@style/Widget.App.Button"
+        app:cornerRadius="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/post_answer"
@@ -177,6 +179,7 @@
         android:layout_marginBottom="8dp"
         app:icon="@drawable/ic_send"
         app:backgroundTint="@color/pink_700"
+        android:textColor="@color/white_500"
         app:iconGravity="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

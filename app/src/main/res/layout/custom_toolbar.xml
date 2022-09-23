@@ -4,7 +4,7 @@
     android:id="@+id/custom_toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/pink_700"
+    android:background="@color/pink_500"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
     app:navigationIconTint="@color/white"
