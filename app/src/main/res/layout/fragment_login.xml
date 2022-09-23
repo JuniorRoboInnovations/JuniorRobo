@@ -65,6 +65,7 @@
             android:paddingStart="4dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
+            app:ccp_contentColor="@color/pink_700"
             app:ccpDialog_textColor="@color/black"
             app:ccpDialog_fastScroller_bubbleTextAppearance="@style/TextAppearance.MdcTypographyStyles.Body1"
             app:layout_constraintBottom_toBottomOf="parent"
