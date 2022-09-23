@@ -23,7 +23,18 @@
         android:textColor="@color/white_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_onboard_skip"
+        style="@style/Widget.App.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        app:backgroundTint="@color/pink_700"
+        android:layout_marginBottom="24dp"
+        android:text="@string/skip_tutorial"
+        android:textColor="@color/white_500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_onboard_next"
         style="@style/Widget.App.Button"

@@ -64,7 +64,7 @@
         style="@style/TextAppearance.MdcTypographyStyles.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="50dp"
         android:text="@string/trustpilot_review"
         app:layout_constraintEnd_toEndOf="@+id/materialTextView3"
         app:layout_constraintStart_toStartOf="@+id/materialTextView3"
