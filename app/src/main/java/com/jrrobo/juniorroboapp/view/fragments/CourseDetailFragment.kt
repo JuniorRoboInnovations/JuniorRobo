@@ -230,14 +230,13 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
                     is FragmentLiveClassesViewModel.BookingItemPostEvent.Failure -> {
                         binding.scrollViewCourseDetail.isClickable = true
                         binding.courseDetailProgressBar.visibility = View.GONE
-                        Snackbar.make(binding.root,it.errorText, Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root,"Some error occured! Please try again later", Snackbar.LENGTH_LONG).show()
                     }
 
                     is FragmentLiveClassesViewModel.BookingItemPostEvent.Success -> {
                         binding.scrollViewCourseDetail.isClickable = true
                         binding.courseDetailProgressBar.visibility = View.GONE
-//                        Snackbar.make(binding.root,"Posted Booking Item Successfully!",Snackbar.LENGTH_SHORT).show()
-                        Toast.makeText(requireContext(),"Posted Booking Item Successfully!", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root,"Posted Booking Item Successfully!", Snackbar.LENGTH_LONG).show()
                         findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee))
 
                     }
@@ -275,12 +274,13 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
                             Log.d(TAG, "postBookingDemoItem: ${it.errorText}")
                             binding.scrollViewCourseDetail.isClickable = true
                             binding.courseDetailProgressBar.visibility = View.GONE
+                            Toast.makeText(requireContext(),"Some error occurred! Please try again later",Toast.LENGTH_SHORT).show()
                         }
 
                         is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Success -> {
                             binding.scrollViewCourseDetail.isClickable = true
                             binding.courseDetailProgressBar.visibility = View.GONE
-                            Snackbar.make(binding.root,"Booking demo for this course successful!",Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(),"Booking demo for this course successful!",Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                         }
                         else -> {
