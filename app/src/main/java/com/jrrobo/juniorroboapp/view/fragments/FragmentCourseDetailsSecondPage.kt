@@ -107,7 +107,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
             adapter = CourseDetailItemAdapter(
                 listOf(
                     "Project/Activity Based Learning",
-                    "1:5 Batch Size",
+                    "1:1 Batch Size",
                     "Daily Reminder for Class",
                     "Lowest Course Fee",
                     "Monthly Subscription",
@@ -192,7 +192,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                 for (i in selectedSubjects.indices){
                     selectedSubjects[i] = false
                     subjectList.clear()
-                    binding.subjectsText.text = ""
+                    binding.subjectsText.text = "Select Subjects"
                 }
             }
         })
