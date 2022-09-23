@@ -1,5 +1,9 @@
 package com.jrrobo.juniorroboapp.data.course
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class CourseGradeDetail(
     val id:Int,
     val title:String,
@@ -10,4 +14,4 @@ data class CourseGradeDetail(
     val single_fee: Int,
     val duration: Long,
     val curriculum:String
-)
+):Parcelable

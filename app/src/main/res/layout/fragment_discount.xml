@@ -25,13 +25,13 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/discount_title"
         style="@style/TextAppearance.MdcTypographyStyles.Headline4"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textAlignment="center"
         android:textColor="@color/pink_700"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/back_image_button"
         app:layout_constraintTop_toTopOf="parent"
         android:text="Discount" />
 
@@ -110,8 +110,24 @@
         android:text="Apply Coupon"
         app:backgroundTint="@color/pink_700"
         app:iconGravity="textStart"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_pay_money"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout_amount"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_margin="10dp"
+        android:id="@+id/button_pay_money"
+        style="@style/Widget.App.Button"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginBottom="8dp"
+        android:text="Pay with"
+        android:textAllCaps="false"
+        app:icon="@drawable/logo_payu"
+        app:iconGravity="textEnd"
+        app:backgroundTint="@color/pink_700"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_apply_coupon"
         tools:layout_editor_absoluteX="0dp" />
 
     <ProgressBar

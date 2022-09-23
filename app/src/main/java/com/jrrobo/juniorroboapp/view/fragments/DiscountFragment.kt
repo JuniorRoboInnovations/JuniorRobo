@@ -7,13 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.databinding.FragmentDiscountBinding
 import com.jrrobo.juniorroboapp.viewmodel.FragmentLiveClassesViewModel
+import com.payu.base.models.PayUPaymentParams
 import kotlinx.coroutines.launch
 import java.lang.Integer.max
 
@@ -33,10 +36,13 @@ class DiscountFragment : Fragment() {
 
     private var coursePrice: Int = 0
 
+    private lateinit var courseGradeDetail: CourseGradeDetail
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // getting the courseListItem sent from CourseListFragment
         coursePrice = DiscountFragmentArgs.fromBundle(requireArguments()).coursePrice
+        courseGradeDetail = DiscountFragmentArgs.fromBundle(requireArguments()).courseGradeDetail
     }
 
     override fun onCreateView(
@@ -55,6 +61,28 @@ class DiscountFragment : Fragment() {
 
         binding.backImageButton.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.buttonPayMoney.setOnClickListener{
+            if(binding.editTextAmount.text.toString() == ""){
+                Snackbar.make(binding.root,"Invalid Course Amount",Snackbar.LENGTH_SHORT).show()
+            }
+            else{
+//                val payUPaymentParams = PayUPaymentParams.Builder()
+//                    .setAmount(binding.editTextAmount.text.toString())
+//                .setIsProduction(false)
+//                .setKey()
+//                .setProductInfo()
+//                .setPhone(<String>)
+//                .setTransactionId(<String>)
+//                .setFirstName(<String>)
+//                .setEmail(<String>)
+//                .setSurl(<String>)
+//                .setFurl(<String>)
+//                .setUserCredential(<String>)
+//                .setAdditionalParams(<HashMap<String,Any?>>) //Optional, can contain any additional PG params
+//                .build()
+            }
         }
 
         binding.editTextVoucherId.addTextChangedListener(object : TextWatcher {

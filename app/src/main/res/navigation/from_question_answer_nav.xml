@@ -63,5 +63,8 @@
         <argument
             android:name="coursePrice"
             app:argType="integer" />
+        <argument
+            android:name="courseGradeDetail"
+            app:argType="com.jrrobo.juniorroboapp.data.course.CourseGradeDetail" />
     </fragment>
 </navigation>

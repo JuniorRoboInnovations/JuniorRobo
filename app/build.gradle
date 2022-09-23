@@ -128,4 +128,8 @@ dependencies {
     //Google Auth
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
 
+    // PayU CheckoutPro integration
+    implementation 'in.payu:payu-checkout-pro:1.8.2'
+
+
 }
