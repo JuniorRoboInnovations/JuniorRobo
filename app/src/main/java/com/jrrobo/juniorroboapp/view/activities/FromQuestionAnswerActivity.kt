@@ -2,20 +2,17 @@ package com.jrrobo.juniorroboapp.view.activities
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.databinding.ActivityFromQuestionAnswerBinding
-import com.jrrobo.juniorroboapp.view.fragments.LiveClassesFragment
-import com.jrrobo.juniorroboapp.view.fragments.ProfileFragment
-import com.jrrobo.juniorroboapp.view.fragments.QuestionAnswerFragment
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class FromQuestionAnswerActivity : AppCompatActivity() {
@@ -30,7 +27,6 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFromQuestionAnswerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 
         //setting upt he nav-controller
         val bottomNavigationView = binding.mainBottomNavigation

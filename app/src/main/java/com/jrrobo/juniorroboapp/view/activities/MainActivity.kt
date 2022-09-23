@@ -12,6 +12,6 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        supportActionBar?.setCustomView(R.layout.custom_toolbar)
     }
 }

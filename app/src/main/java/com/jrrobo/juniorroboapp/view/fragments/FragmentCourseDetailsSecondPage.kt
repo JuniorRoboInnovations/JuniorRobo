@@ -182,7 +182,6 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                     binding.subjectsText.text = stringBuilder.toString()
                 }
             }
-
         }).setNegativeButton("Cancel", object : DialogInterface.OnClickListener{
             override fun onClick(dialog: DialogInterface?, which: Int) {
                 dialog?.dismiss()

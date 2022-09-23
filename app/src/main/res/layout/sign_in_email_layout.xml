@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     app:contentPadding="10dp"
     app:cardCornerRadius="10dp"
-    app:cardElevation="10dp">
+    app:cardElevation="10dp"
+    app:cardBackgroundColor="@color/white">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -16,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_close_white"
-            android:background="@color/pink_700"
+            android:background="@color/pink_500"
             app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -33,7 +34,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/sign_in_with_email"
             android:textStyle="bold"
-            android:textColor="@color/pink_700"/>
+            android:textColor="@color/pink_500"/>
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/sign_in_email"
             style="@style/Widget.App.TextInputLayout"
@@ -43,6 +44,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/email"
+            app:boxStrokeColor="@color/pink_500"
+            app:startIconTint="@color/pink_500"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sign_in_text"
@@ -53,8 +56,8 @@
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:outlineSpotShadowColor="@color/pink_700"
-                android:shadowColor="@color/pink_700"
+                android:outlineSpotShadowColor="@color/pink_500"
+                android:shadowColor="@color/pink_500"
                 android:inputType="textEmailAddress"
                 tools:targetApi="p" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -64,10 +67,12 @@
             style="@style/Widget.App.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/pink_500"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/password"
+            app:startIconTint="@color/pink_500"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sign_in_email"
@@ -78,8 +83,8 @@
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:outlineSpotShadowColor="@color/pink_700"
-                android:shadowColor="@color/pink_700"
+                android:outlineSpotShadowColor="@color/pink_500"
+                android:shadowColor="@color/pink_500"
                 android:inputType="textPassword"
                 tools:targetApi="p" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -94,7 +99,7 @@
             android:focusable="true"
             android:minHeight="48dp"
             android:text="@string/forgot_password"
-            android:textColor="@color/pink_700"
+            android:textColor="@color/pink_500"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="@id/sign_in_password"
             app:layout_constraintTop_toBottomOf="@id/sign_in_password" />
@@ -107,6 +112,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:visibility="gone"
+            app:boxStrokeColor="@color/pink_500"
+            app:startIconTint="@color/pink_500"
             android:hint="@string/mobile_number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -118,8 +125,8 @@
                 style="@style/TextAppearance.MdcTypographyStyles.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:outlineSpotShadowColor="@color/pink_700"
-                android:shadowColor="@color/pink_700"
+                android:outlineSpotShadowColor="@color/pink_500"
+                android:shadowColor="@color/pink_500"
                 android:inputType="number"
                 tools:targetApi="p" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -132,6 +139,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="visible"
             android:text="@string/login"
+            android:backgroundTint="@color/pink_500"
             android:layout_margin="16dp"
             android:padding="10dp"/>
         <com.google.android.material.button.MaterialButton
@@ -142,6 +150,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="@string/register"
+            android:backgroundTint="@color/pink_500"
             android:visibility="gone"
             android:layout_margin="16dp"
             android:padding="10dp"/>
