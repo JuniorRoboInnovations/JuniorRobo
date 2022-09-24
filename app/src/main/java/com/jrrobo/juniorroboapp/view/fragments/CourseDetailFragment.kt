@@ -204,7 +204,7 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
             pkStudentId = it
         })
 
-        findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee))
+        findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee,courseGradeDetail))
 
 //        viewModel.postBookingItem(
 //            BookingItem(
@@ -237,7 +237,7 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
                         binding.scrollViewCourseDetail.isClickable = true
                         binding.courseDetailProgressBar.visibility = View.GONE
                         Snackbar.make(binding.root,"Posted Booking Item Successfully!", Snackbar.LENGTH_LONG).show()
-                        findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee))
+                        findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee,courseGradeDetail))
 
                     }
                     else -> {

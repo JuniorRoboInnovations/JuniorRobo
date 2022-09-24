@@ -71,7 +71,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
         super.onViewCreated(view, savedInstanceState)
 
         binding.courseDetailEnrolButton.setOnClickListener {
-            findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee))
+            findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee, courseGradeDetail))
         }
 
         binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jrrobo.juniorroboapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        tools:replace="android:theme"
         android:name="com.jrrobo.juniorroboapp.JuniorRoboApplication"
         android:allowBackup="true"
         android:icon="@drawable/app_icon_minimalist"
@@ -16,8 +18,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/app_icon_minimalist"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JuniorRobo"
-        android:usesCleartextTraffic="true">
+        android:theme="@style/Theme.JuniorRobo">
 
         <activity
             android:name=".view.activities.AnswerAQuestion"
