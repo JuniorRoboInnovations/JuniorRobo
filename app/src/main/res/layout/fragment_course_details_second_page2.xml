@@ -90,15 +90,17 @@
                     style="@style/Widget.App.TextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/subcourse_hours_text"
                         style="@style/TextAppearance.MdcTypographyStyles.Body1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/pink_500"
                         android:background="@color/white"
+                        android:enabled="false"
+                        android:hint="@string/enter_hours"
                         android:inputType="number"
-                        android:hint="@string/enter_hours"/>
+                        android:textColor="@color/pink_500" />
                 </com.google.android.material.textfield.TextInputLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -108,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/subcourse_subjects_layout"
                 app:layout_constraintStart_toStartOf="@id/subcourse_subjects_layout"
                 android:textSize="15sp"

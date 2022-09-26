@@ -44,7 +44,13 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
     private val viewModel: FragmentLiveClassesViewModel by activityViewModels()
 
-//    private var subjectList = arrayListOf<Int>()
+
+    private var subjectList:ArrayList<Int> = arrayListOf<Int>()
+
+    private lateinit var subjectArray:Array<String>
+
+    private lateinit var selectedSubjects: BooleanArray
+
 
     // courseGradeDetail object to get the course details
     private lateinit var courseGradeDetail : CourseGradeDetail
@@ -70,6 +76,33 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getCourseGradeDetails(courseGradeListItem.id)
+        Log.d(TAG, "onViewCreated: calling getCourseDetails")
+        lifecycleScope.launch {
+            viewModel.courseGradeDetailsGetFlow.collect {
+                when (it) {
+                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Loading -> {
+
+                    }
+
+                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Failure -> {
+
+                    }
+
+                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Success -> {
+                        // update the views
+                        populateViews(it.courseGradeDetail)
+                        courseGradeDetail = it.courseGradeDetail
+                        subjectArray = courseGradeDetail.subject_covered.split(',').toTypedArray()
+                        selectedSubjects = BooleanArray(subjectArray.size)
+                    }
+                    else -> {
+                        Unit
+                    }
+                }
+            }
+        }
+
         binding.courseDetailEnrolButton.setOnClickListener {
             findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee))
         }
@@ -83,14 +116,30 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
         }
 
         binding.subcourseHoursText.doOnTextChanged { text, start, before, count ->
-            var noh = 0
-            if (text.toString().isNotEmpty()) {
-                noh = text.toString().toInt()
+            if(binding.subjectsText.text == "Select Subjects"){
+                Toast.makeText(requireContext(),"Please select subjects first!",Toast.LENGTH_SHORT).show()
+                binding.amountText.visibility = View.GONE
             }
-            val price = noh * courseGradeDetail.single_fee
+            else{
+                var noh = 0
+                if (text.toString().isNotEmpty()) {
+                    noh = text.toString().toInt()
+                    if(noh>500){
+                        Toast.makeText(requireContext(),"Maximum hours can be 500!",Toast.LENGTH_SHORT).show()
+                        binding.subcourseHoursText.setText("500")
+                        binding.amountText.text = "Your Total Amount is: ${500 * courseGradeDetail.single_fee}"
+                        binding.courseDetailEnrolButton.text = "Enroll Now ₹${500 * courseGradeDetail.single_fee}"
+                        noh=500
+                    }
+                }
+                val price = noh * courseGradeDetail.single_fee
 
-            binding.amountText.text = "Your Total Amount is: $price"
-            binding.courseDetailEnrolButton.text = "Enroll Now ₹$price"
+
+                binding.amountText.visibility = View.VISIBLE
+                binding.amountText.text = "Your Total Amount is: $price"
+                binding.courseDetailEnrolButton.text = "Enroll Now ₹$price"
+
+            }
         }
 
         binding.subjectsCard.setOnClickListener {
@@ -114,45 +163,12 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                 )
             )
         }
-
-        viewModel.getCourseGradeDetails(courseGradeListItem.id)
-        Log.d(TAG, "onViewCreated: calling getCourseDetails")
-        lifecycleScope.launch {
-            viewModel.courseGradeDetailsGetFlow.collect {
-                when (it) {
-                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Loading -> {
-
-                    }
-
-                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Failure -> {
-
-                    }
-
-                    is FragmentLiveClassesViewModel.CourseGradeDetailsGetEvent.Success -> {
-                        // update the views
-                        populateViews(it.courseGradeDetail)
-                        courseGradeDetail = it.courseGradeDetail
-                    }
-                    else -> {
-                        Unit
-                    }
-                }
-            }
-        }
-
-
     }
 
     private fun showSubjectsDialog() {
 
-        val subjectList = arrayListOf<Int>()
-
+//        val subjectList = arrayListOf<Int>()
         // courseGradeDetail object to get the course details
-
-        val subjectArray = courseGradeDetail.subject_covered.split(',').toTypedArray()
-
-        val selectedSubjects = BooleanArray(subjectArray.size)
-
         val builder = AlertDialog.Builder(requireContext())
 
         builder.setTitle("Select Subjects")
@@ -168,7 +184,6 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
         }).setPositiveButton("OK", object : DialogInterface.OnClickListener{
             override fun onClick(dialog: DialogInterface?, which: Int) {
-
                 val stringBuilder: StringBuilder = StringBuilder("")
                 for (i in 0 until subjectList.size){
 
@@ -181,6 +196,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
                     binding.subjectsText.text = stringBuilder.toString()
                 }
+                binding.subcourseHoursText.isEnabled = true
             }
         }).setNegativeButton("Cancel", object : DialogInterface.OnClickListener{
             override fun onClick(dialog: DialogInterface?, which: Int) {
@@ -194,6 +210,9 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                     subjectList.clear()
                     binding.subjectsText.text = "Select Subjects"
                 }
+                binding.amountText.visibility = View.GONE
+                binding.subcourseHoursText.text?.clear()
+                binding.subcourseHoursText.isEnabled = false
             }
         })
 
