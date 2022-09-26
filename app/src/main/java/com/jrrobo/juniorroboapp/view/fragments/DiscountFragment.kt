@@ -66,15 +66,15 @@ class DiscountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.editTextAmount.setText(coursePrice.toString())
-        binding.editTextAmount.isEnabled = false
+
+        updateViews(coursePrice,0,0,0)
 
         binding.backImageButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
         binding.buttonPayMoney.setOnClickListener{
-            if(binding.editTextAmount.text.toString() == ""){
+            if(coursePrice.toString() == ""){
                 Snackbar.make(binding.root,"Invalid Course Amount",Snackbar.LENGTH_SHORT).show()
             }
             else{
@@ -149,7 +149,7 @@ class DiscountFragment : Fragment() {
                                 val hashName = valueMap[CP_HASH_NAME]
 
                                 //Do not generate hash from local, it needs to be calculated from server side only. Here, hashString contains hash created from your server side.
-                                val hash: String? = "hash_from_server"
+                                val hash: String? = "vvvgT"
                                 if (!TextUtils.isEmpty(hash)) {
                                     val dataMap: HashMap<String, String?> = HashMap()
                                     dataMap[hashName!!] = hash!!
@@ -194,18 +194,22 @@ class DiscountFragment : Fragment() {
                                 binding.progressBar.visibility = View.GONE
                                 binding.root.isEnabled = true
                                 Snackbar.make(binding.root,"Coupon Invalid!",Snackbar.LENGTH_SHORT).show()
-                                binding.editTextAmount.setText(coursePrice.toString())
+                                updateViews(coursePrice,0,0,0)
                                 binding.textViewCouponApplied.visibility = View.GONE
                             }
 
                             is FragmentLiveClassesViewModel.DiscountGetEvent.Success -> {
                                 binding.progressBar.visibility = View.GONE
                                 binding.root.isEnabled = true
-                                val reducedPrice = it.voucher.amount.toInt()
-                                var discountedPrice = coursePrice - reducedPrice
-                                discountedPrice = max(0,discountedPrice)
-                                binding.editTextAmount.setText(discountedPrice.toString())
-                                binding.textViewCouponApplied.visibility = View.VISIBLE
+                                if(it.voucher.amount.toInt()>=coursePrice){
+                                    Snackbar.make(binding.root,"Coupon cannot be applied to this course!",Snackbar.LENGTH_SHORT).show()
+                                    binding.textViewCouponApplied.visibility = View.GONE
+                                    updateViews(coursePrice,0,0,0)
+                                }
+                                else{
+                                    binding.textViewCouponApplied.visibility = View.VISIBLE
+                                    updateViews(coursePrice,0,it.voucher.amount.toInt(),0)
+                                }
 
                             }
                             else -> {
@@ -219,5 +223,14 @@ class DiscountFragment : Fragment() {
         }
 
 
+    }
+
+    private fun updateViews(totalMRP: Int, discountOnMRP: Int, couponDiscount: Int, convenienceFee: Int) {
+        val totalAmount = totalMRP+convenienceFee-(discountOnMRP+couponDiscount)
+        binding.totalMrpTextView.text = totalMRP.toString()
+        binding.discountOnMrpTextView.text = discountOnMRP.toString()
+        binding.discountTextView.text = couponDiscount.toString()
+        binding.convenienceFeeTextView.text = convenienceFee.toString()
+        binding.totalAmountTextView.text = totalAmount.toString()
     }
 }
