@@ -2,7 +2,6 @@ package com.jrrobo.juniorroboapp.view.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import com.jrrobo.juniorroboapp.R
 import dagger.hilt.android.AndroidEntryPoint
 
