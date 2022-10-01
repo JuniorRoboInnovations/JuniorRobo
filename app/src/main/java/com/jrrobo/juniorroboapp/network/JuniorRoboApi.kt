@@ -6,6 +6,7 @@ import com.jrrobo.juniorroboapp.data.answer.AnswerItemPostResponse
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItemPostResponse
 import com.jrrobo.juniorroboapp.data.booking.BookingItem
+import com.jrrobo.juniorroboapp.data.booking.BookingItemPostResponse
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
@@ -148,7 +149,7 @@ interface JuniorRoboApi {
     @POST(EndPoints.APP_BOOKING)
     suspend fun postBookingItem(
         @Body bookingItem: BookingItem
-    ): Response<Int>
+    ): Response<BookingItemPostResponse>
 
     @POST(EndPoints.STUDENT_QUERY)
     suspend fun postBookingDemo(
@@ -160,5 +161,9 @@ interface JuniorRoboApi {
         @Query("code") code: String
     ): Response<Voucher>
 
+    @GET(EndPoints.APP_HASH)
+    suspend fun getHash(
+        @Query("hash") hash:String
+    ): Response<String>
 
 }

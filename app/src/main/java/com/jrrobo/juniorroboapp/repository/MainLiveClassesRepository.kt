@@ -3,9 +3,11 @@ package com.jrrobo.juniorroboapp.repository
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItemPostResponse
 import com.jrrobo.juniorroboapp.data.booking.BookingItem
+import com.jrrobo.juniorroboapp.data.booking.BookingItemPostResponse
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
+import com.jrrobo.juniorroboapp.data.profile.StudentProfileData
 import com.jrrobo.juniorroboapp.data.voucher.Voucher
 import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
 
@@ -20,10 +22,14 @@ interface MainLiveClassesRepository {
 
     suspend fun getCourseGradeDetails(id: Int): NetworkRequestResource<CourseGradeDetail>
 
-    suspend fun postBookingItem(bookingItem: BookingItem) : NetworkRequestResource<Int>
+    suspend fun postBookingItem(bookingItem: BookingItem) : NetworkRequestResource<BookingItemPostResponse>
 
     suspend fun postBookingDemoItem(bookingDemoItem: BookingDemoItem) : NetworkRequestResource<BookingDemoItemPostResponse>
 
     suspend fun getDiscount(coupon : String) : NetworkRequestResource<Voucher>
+
+    suspend fun getHash(hash : String) : NetworkRequestResource<String>
+
+    suspend fun getStudentProfile(id: Int): NetworkRequestResource<StudentProfileData>
 
 }

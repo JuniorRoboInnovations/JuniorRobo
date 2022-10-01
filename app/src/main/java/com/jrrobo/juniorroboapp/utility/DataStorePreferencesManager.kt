@@ -1,12 +1,14 @@
 package com.jrrobo.juniorroboapp.utility
 
 import android.content.Context
+import androidx.datastore.dataStore
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -140,6 +142,11 @@ class DataStorePreferencesManager @Inject constructor(
     // getter function for the pkStudentId returning Flow
     fun getPkStudentId() = pkStudentIdData.data.map { pkStudentIdPreference ->
         pkStudentIdPreference[pkStudentIdDataPreferenceKey] ?: -1
+    }
+
+    suspend fun getPrimaryKeyStudentId(): Int {
+        val preferences = pkStudentIdData.data.first()
+        return preferences[pkStudentIdDataPreferenceKey]?:-1
     }
 
     /**

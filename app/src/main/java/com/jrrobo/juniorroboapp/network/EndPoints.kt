@@ -56,6 +56,9 @@ class EndPoints {
         //Endpoint to get discount amount
         const val APP_VOUCHER: String = "appVoucher"
 
+        //Endpoint to get sha215-hash
+        const val APP_HASH: String = "appHash"
+
     }
 
 }

@@ -4,9 +4,11 @@ import android.util.Log
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItemPostResponse
 import com.jrrobo.juniorroboapp.data.booking.BookingItem
+import com.jrrobo.juniorroboapp.data.booking.BookingItemPostResponse
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
+import com.jrrobo.juniorroboapp.data.profile.StudentProfileData
 import com.jrrobo.juniorroboapp.data.voucher.Voucher
 import com.jrrobo.juniorroboapp.network.JuniorRoboApi
 import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
@@ -71,7 +73,7 @@ class LiveClassesRepository @Inject constructor(
         }
     }
 
-    override suspend fun postBookingItem(bookingItem: BookingItem): NetworkRequestResource<Int> {
+    override suspend fun postBookingItem(bookingItem: BookingItem): NetworkRequestResource<BookingItemPostResponse> {
         return try {
             val response = juniorRoboApi.postBookingItem(bookingItem)
 
@@ -118,6 +120,36 @@ class LiveClassesRepository @Inject constructor(
             }
         } catch (e: Exception) {
             NetworkRequestResource.Error(e.message ?: "Unable to get discount")
+        }
+    }
+
+    override suspend fun getHash(hash: String): NetworkRequestResource<String> {
+        return try {
+            val response = juniorRoboApi.getHash(hash)
+
+            val result = response.body()
+            if (response.isSuccessful && result != null) {
+                NetworkRequestResource.Success(result)
+            } else {
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            NetworkRequestResource.Error(e.message ?: "Unable to get hash")
+        }
+    }
+
+    override suspend fun getStudentProfile(id: Int): NetworkRequestResource<StudentProfileData> {
+        return try {
+            val response = juniorRoboApi.getStudentProfile(id)
+
+            val result = response.body()
+            if (response.isSuccessful && result != null) {
+                NetworkRequestResource.Success(result)
+            } else {
+                NetworkRequestResource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            NetworkRequestResource.Error(e.message ?: "An error occured")
         }
     }
 }

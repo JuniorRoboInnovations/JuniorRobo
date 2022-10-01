@@ -64,7 +64,7 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
         super.onViewCreated(view, savedInstanceState)
 
         binding.courseDetailEnrolButton.setOnClickListener {
-            postBookingItem()
+            findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail))
         }
 
         binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
@@ -196,57 +196,7 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
         }
     }
 
-    private fun postBookingItem() {
-        var pkStudentId: Int = -1
-        // request the primary key
-        viewModel.getPkStudentIdPreference().observe(requireActivity(), Observer {
-            // assign the primary key from the data store preference
-            pkStudentId = it
-        })
 
-        findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee,courseGradeDetail))
-
-//        viewModel.postBookingItem(
-//            BookingItem(
-//                0,
-//                courseGradeDetail.fee.toString(),
-//                "0",
-//                courseGradeListItem.id,
-//                pkStudentId,
-//                0,
-//                null,
-//                "Pending"
-//            )
-//        )
-
-        lifecycleScope.launch {
-            viewModel.bookingPostFlow.collect {
-                when (it) {
-                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Loading -> {
-                        binding.scrollViewCourseDetail.isClickable = false
-                        binding.courseDetailProgressBar.visibility = View.VISIBLE
-                    }
-
-                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Failure -> {
-                        binding.scrollViewCourseDetail.isClickable = true
-                        binding.courseDetailProgressBar.visibility = View.GONE
-                        Snackbar.make(binding.root,"Some error occured! Please try again later", Snackbar.LENGTH_LONG).show()
-                    }
-
-                    is FragmentLiveClassesViewModel.BookingItemPostEvent.Success -> {
-                        binding.scrollViewCourseDetail.isClickable = true
-                        binding.courseDetailProgressBar.visibility = View.GONE
-                        Snackbar.make(binding.root,"Posted Booking Item Successfully!", Snackbar.LENGTH_LONG).show()
-                        findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail.fee,courseGradeDetail))
-
-                    }
-                    else -> {
-                        Unit
-                    }
-                }
-            }
-        }
-    }
 
     private fun postBookingDemoItem(
         dialog: Dialog,

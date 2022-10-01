@@ -1,22 +1,23 @@
 package com.jrrobo.juniorroboapp.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItemPostResponse
 import com.jrrobo.juniorroboapp.data.booking.BookingItem
+import com.jrrobo.juniorroboapp.data.booking.BookingItemPostResponse
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
+import com.jrrobo.juniorroboapp.data.profile.StudentProfileData
 import com.jrrobo.juniorroboapp.data.voucher.Voucher
 import com.jrrobo.juniorroboapp.repository.LiveClassesRepository
 import com.jrrobo.juniorroboapp.utility.DataStorePreferencesManager
 import com.jrrobo.juniorroboapp.utility.DispatcherProvider
 import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +27,6 @@ class FragmentLiveClassesViewModel @Inject constructor(
     private val dataStorePreferencesManager: DataStorePreferencesManager,
     private val dispatchers: DispatcherProvider
 ): ViewModel() {
-
     private val TAG: String = javaClass.simpleName
 
     /**
@@ -146,46 +146,34 @@ class FragmentLiveClassesViewModel @Inject constructor(
      * Request type: POST
      */
     sealed class BookingItemPostEvent {
-        class Success(val pk_id: Int) : BookingItemPostEvent()
+        class Success(val bookingItemPostResponse: BookingItemPostResponse) : BookingItemPostEvent()
         class Failure(val errorText: String) : BookingItemPostEvent()
         object Loading : BookingItemPostEvent()
         object Empty : BookingItemPostEvent()
     }
 
-    private val _bookingPostFlow = MutableStateFlow<BookingItemPostEvent>(BookingItemPostEvent.Empty)
-    val bookingPostFlow: MutableStateFlow<BookingItemPostEvent> = _bookingPostFlow
-
-    fun postBookingItem(
+    suspend fun postBookingItem(
         bookingItem: BookingItem
-    ) {
-        // using the repository object injected launch the profile update event for POST request
-        viewModelScope.launch(dispatchers.io) {
+    ):BookingItemPostEvent {
+        val bookingItemPostResponse = viewModelScope.async {
+            repository.postBookingItem(bookingItem)
+        }
 
-            // keep the event in the loading state
-            _bookingPostFlow.value = BookingItemPostEvent.Loading
+        when (bookingItemPostResponse.await()) {
 
-            // check the state of the NetworkResource data of the response after POST request
-            when (val updateProfileResponse = repository.postBookingItem(bookingItem)) {
+            // when the NetworkResource is Error then set the Profile update request event to
+            // Error state with the error message
+            is NetworkRequestResource.Error -> {
+                return BookingItemPostEvent.Failure(bookingItemPostResponse.await().message!!)
+            }
 
-                // when the NetworkResource is Error then set the Profile update request event to
-                // Error state with the error message
-                is NetworkRequestResource.Error -> {
-                    _bookingPostFlow.value =
-                        BookingItemPostEvent.Failure(updateProfileResponse.message!!)
-                }
-
-                // when the NetworkResource is Success set the BookingItemPost event to
-                // Success state with the data got by the network resource
-                is NetworkRequestResource.Success -> {
-                    try {
-                        _bookingPostFlow.value =
-                            BookingItemPostEvent.Success(updateProfileResponse.data!!)
-                    }
-                    catch (e : Exception){
-                        _bookingPostFlow.value =
-                            BookingItemPostEvent.Failure(e.message.toString())
-                    }
-                    Log.d(TAG, updateProfileResponse.data.toString())
+            // when the NetworkResource is Success set the BookingItemPost event to
+            // Success state with the data got by the network resource
+            is NetworkRequestResource.Success -> {
+                return try {
+                    BookingItemPostEvent.Success(bookingItemPostResponse.await().data!!)
+                } catch (e : Exception){
+                    BookingItemPostEvent.Failure(e.message.toString())
                 }
             }
         }
@@ -204,7 +192,7 @@ class FragmentLiveClassesViewModel @Inject constructor(
     }
 
     private val _bookingDemoItemPostFlow = MutableStateFlow<BookingDemoItemPostEvent>(BookingDemoItemPostEvent.Empty)
-    val bookingDemoItemPostFlow: MutableStateFlow<BookingDemoItemPostEvent> = _bookingDemoItemPostFlow
+    val bookingDemoItemPostFlow: StateFlow<BookingDemoItemPostEvent> = _bookingDemoItemPostFlow
 
     fun postBookingDemoItem(
         bookingDemoItem: BookingDemoItem
@@ -254,7 +242,7 @@ class FragmentLiveClassesViewModel @Inject constructor(
     }
 
     private val _discountGetFlow = MutableStateFlow<DiscountGetEvent>(DiscountGetEvent.Empty)
-    val discountGetFlow: MutableStateFlow<DiscountGetEvent> = _discountGetFlow
+    val discountGetFlow: StateFlow<DiscountGetEvent> = _discountGetFlow
 
     fun getDiscount(
         couponCode: String
@@ -292,9 +280,84 @@ class FragmentLiveClassesViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Hash GET event
+     * Request type: GET
+     */
+    sealed class HashGetEvent {
+        class Success(val sha512: String) : HashGetEvent()
+        class Failure(val errorText: String) : HashGetEvent()
+        object Loading : HashGetEvent()
+        object Empty : HashGetEvent()
+    }
+
+    suspend fun getHash(
+        hash: String
+    ): HashGetEvent {
+        val hashData = viewModelScope.async {
+            repository.getHash(hash)
+        }
+
+        when (hashData.await()) {
+
+            // when the NetworkResource is Error then set the Hash get event to
+            // Error state with the error message
+            is NetworkRequestResource.Error -> {
+                return HashGetEvent.Failure(hashData.await().message!!)
+            }
+
+            // when the NetworkResource is Success set the get Hash event to
+            // Success state with the data got by the network resource
+            is NetworkRequestResource.Success -> {
+                return try {
+                    HashGetEvent.Success(hashData.await().data!!)
+                } catch (e : Exception){
+                    HashGetEvent.Failure(e.message.toString())
+                }
+            }
+        }
+    }
+
+    /**
+     * Profile get event
+     * Request type: GET
+     */
+    sealed class ProfileGetEvent {
+        class Success(val parsedStudentProfileData: StudentProfileData) : ProfileGetEvent()
+        class Failure(val errorText: String) : ProfileGetEvent()
+        object Loading : ProfileGetEvent()
+        object Empty : ProfileGetEvent()
+    }
+
+    suspend fun getStudentProfile(
+        pkStudentId: Int
+    ): ProfileGetEvent {
+        val studentProfileData = viewModelScope.async {
+            repository.getStudentProfile(pkStudentId)
+        }
+
+        when (studentProfileData.await()) {
+
+            // when the NetworkResource is Error then set the Profile update request event to
+            // Error state with the error message
+            is NetworkRequestResource.Error -> {
+                return ProfileGetEvent.Failure(studentProfileData.await().message!!)
+            }
+
+            // when the NetworkResource is Success set the BookingItemPost event to
+            // Success state with the data got by the network resource
+            is NetworkRequestResource.Success -> {
+                return try {
+                    ProfileGetEvent.Success(studentProfileData.await().data!!)
+                } catch (e : Exception){
+                    ProfileGetEvent.Failure(e.message.toString())
+                }
+            }
+        }
+    }
 
 
-    fun getPkStudentIdPreference() = dataStorePreferencesManager.getPkStudentId().asLiveData()
+    suspend fun getPkStudentIdPreference() = dataStorePreferencesManager.getPrimaryKeyStudentId()
 
 
 }

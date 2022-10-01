@@ -61,10 +61,14 @@
         android:label="fragment_discount"
         tools:layout="@layout/fragment_discount" >
         <argument
-            android:name="coursePrice"
-            app:argType="integer" />
-        <argument
             android:name="courseGradeDetail"
             app:argType="com.jrrobo.juniorroboapp.data.course.CourseGradeDetail" />
+        <action
+            android:id="@+id/action_discountFragment_to_questionAnswerFragment"
+            app:destination="@id/questionAnswerFragment"
+            app:popUpTo="@id/questionAnswerFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            />
     </fragment>
 </navigation>
