@@ -7,6 +7,7 @@
     <color name="yellow_600">#f3cb1d</color>
     <color name="yellow_700">#ec7200</color>
     <color name="black">#000000</color>
+    <color name="black_500">#000000</color>
     <color name="blue">#9BD9F1</color>
     <color name="light_blue">#FF9BD9F1</color>
     <color name="white">#FFFFFF</color>

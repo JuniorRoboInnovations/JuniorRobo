@@ -63,7 +63,7 @@ class ViewPagerFragment : Fragment() {
                 // to their positions
                 when (position) {
                     0 -> {
-                        binding.buttonOnboardNext.setOnClickListener {
+                        binding.buttonOnboardTour.setOnClickListener {
                             binding.onboardViewPager.currentItem = 1
                         }
                         binding.buttonOnboardSkip.setOnClickListener {
@@ -71,9 +71,10 @@ class ViewPagerFragment : Fragment() {
                             fragmentOnBoardLoginViewModel.setOnBoardStatus(true)
                         }
                         binding.buttonOnboardSkip.visibility = View.VISIBLE
-                        binding.buttonOnboardNext.visibility = View.VISIBLE
+                        binding.buttonOnboardNext.visibility = View.INVISIBLE
                         binding.buttonOnboardBack.visibility = View.INVISIBLE
                         binding.buttonOnboardFinish.visibility = View.INVISIBLE
+                        binding.buttonOnboardTour.visibility = View.VISIBLE
                     }
 
                     1 -> {
@@ -84,7 +85,9 @@ class ViewPagerFragment : Fragment() {
                             binding.onboardViewPager.currentItem = 0
                         }
                         binding.buttonOnboardSkip.visibility = View.INVISIBLE
+                        binding.buttonOnboardTour.visibility = View.INVISIBLE
                         binding.buttonOnboardBack.visibility = View.VISIBLE
+                        binding.buttonOnboardNext.visibility = View.VISIBLE
                         binding.buttonOnboardFinish.visibility = View.INVISIBLE
 
                     }
@@ -96,7 +99,9 @@ class ViewPagerFragment : Fragment() {
                         binding.buttonOnboardBack.setOnClickListener {
                             binding.onboardViewPager.currentItem = 1
                         }
+                        binding.buttonOnboardTour.visibility = View.INVISIBLE
                         binding.buttonOnboardSkip.visibility = View.INVISIBLE
+                        binding.buttonOnboardNext.visibility = View.VISIBLE
                         binding.buttonOnboardFinish.visibility = View.INVISIBLE
                     }
 
@@ -107,6 +112,8 @@ class ViewPagerFragment : Fragment() {
                         binding.buttonOnboardBack.setOnClickListener {
                             binding.onboardViewPager.currentItem = 2
                         }
+                        binding.buttonOnboardNext.visibility = View.VISIBLE
+                        binding.buttonOnboardTour.visibility = View.INVISIBLE
                         binding.buttonOnboardSkip.visibility = View.INVISIBLE
                         binding.buttonOnboardFinish.visibility = View.INVISIBLE
                     }
@@ -118,6 +125,8 @@ class ViewPagerFragment : Fragment() {
                         binding.buttonOnboardBack.setOnClickListener {
                             binding.onboardViewPager.currentItem = 3
                         }
+
+                        binding.buttonOnboardTour.visibility = View.INVISIBLE
                         binding.buttonOnboardSkip.visibility = View.INVISIBLE
                         binding.buttonOnboardNext.visibility = View.VISIBLE
                         binding.buttonOnboardFinish.visibility = View.INVISIBLE
@@ -127,6 +136,7 @@ class ViewPagerFragment : Fragment() {
                         binding.buttonOnboardBack.setOnClickListener {
                             binding.onboardViewPager.currentItem = 4
                         }
+                        binding.buttonOnboardTour.visibility = View.INVISIBLE
                         binding.buttonOnboardSkip.visibility = View.INVISIBLE
                         binding.buttonOnboardNext.visibility = View.INVISIBLE
                         binding.buttonOnboardFinish.visibility = View.VISIBLE

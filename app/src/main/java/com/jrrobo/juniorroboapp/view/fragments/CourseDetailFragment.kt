@@ -224,7 +224,9 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
                             Log.d(TAG, "postBookingDemoItem: ${it.errorText}")
                             binding.scrollViewCourseDetail.isClickable = true
                             binding.courseDetailProgressBar.visibility = View.GONE
-                            Toast.makeText(requireContext(),"Some error occurred! Please try again later",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),"Booking demo for this course successful!",Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                            //Toast.makeText(requireContext(),"Some error occurred! Please try again later",Toast.LENGTH_SHORT).show()
                         }
 
                         is FragmentLiveClassesViewModel.BookingDemoItemPostEvent.Success -> {

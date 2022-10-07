@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "574027600982",
+    "project_id": "junior-robo",
+    "storage_bucket": "junior-robo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574027600982:android:fca8afbe9afc6e6b8397f7",
+        "android_client_info": {
+          "package_name": "com.jrrobo.juniorroboapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574027600982-qhhgkkk8dmi276cjj8k2jk4dqcitvfgm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jrrobo.juniorroboapp",
+            "certificate_hash": "18fc5f27bab9184e1875a768962acc1ba26b15e5"
+          }
+        },
+        {
+          "client_id": "574027600982-3km4slkejfjl1188squlk8bg24kmhto1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkeftPuL-fQK3nt1dd7y99e45Xfp5Vynk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574027600982-3km4slkejfjl1188squlk8bg24kmhto1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

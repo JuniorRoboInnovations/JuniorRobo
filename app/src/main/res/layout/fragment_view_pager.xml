@@ -11,16 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/button_onboard_back"
-        style="@style/Widget.App.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="24dp"
-        app:backgroundTint="@color/pink_700"
+        app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
+        android:background="@color/pink_700"
         android:layout_marginBottom="24dp"
-        android:text="@string/back"
-        android:textColor="@color/white_500"
+        android:padding="5dp"
+        android:src="@drawable/ic_baseline_arrow_back_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
     <com.google.android.material.button.MaterialButton
@@ -29,38 +29,55 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        app:backgroundTint="@color/pink_700"
+        app:backgroundTint="@color/grey_default"
         android:layout_marginBottom="24dp"
-        android:text="@string/skip_tutorial"
-        android:textColor="@color/white_500"
+        android:text="@string/skip"
+        android:textColor="@color/pink_500"
+        app:iconTint="@color/pink_500"
+        app:iconGravity="textEnd"
+        app:icon="@drawable/ic_baseline_keyboard_double_arrow_right_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_onboard_next"
+        android:id="@+id/button_onboard_tour"
         style="@style/Widget.App.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        app:backgroundTint="@color/pink_700"
-        android:text="@string/next"
+        android:backgroundTint="@color/pink_700"
+        android:text="@string/tour"
         android:textColor="@color/white_500"
+        app:icon="@drawable/ic_baseline_play_arrow_24"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/white_500"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="gone"/>
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/button_onboard_next"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="24dp"
+        app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
+        android:layout_marginBottom="24dp"
+        android:background="@color/pink_700"
+        android:padding="5dp"
+        android:src="@drawable/ic_baseline_arrow_forward_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/button_onboard_finish"
-        style="@style/Widget.App.Button"
-        android:backgroundTint="@color/pink_700"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@color/pink_700"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:text="@string/finish"
-        android:textColor="@color/white_500"
-        android:visibility="invisible"
+        android:padding="5dp"
+        android:src="@drawable/ic_baseline_check_24"
+        app:shapeAppearanceOverlay="@style/circularImageShapeOverlay"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
