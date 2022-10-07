@@ -70,5 +70,8 @@
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
             />
+        <argument
+            android:name="coursePrice"
+            app:argType="integer" />
     </fragment>
 </navigation>

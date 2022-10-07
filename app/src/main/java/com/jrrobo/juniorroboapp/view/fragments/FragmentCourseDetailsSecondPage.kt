@@ -51,6 +51,8 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
     private lateinit var selectedSubjects: BooleanArray
 
+    private var coursePrice : Int = 0
+
 
     // courseGradeDetail object to get the course details
     private lateinit var courseGradeDetail : CourseGradeDetail
@@ -104,7 +106,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
         }
 
         binding.courseDetailEnrolButton.setOnClickListener {
-            findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail))
+            findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail,coursePrice))
         }
 
         binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
@@ -133,7 +135,7 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
                     }
                 }
                 val price = noh * courseGradeDetail.single_fee
-
+                coursePrice = price
 
                 binding.amountText.visibility = View.VISIBLE
                 binding.amountText.text = "Your Total Amount is: $price"

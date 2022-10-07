@@ -64,7 +64,7 @@ class CourseDetailFragment(private val courseGradeListItem: CourseGradeListItem)
         super.onViewCreated(view, savedInstanceState)
 
         binding.courseDetailEnrolButton.setOnClickListener {
-            findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail))
+            findNavController().navigate(CourseDetailViewPagerFragmentDirections.actionCourseDetailViewPagerFragmentToDiscountFragment(courseGradeDetail,courseGradeDetail.fee))
         }
 
         binding.scrollViewCourseDetail.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->

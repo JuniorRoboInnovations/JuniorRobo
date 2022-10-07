@@ -55,6 +55,8 @@ class DiscountFragment : Fragment() {
 
     private lateinit var courseGradeDetail: CourseGradeDetail
 
+    private var coursePrice: Int = 0
+
     // to get the voucher details if any
     private var voucher: Voucher? = null
 
@@ -62,6 +64,7 @@ class DiscountFragment : Fragment() {
         super.onCreate(savedInstanceState)
         // getting the courseListItem sent from CourseListFragment
         courseGradeDetail = DiscountFragmentArgs.fromBundle(requireArguments()).courseGradeDetail
+        coursePrice =DiscountFragmentArgs.fromBundle(requireArguments()).coursePrice
     }
 
     override fun onCreateView(
@@ -78,7 +81,7 @@ class DiscountFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "onViewCreated: ")
 
-        updateViews(courseGradeDetail.fee, 0, 0, 0)
+        updateViews(coursePrice, 0, 0, 0)
 
         binding.backImageButton.setOnClickListener {
             findNavController().popBackStack()
@@ -129,7 +132,7 @@ class DiscountFragment : Fragment() {
                                         "Coupon Invalid!",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    updateViews(courseGradeDetail.fee, 0, 0, 0)
+                                    updateViews(coursePrice, 0, 0, 0)
                                     binding.textViewCouponApplied.visibility = View.GONE
                                 }
 
@@ -143,13 +146,13 @@ class DiscountFragment : Fragment() {
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         binding.textViewCouponApplied.visibility = View.GONE
-                                        updateViews(courseGradeDetail.fee, 0, 0, 0)
+                                        updateViews(coursePrice, 0, 0, 0)
                                     } else {
                                         voucher =
                                             it.voucher // updating the voucher variable to store the voucher details
                                         binding.textViewCouponApplied.visibility = View.VISIBLE
                                         updateViews(
-                                            courseGradeDetail.fee,
+                                            coursePrice,
                                             0,
                                             it.voucher.amount.toInt(),
                                             0
@@ -295,7 +298,7 @@ class DiscountFragment : Fragment() {
         } else {
 
             val payUPaymentParams = PayUPaymentParams.Builder()
-                .setAmount("1.0")
+                .setAmount(binding.totalAmountTextView.text.toString())
                 .setIsProduction(true)
                 .setKey(PayUConstants.MERCHANT_KEY)
                 .setProductInfo(courseGradeDetail.title)
