@@ -1,4 +1,4 @@
-package com.jrrobo.juniorroboapp.utility
+package com.jrrobo.juniorroboapp.view.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -7,7 +7,7 @@ import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.view.fragments.CourseDetailFragment
 import com.jrrobo.juniorroboapp.view.fragments.FragmentCourseDetailsSecondPage
 
-class ScreenSliderAdapter(fa : FragmentActivity, val courseGradeListItem: CourseGradeListItem) : FragmentStateAdapter(fa) {
+class ScreenSliderAdapterCourses(fa : FragmentActivity, val courseGradeListItem: CourseGradeListItem) : FragmentStateAdapter(fa) {
 
     override fun getItemCount(): Int  = 2
 

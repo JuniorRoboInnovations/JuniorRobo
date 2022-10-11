@@ -36,7 +36,7 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             if(destination.id == R.id.questionAnswerFragment || destination.id == R.id.liveClassesFragment
-                || destination.id == R.id.profileFragment){
+                || destination.id == R.id.profileFragment || destination.id == R.id.fragmentClassroomSubjects){
                 binding.mainBottomNavigation.visibility = View.VISIBLE
                 binding.mainBottomNavigationShadow.visibility = View.VISIBLE
             }
@@ -50,7 +50,6 @@ class FromQuestionAnswerActivity : AppCompatActivity() {
         // handle the bottom navigation item click listener
         binding.mainBottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
-
                 // from the bottom navigation if the q&a button is clicked
                 // replace the fragment with QuestionAnswerFragment.kt
                 R.id.bottom_menu_question_answer -> {

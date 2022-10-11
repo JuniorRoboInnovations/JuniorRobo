@@ -74,4 +74,18 @@
             android:name="coursePrice"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/fragmentClassroomChapters"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.FragmentClassroomChapters"
+        android:label="FragmentClassroomChapters" />
+    <fragment
+        android:id="@+id/fragmentClassroomSubjects"
+        android:name="com.jrrobo.juniorroboapp.view.fragments.FragmentClassroomSubjects"
+        android:label="fragment_classroom_subjects"
+        tools:layout="@layout/fragment_classroom_subjects" >
+        <action
+            android:id="@+id/action_fragmentClassroomSubjects_to_fragmentClassroomChapters"
+            app:destination="@id/fragmentClassroomChapters" />
+    </fragment>
 </navigation>

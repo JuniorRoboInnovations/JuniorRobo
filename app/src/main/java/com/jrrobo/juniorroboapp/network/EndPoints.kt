@@ -53,6 +53,15 @@ class EndPoints {
         //Endpoint to book demo of a course
         const val STUDENT_QUERY: String = "studentQuery"
 
+        //Endpoint to youtube live stream
+        const val CLASSROOM: String = ""
+
+        //Endpoint to youtube live stream
+        const val SUBJECTS: String = ""
+
+        //Endpoint to youtube live stream
+        const val CHAPTERS: String = ""
+
         //Endpoint to get discount amount
         const val APP_VOUCHER: String = "appVoucher"
 

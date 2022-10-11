@@ -11,7 +11,7 @@ import com.jrrobo.juniorroboapp.R
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.databinding.FragmentCourseDetailViewPagerBinding
 import com.jrrobo.juniorroboapp.databinding.FragmentViewPagerBinding
-import com.jrrobo.juniorroboapp.utility.ScreenSliderAdapter
+import com.jrrobo.juniorroboapp.view.adapter.ScreenSliderAdapterCourses
 
 
 class CourseDetailViewPagerFragment : Fragment() {
@@ -39,7 +39,7 @@ class CourseDetailViewPagerFragment : Fragment() {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
-        binding.viewPager.adapter = ScreenSliderAdapter(requireActivity(), courseGradeListItem)
+        binding.viewPager.adapter = ScreenSliderAdapterCourses(requireActivity(), courseGradeListItem)
 
         TabLayoutMediator(binding.tabs,binding.viewPager) {
                 tab, position ->

@@ -92,6 +92,22 @@ class QuestionAnswerFragment : Fragment() {
 //            viewModel.getQuestionsWithoutPaging(null)
         }
 
+        binding?.rvQuestionsList?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0){
+                    if (binding!!.fabAskQuestion.isShown){
+                        binding!!.fabAskQuestion.shrink()
+                    }
+                } else if (dy < 0){
+                    if(binding!!.fabAskQuestion.isShown){
+                        binding!!.fabAskQuestion.extend()
+                    }
+                }
+            }
+        })
+
         var listOfQuestionCategories: List<QuestionCategoryItem>? = null
         viewModel.questionCategoriesLiveData.observe(requireActivity(), Observer {
             listOfQuestionCategories = it
@@ -128,22 +144,6 @@ class QuestionAnswerFragment : Fragment() {
                     binding?.chipGroupQuestionCategoriesChips?.check(allQuestionChipId)
                 }
 
-            }
-        })
-
-        binding?.rvQuestionsList?.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                if (dy > 0){
-                    if (binding!!.fabAskQuestion.isShown){
-                        binding!!.fabAskQuestion.shrink()
-                    }
-                } else if (dy < 0){
-                    if(binding!!.fabAskQuestion.isShown){
-                        binding!!.fabAskQuestion.extend()
-                    }
-                }
             }
         })
 

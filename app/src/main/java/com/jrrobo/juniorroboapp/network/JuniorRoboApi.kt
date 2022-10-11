@@ -7,6 +7,9 @@ import com.jrrobo.juniorroboapp.data.booking.BookingDemoItem
 import com.jrrobo.juniorroboapp.data.booking.BookingDemoItemPostResponse
 import com.jrrobo.juniorroboapp.data.booking.BookingItem
 import com.jrrobo.juniorroboapp.data.booking.BookingItemPostResponse
+import com.jrrobo.juniorroboapp.data.classroom.ClassroomChapters
+import com.jrrobo.juniorroboapp.data.classroom.ClassroomDetails
+import com.jrrobo.juniorroboapp.data.classroom.ClassroomSubjects
 import com.jrrobo.juniorroboapp.data.course.CourseGradeDetail
 import com.jrrobo.juniorroboapp.data.course.CourseGradeListItem
 import com.jrrobo.juniorroboapp.data.course.CourseListItem
@@ -19,6 +22,7 @@ import com.jrrobo.juniorroboapp.data.questionitem.QuestionItem
 import com.jrrobo.juniorroboapp.data.questionitem.QuestionItemPostResponse
 import com.jrrobo.juniorroboapp.data.questionitem.QuestionItemToAsk
 import com.jrrobo.juniorroboapp.data.voucher.Voucher
+import com.jrrobo.juniorroboapp.utility.NetworkRequestResource
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -166,4 +170,15 @@ interface JuniorRoboApi {
         @Query("hash") hash:String
     ): Response<String>
 
+    @GET(EndPoints.CLASSROOM)
+    suspend fun classroomDetails()
+    : Response<List<ClassroomDetails>>
+
+    @GET(EndPoints.SUBJECTS)
+    suspend fun classroomSubjects()
+    : Response<List<ClassroomSubjects>>
+
+    @GET(EndPoints.CHAPTERS)
+    suspend fun classroomChapters()
+    : Response<List<ClassroomChapters>>
 }
