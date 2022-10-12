@@ -66,10 +66,10 @@ class FragmentClassroomSubjects : Fragment() {
                 val allQuestionChipId: Int = chip.id
 
                 listOfCourses?.let {
-                    for (questionCategory in listOfCourses!!) {
-                        catNameToCatIdMap[questionCategory] = questionCategory.length
+                    for (course in listOfCourses!!) {
+                        catNameToCatIdMap[course] = course.length
                         chip = Chip(context)
-                        chip.text = questionCategory
+                        chip.text = course
                         chip.isCheckable = true
                         chipGroup?.addView(chip)
                     }
@@ -84,8 +84,8 @@ class FragmentClassroomSubjects : Fragment() {
             }*/
                 } else {
                     lifecycleScope.launch {
-                        listOfCourses?.find { questionCategoryItem ->
-                            questionCategoryItem == chip.text
+                        listOfCourses?.find { courseItem ->
+                            courseItem == chip.text
                         }
                     }
                 }
