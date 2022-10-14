@@ -14,7 +14,11 @@ RecyclerView.Adapter<SubjectsRvAdapter.ViewHolder>() {
             binding.apply {
                 subjectName.text = item
                 subjectsListCard.setOnClickListener {
-                    Navigation.findNavController(itemView).navigate(FragmentClassroomSubjectsDirections.actionFragmentClassroomSubjectsToFragmentClassroomChapters())
+                    Navigation.findNavController(itemView)
+                        .navigate(
+                            FragmentClassroomSubjectsDirections
+                                .actionFragmentClassroomSubjectsToFragmentClassroomChapters()
+                        )
                 }
             }
         }
