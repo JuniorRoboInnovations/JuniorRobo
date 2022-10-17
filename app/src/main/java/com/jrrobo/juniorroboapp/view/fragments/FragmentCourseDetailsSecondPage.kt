@@ -310,8 +310,6 @@ class FragmentCourseDetailsSecondPage(private val courseGradeListItem: CourseGra
 
     private fun populateViews(courseGradeDetail: CourseGradeDetail) {
         binding.courseDetailAboutText.text = courseGradeDetail.description
-
-
         Glide.with(binding.root)
             .load(EndPoints.GET_IMAGE + "/course/" + courseGradeDetail.image)
             .into(binding.courseDetailImage)
